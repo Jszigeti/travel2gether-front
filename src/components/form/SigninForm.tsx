@@ -1,3 +1,6 @@
+// REACT HOOKS
+import { useState } from "react";
+
 // FORMIK + YUP
 import { useFormik } from "formik";
 import { object, string } from "yup";
@@ -6,7 +9,6 @@ import { object, string } from "yup";
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
 
 export default function SigninForm() {
   const [error, setError] = useState(false);
@@ -28,10 +30,11 @@ export default function SigninForm() {
     initialValues: {
       email: "",
       password: "",
+      travel_types: [],
     },
     validationSchema: object({
-      email: string().email().required(),
-      password: string().required(),
+      email: string().email("Email invalide").required("Email requis"),
+      password: string().required("Mot de passe requis"),
     }),
     onSubmit: (values) => {
       verifyCredentials(values);
@@ -46,12 +49,8 @@ export default function SigninForm() {
       onSubmit={formik.handleSubmit}
     >
       <div>
-        <div className="flex flex-col gap-6 mb-3 relative">
-          <Typography
-            variant="h6"
-            color="blue-gray"
-            className="-mb-3 font-khula"
-          >
+        <div className="flex flex-col mb-3 relative">
+          <Typography variant="h6" className="font-khula">
             E-mail
           </Typography>
           <Input
@@ -60,7 +59,7 @@ export default function SigninForm() {
             name="email"
             value={formik.values.email}
             onChange={formik.handleChange}
-            className={`!border-blue font-khula focus:!border-2 ${
+            className={`!border-blue font-khula ${
               formik.touched.email && formik.errors.email
                 ? "!border-red-500"
                 : null
@@ -73,16 +72,17 @@ export default function SigninForm() {
           {formik.touched.email && formik.errors.email ? (
             <FontAwesomeIcon
               icon={faCircleExclamation}
-              className="absolute right-3 top-[52px] text-red-500"
+              className="absolute right-3 top-[40px] text-red-500"
             />
           ) : null}
+          {formik.errors.email && formik.touched.email && (
+            <div className="mt-1 text-red-500 font-khula">
+              {formik.errors.email}
+            </div>
+          )}
         </div>
-        <div className="flex flex-col gap-6 relative">
-          <Typography
-            variant="h6"
-            color="blue-gray"
-            className="-mb-3 font-khula"
-          >
+        <div className="flex flex-col relative">
+          <Typography variant="h6" className="font-khula">
             Mot de passe
           </Typography>
           <Input
@@ -105,18 +105,23 @@ export default function SigninForm() {
           {formik.touched.password && formik.errors.password ? (
             <FontAwesomeIcon
               icon={faCircleExclamation}
-              className="absolute right-3 top-[52px] text-red-500"
+              className="absolute right-3 top-[40px] text-red-500"
             />
           ) : null}
+          {formik.errors.password && formik.touched.password && (
+            <div className="mt-1 text-red-500 font-khula">
+              {formik.errors.password}
+            </div>
+          )}
         </div>
       </div>
       <Button className="bg-blue font-montserrat" fullWidth type="submit">
         Me connecter
       </Button>
       {error && (
-        <Typography color="red" className="text-center font-normal font-khula">
+        <div className="text-red-500 text-center font-khula">
           Identifiant ou mot de passe incorrect
-        </Typography>
+        </div>
       )}
     </form>
   );

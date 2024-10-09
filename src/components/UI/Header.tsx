@@ -10,7 +10,6 @@ import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 const navLinks = [
-  { path: "/", name: "Accueil" },
   { path: "/my-profile", name: "Mon profil" },
   { path: "/my-profile/notifications", name: "Mes notifications" },
   { path: "/my-profile/messages", name: "Mes messages" },
@@ -20,7 +19,7 @@ const navLinks = [
 
 function NavList({ closeNav }: { closeNav?: () => void }) {
   return (
-    <nav className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row items-center lg:gap-6 text-black">
+    <nav className="flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row items-center lg:gap-6 text-black">
       {navLinks.map((link, index) => (
         <NavLink key={index} to={link.path} className="mb-3" onClick={closeNav}>
           {link.name}
@@ -52,7 +51,7 @@ export default function Header() {
           <NavLink to="/" className="absolute left-1">
             <img src="./src/assets/logo/logo.svg" />
           </NavLink>
-          <div className="hidden lg:block lg:mr-4">
+          <div className="hidden xl:block lg:mr-4">
             <NavList />
           </div>
           <div className="flex items-center gap-6">
@@ -63,7 +62,7 @@ export default function Header() {
             />
             <IconButton
               variant="text"
-              className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+              className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent xl:hidden"
               ripple={false}
               onClick={() => setOpenNav(!openNav)}
             >

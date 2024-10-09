@@ -14,7 +14,7 @@ export default function ForgotPasswordForm() {
       email: "",
     },
     validationSchema: object({
-      email: string().email().required(),
+      email: string().email("Email invalide").required("Email requis"),
     }),
     onSubmit: (values) => {
       console.log({ ...values });
@@ -27,8 +27,8 @@ export default function ForgotPasswordForm() {
       className="w-80 max-w-screen-lg sm:w-96 flex flex-col gap-6"
       onSubmit={formik.handleSubmit}
     >
-      <div className="flex flex-col gap-6 mb-3 relative">
-        <Typography variant="h6" className="-mb-3 font-khula">
+      <div className="flex flex-col relative">
+        <Typography variant="h6" className="font-khula">
           E-mail
         </Typography>
         <Input
@@ -50,9 +50,14 @@ export default function ForgotPasswordForm() {
         {formik.touched.email && formik.errors.email ? (
           <FontAwesomeIcon
             icon={faCircleExclamation}
-            className="absolute right-3 top-[52px] text-red-500"
+            className="absolute right-3 top-[40px] text-red-500"
           />
         ) : null}
+        {formik.errors.email && formik.touched.email && (
+          <div className="mt-1 text-red-500 font-khula">
+            {formik.errors.email}
+          </div>
+        )}
       </div>
       <Button className="bg-blue font-montserrat" fullWidth type="submit">
         Me renvoyer mon mot de passe
