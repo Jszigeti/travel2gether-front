@@ -1,11 +1,9 @@
-import { GroupCreateForm } from "../../components/form/GroupCreateForm";
-import GroupPreferenceForm from "../../components/form/GroupPreferenceForm";
+import GroupCreateForm from "../../components/form/GroupCreateForm";
 
-export default function CreateGroup() {
+export default function GroupCreatePage() {
   return (
     <div>
       <GroupCreateForm />
-      <GroupPreferenceForm />
     </div>
   );
 }
