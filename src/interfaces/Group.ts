@@ -32,6 +32,7 @@ export interface GroupCardInterface {
   date_from: string;
   date_to: string;
   profiles: {
+    user_id: number;
     path_picture: string;
     role: GroupUserRoleEnum;
   }[];

@@ -12,6 +12,7 @@ export const groupsList = [
     date_to: "2024-10-31",
     profiles: [
       {
+        user_id: 1,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.AUTHOR,
       },
@@ -27,18 +28,22 @@ export const groupsList = [
     date_to: "2024-10-31",
     profiles: [
       {
+        user_id: 1,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.AUTHOR,
       },
       {
+        user_id: 2,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.ORGANIZER,
       },
       {
+        user_id: 3,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 4,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
@@ -54,18 +59,22 @@ export const groupsList = [
     date_to: "2024-10-31",
     profiles: [
       {
+        user_id: 1,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.AUTHOR,
       },
       {
+        user_id: 2,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 3,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 4,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
@@ -81,22 +90,27 @@ export const groupsList = [
     date_to: "2024-10-31",
     profiles: [
       {
+        user_id: 1,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.AUTHOR,
       },
       {
+        user_id: 2,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 3,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 4,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 5,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
@@ -112,22 +126,27 @@ export const groupsList = [
     date_to: "2024-10-31",
     profiles: [
       {
+        user_id: 1,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.AUTHOR,
       },
       {
+        user_id: 2,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 3,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 4,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 5,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
@@ -143,22 +162,27 @@ export const groupsList = [
     date_to: "2024-10-31",
     profiles: [
       {
+        user_id: 1,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.AUTHOR,
       },
       {
+        user_id: 2,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 3,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 4,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 5,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
@@ -174,22 +198,27 @@ export const groupsList = [
     date_to: "2024-10-31",
     profiles: [
       {
+        user_id: 1,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.AUTHOR,
       },
       {
+        user_id: 2,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 3,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 4,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },
       {
+        user_id: 5,
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
         role: GroupUserRoleEnum.TRAVELER,
       },

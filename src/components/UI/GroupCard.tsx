@@ -1,13 +1,21 @@
 // ROUTER
 import { NavLink } from "react-router-dom";
 
+// INTERFACES
+import { GroupCardInterface } from "../../interfaces/Group";
+
 // UTILS FUNCTIONS
 import { formatDate } from "../../utils/formatDate";
 
 // COMPONENTS
 import { Avatar } from "@material-tailwind/react";
 
-export default function GroupCard({ group }: any) {
+// PROPS INTERFACE
+interface GroupCardProps {
+  group: GroupCardInterface;
+}
+
+export default function GroupCard({ group }: GroupCardProps) {
   return (
     <NavLink to={`/group/${group.id}`}>
       <article className="relative w-full pb-[60%] md:pb-[55%] rounded-lg overflow-hidden">
@@ -27,8 +35,9 @@ export default function GroupCard({ group }: any) {
           </span>
         </p>
         <div className="absolute left-4 bottom-4 z-20 flex gap-2">
-          {group.profiles.slice(0, 3).map((profil: any) => (
+          {group.profiles.slice(0, 3).map((profil) => (
             <Avatar
+              key={profil.user_id}
               src={profil.path_picture}
               alt="avatar"
               className={`${
