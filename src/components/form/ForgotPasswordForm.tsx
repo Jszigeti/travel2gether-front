@@ -1,3 +1,6 @@
+// REACT HOOKS
+import { useState } from "react";
+
 // AXIOS FUNCTIONS
 import { forgotPassword } from "../../api/auth";
 
@@ -11,6 +14,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 export default function ForgotPasswordForm() {
+  // STATES
+  const [error, setError] = useState<null | string>(null);
+
   // FORM LOGIC
   const formik = useFormik({
     initialValues: {
@@ -20,9 +26,15 @@ export default function ForgotPasswordForm() {
       email: string().email("Email invalide").required("Email requis"),
     }),
     onSubmit: async (values) => {
-      const response = await forgotPassword(values);
-      console.log("Soumission du formulaire réussie", response);
-      formik.resetForm();
+      try {
+        setError(null);
+        const response = await forgotPassword(values);
+        console.log("Soumission du formulaire réussie", response);
+        formik.resetForm();
+      } catch (error: unknown) {
+        console.log(error);
+        setError(error);
+      }
     },
   });
 
@@ -66,6 +78,11 @@ export default function ForgotPasswordForm() {
       <Button className="bg-blue font-montserrat" fullWidth type="submit">
         Me renvoyer mon mot de passe
       </Button>
+      {error && (
+        <div className="text-red-500 text-center font-khula">
+          Une erreur est survenue
+        </div>
+      )}
     </form>
   );
 }
