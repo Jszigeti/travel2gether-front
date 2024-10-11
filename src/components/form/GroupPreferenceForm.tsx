@@ -27,6 +27,61 @@ export default function GroupPreferenceForm() {
     },
   });
 
+  const travelTypesOptions = [
+    { value: "adventure", label: "Aventure" },
+    { value: "cultural", label: "Culturel" },
+    { value: "relaxation", label: "Détente" },
+    { value: "luxury", label: "Luxe" },
+    { value: "hiking", label: "Randonnée" },
+    { value: "beach", label: "Plage" },
+    { value: "road_trip", label: "Road Trip" },
+    { value: "cruise", label: "Croisière" },
+    { value: "family_trip", label: "Famililale" },
+    { value: "romantic_trip", label: "Romantique" },
+    { value: "friends_trip", label: "Voyage entre ami(e)s" },
+    { value: "eco_friendly", label: "Écologique" },
+  ];
+  const lodgingsOptions = [
+    { value: "youth_hotel", label: "Auberge" },
+    { value: "hotel", label: "Hotel" },
+    { value: "airbnb", label: "AirBnb" },
+    { value: "camping", label: "Camping" },
+    { value: "ecolodge", label: "Eco logement" },
+    { value: "luxury", label: "Luxueux" },
+  ];
+  const genderOptions = [
+    { value: "male", label: "Masculin" },
+    { value: "female", label: "Féminin" },
+    { value: "other", label: "Autres" },
+    { value: "mixed", label: "Mixte" },
+  ];
+  const spokenLanguagesOptions = [
+    { value: "french", label: "Français" },
+    { value: "english", label: "Anglais" },
+    { value: "spanish", label: "Espagnol" },
+    { value: "portuguese", label: "Portugais" },
+    { value: "arabic", label: "Arabe" },
+    { value: "italian", label: "Italien" },
+    { value: "japanese", label: "Japonais" },
+    { value: "mandarin", label: "Mandarin" },
+    { value: "greek", label: "Grèque" },
+    { value: "deutsch", label: "Deutsh" },
+    { value: "dutch", label: "Allemand" },
+    { value: "russian", label: "Russe" },
+    { value: "hindi", label: "Hindi" },
+  ];
+  const budgetOptions = [
+    { value: "low", label: "Bas" },
+    { value: "middle", label: "Moyen" },
+    { value: "high", label: "Haut" },
+    { value: "luxury", label: "Luxe" },
+  ];
+  const ageRangesOptions = [
+    { value: "18-25", label: "18-25" },
+    { value: "25-35", label: "25-35" },
+    { value: "35-50", label: "35-50" },
+    { value: "50+", label: "50+" },
+  ];
   return (
     <Card
       shadow={false}
@@ -43,7 +98,7 @@ export default function GroupPreferenceForm() {
           </Typography>
           <Dropdown
             label="un type de voyage"
-            options={["Aventure", "Culturel", "Détente", "Luxe"]}
+            options={travelTypesOptions}
             field={formik.getFieldProps("travel_types")}
             formik={formik}
           />
@@ -56,7 +111,7 @@ export default function GroupPreferenceForm() {
           </Typography>
           <Dropdown
             label="un type d'hébergement"
-            options={["Hôtel", "Auberge", "Maison", "Camping"]}
+            options={lodgingsOptions}
             field={formik.getFieldProps("lodgings")}
             formik={formik}
           />
@@ -70,7 +125,7 @@ export default function GroupPreferenceForm() {
           <Dropdown
             multiple={false}
             label="un genre"
-            options={["Masculin", "Féminin", "Autre"]}
+            options={genderOptions}
             field={formik.getFieldProps("gender_type")}
             formik={formik}
           />
@@ -83,7 +138,7 @@ export default function GroupPreferenceForm() {
           </Typography>
           <Dropdown
             label="une langue"
-            options={["Français", "Anglais", "Espagnol", "Allemand"]}
+            options={spokenLanguagesOptions}
             field={formik.getFieldProps("spoken_languages")}
             formik={formik}
           />
@@ -99,7 +154,7 @@ export default function GroupPreferenceForm() {
           <Dropdown
             label="un budget"
             multiple={false}
-            options={["Bas", "Moyen", "Élevé"]}
+            options={budgetOptions}
             field={formik.getFieldProps("budget")}
             formik={formik}
           />
@@ -112,7 +167,7 @@ export default function GroupPreferenceForm() {
           </Typography>
           <Dropdown
             label="une tranche d'âge"
-            options={["18-25 ans", "26-35 ans", "36-45 ans", "46 ans et plus"]}
+            options={ageRangesOptions}
             field={formik.getFieldProps("age_ranges")}
             formik={formik}
           />

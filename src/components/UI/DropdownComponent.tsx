@@ -3,8 +3,14 @@ import { FieldInputProps, FormikProps } from "formik";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+// Définir un type pour les options avec des valeurs et des labels
+interface Option {
+  value: string;
+  label: string;
+}
+
 interface DropdownProps {
-  options: Array<string>;
+  options: Array<Option>; // Tableau d'options contenant { value, label }
   field: FieldInputProps<string[]>;
   formik: FormikProps<any>;
   label: string;
@@ -22,18 +28,18 @@ export default function Dropdown({
   const dropdownRef = useRef<HTMLDivElement>(null); // Référence pour la liste déroulante
 
   // Fonction pour gérer la sélection des options
-  const handleCheckboxChange = (option: string) => {
+  const handleCheckboxChange = (value: string) => {
     const selectedValues = formik.values[field.name];
 
     if (multiple) {
-      const updatedValues = selectedValues.includes(option)
-        ? selectedValues.filter((value: string) => value !== option)
-        : [...selectedValues, option];
+      const updatedValues = selectedValues.includes(value)
+        ? selectedValues.filter((v: string) => v !== value)
+        : [...selectedValues, value];
       formik.setFieldValue(field.name, updatedValues);
     } else {
       formik.setFieldValue(
         field.name,
-        selectedValues.includes(option) ? [] : [option]
+        selectedValues.includes(value) ? [] : [value]
       );
     }
   };
@@ -63,7 +69,12 @@ export default function Dropdown({
         onClick={() => setIsOpen(!isOpen)}
       >
         {formik.values[field.name].length > 0
-          ? formik.values[field.name].join(", ")
+          ? options
+              .filter((option) =>
+                formik.values[field.name].includes(option.value)
+              )
+              .map((option) => option.label)
+              .join(", ")
           : `Sélectionnez ${label}`}
 
         <FontAwesomeIcon
@@ -77,18 +88,18 @@ export default function Dropdown({
 
       {isOpen && (
         <div className="absolute z-10 w-full bg-white border mt-2 rounded shadow-lg max-h-48 overflow-y-auto">
-          {options.map((option: string) => (
+          {options.map((option) => (
             <label
-              key={option}
+              key={option.value}
               className="flex items-center p-2 hover:bg-gray-100"
             >
               <input
                 type={multiple ? "checkbox" : "radio"}
                 className="mr-2"
-                checked={formik.values[field.name].includes(option)}
-                onChange={() => handleCheckboxChange(option)}
+                checked={formik.values[field.name].includes(option.value)}
+                onChange={() => handleCheckboxChange(option.value)}
               />
-              {option}
+              {option.label} {/* Affichage de l'option en français */}
             </label>
           ))}
         </div>
