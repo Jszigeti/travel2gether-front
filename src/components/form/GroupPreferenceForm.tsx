@@ -2,6 +2,14 @@ import { Card, Button, Typography } from "@material-tailwind/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Dropdown from "../UI/DropdownComponent";
+import {
+  ageRangesOptions,
+  budgetOptions,
+  groupGenderOptions,
+  lodgingsOptions,
+  spokenLanguagesOptions,
+  travelTypesOptions,
+} from "../../data/formOptions";
 
 export default function GroupPreferenceForm() {
   const formik = useFormik({
@@ -27,65 +35,10 @@ export default function GroupPreferenceForm() {
     },
   });
 
-  const travelTypesOptions = [
-    { value: "adventure", label: "Aventure" },
-    { value: "cultural", label: "Culturel" },
-    { value: "relaxation", label: "Détente" },
-    { value: "luxury", label: "Luxe" },
-    { value: "hiking", label: "Randonnée" },
-    { value: "beach", label: "Plage" },
-    { value: "road_trip", label: "Road Trip" },
-    { value: "cruise", label: "Croisière" },
-    { value: "family_trip", label: "Famililale" },
-    { value: "romantic_trip", label: "Romantique" },
-    { value: "friends_trip", label: "Voyage entre ami(e)s" },
-    { value: "eco_friendly", label: "Écologique" },
-  ];
-  const lodgingsOptions = [
-    { value: "youth_hotel", label: "Auberge" },
-    { value: "hotel", label: "Hotel" },
-    { value: "airbnb", label: "AirBnb" },
-    { value: "camping", label: "Camping" },
-    { value: "ecolodge", label: "Eco logement" },
-    { value: "luxury", label: "Luxueux" },
-  ];
-  const genderOptions = [
-    { value: "male", label: "Masculin" },
-    { value: "female", label: "Féminin" },
-    { value: "other", label: "Autres" },
-    { value: "mixed", label: "Mixte" },
-  ];
-  const spokenLanguagesOptions = [
-    { value: "french", label: "Français" },
-    { value: "english", label: "Anglais" },
-    { value: "spanish", label: "Espagnol" },
-    { value: "portuguese", label: "Portugais" },
-    { value: "arabic", label: "Arabe" },
-    { value: "italian", label: "Italien" },
-    { value: "japanese", label: "Japonais" },
-    { value: "mandarin", label: "Mandarin" },
-    { value: "greek", label: "Grèque" },
-    { value: "deutsch", label: "Deutsh" },
-    { value: "dutch", label: "Allemand" },
-    { value: "russian", label: "Russe" },
-    { value: "hindi", label: "Hindi" },
-  ];
-  const budgetOptions = [
-    { value: "low", label: "Bas" },
-    { value: "middle", label: "Moyen" },
-    { value: "high", label: "Haut" },
-    { value: "luxury", label: "Luxe" },
-  ];
-  const ageRangesOptions = [
-    { value: "18-25", label: "18-25" },
-    { value: "25-35", label: "25-35" },
-    { value: "35-50", label: "35-50" },
-    { value: "50+", label: "50+" },
-  ];
   return (
     <Card
       shadow={false}
-      className="flex justify-center items-center min-h-screen text-black font-khula"
+      className="flex justify-center items-center min-h-screen text-black "
     >
       <h1>Préférences du groupe de voyage</h1>
       <form
@@ -93,7 +46,7 @@ export default function GroupPreferenceForm() {
         className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
       >
         <div className="mb-1 flex flex-col gap-2">
-          <Typography variant="h6" className="mt-1 font-khula">
+          <Typography variant="h6" className="mt-1 ">
             Type de voyage
           </Typography>
           <Dropdown
@@ -106,7 +59,7 @@ export default function GroupPreferenceForm() {
             <Typography color="red">{formik.errors.travel_types}</Typography>
           ) : null}
 
-          <Typography variant="h6" className="font-khula mt-4">
+          <Typography variant="h6" className=" mt-4">
             Hébergement
           </Typography>
           <Dropdown
@@ -119,13 +72,13 @@ export default function GroupPreferenceForm() {
             <Typography color="red">{formik.errors.lodgings}</Typography>
           ) : null}
 
-          <Typography variant="h6" className="font-khula mt-4">
+          <Typography variant="h6" className=" mt-4">
             Genre
           </Typography>
           <Dropdown
             multiple={false}
             label="un genre"
-            options={genderOptions}
+            options={groupGenderOptions}
             field={formik.getFieldProps("gender_type")}
             formik={formik}
           />
@@ -133,7 +86,7 @@ export default function GroupPreferenceForm() {
             <Typography color="red">{formik.errors.gender_type}</Typography>
           ) : null}
 
-          <Typography variant="h6" className="font-khula mt-4">
+          <Typography variant="h6" className=" mt-4">
             Langues parlées
           </Typography>
           <Dropdown
@@ -148,7 +101,7 @@ export default function GroupPreferenceForm() {
             </Typography>
           ) : null}
 
-          <Typography variant="h6" className="font-khula mt-4">
+          <Typography variant="h6" className=" mt-4">
             Budget
           </Typography>
           <Dropdown
@@ -162,7 +115,7 @@ export default function GroupPreferenceForm() {
             <Typography color="red">{formik.errors.budget}</Typography>
           ) : null}
 
-          <Typography variant="h6" className="font-khula mt-4">
+          <Typography variant="h6" className=" mt-4">
             Tranche d'âge
           </Typography>
           <Dropdown

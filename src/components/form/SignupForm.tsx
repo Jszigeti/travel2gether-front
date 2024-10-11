@@ -54,15 +54,13 @@ export function SignupForm({ onNext }: SignupFormProps) {
         onSubmit={formik.handleSubmit}
       >
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Mon adresse mail
-          </Typography>
+          <Typography variant="h6">Mon adresse mail</Typography>
           <Input
             crossOrigin={undefined}
             size="lg"
             type="email"
             placeholder="name@email.com"
-            className={`!border-blue font-khula ${
+            className={`!border-blue  ${
               formik.touched.email && formik.errors.email
                 ? "!border-red-500"
                 : null
@@ -85,14 +83,12 @@ export function SignupForm({ onNext }: SignupFormProps) {
           )}
         </div>
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Mon prénom
-          </Typography>
+          <Typography variant="h6">Mon prénom</Typography>
           <Input
             crossOrigin={undefined}
             size="lg"
             placeholder="Insert title here"
-            className={`!border-blue font-khula ${
+            className={`!border-blue  ${
               formik.touched.firstname && formik.errors.firstname
                 ? "!border-red-500"
                 : null
@@ -115,14 +111,12 @@ export function SignupForm({ onNext }: SignupFormProps) {
           )}
         </div>
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Mon nom de famille
-          </Typography>
+          <Typography variant="h6">Mon nom de famille</Typography>
           <Input
             crossOrigin={undefined}
             size="lg"
             placeholder="Insert title here"
-            className={`!border-blue font-khula ${
+            className={`!border-blue  ${
               formik.touched.lastname && formik.errors.lastname
                 ? "!border-red-500"
                 : null
@@ -145,15 +139,13 @@ export function SignupForm({ onNext }: SignupFormProps) {
           )}
         </div>
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Mot de passe
-          </Typography>
+          <Typography variant="h6">Mot de passe</Typography>
           <Input
             crossOrigin={undefined}
             size="lg"
             type="password"
             placeholder="Insert title here"
-            className={`!border-blue font-khula ${
+            className={`!border-blue  ${
               formik.touched.password && formik.errors.password
                 ? "!border-red-500"
                 : null
@@ -176,15 +168,13 @@ export function SignupForm({ onNext }: SignupFormProps) {
           )}
         </div>
         <div className="flex flex-col mb-6 relative">
-          <Typography variant="h6" className="font-khula">
-            Confirmer le mot de passe
-          </Typography>
+          <Typography variant="h6">Confirmer le mot de passe</Typography>
           <Input
             crossOrigin={undefined}
             size="lg"
             type="password"
             placeholder="Insert title here"
-            className={`!border-blue font-khula ${
+            className={`!border-blue  ${
               formik.touched.email && formik.errors.email
                 ? "!border-red-500"
                 : null
@@ -206,10 +196,15 @@ export function SignupForm({ onNext }: SignupFormProps) {
             <div>{formik.errors.passwordmatch}</div>
           )}
         </div>
-        <Button size="md" fullWidth className="bg-blue" type="submit">
+        <Button
+          size="md"
+          fullWidth
+          className="bg-blue font-montserrat"
+          type="submit"
+        >
           M'inscrire
         </Button>
-        <Typography className="text-center font-normal font-khula mt-6">
+        <Typography className="text-center font-normal  mt-6">
           Déjà inscrit ?{" "}
           <NavLink to="/signin" className="text-blue font-bold">
             Se connecter

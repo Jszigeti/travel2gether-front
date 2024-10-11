@@ -11,13 +11,13 @@ export default function App() {
   return (
     <>
       <Routes>
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="*" element={<NoPage />} />
         <Route path="/" element={<HomePage />} />
+        <Route path="/signup" element={<SignupPage />} />
         <Route path="/signin" element={<SigninPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/group/create" element={<GroupCreatePage />} />
         <Route path="/group/:groupId/edit" element={<GroupeEditPage />} />
+        <Route path="*" element={<NoPage />} />
       </Routes>
     </>
   );

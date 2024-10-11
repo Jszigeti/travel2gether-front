@@ -1,4 +1,3 @@
-//import { User } from "../interfaces/User";
 import {
   Button,
   Card,
@@ -8,12 +7,16 @@ import {
   Avatar,
 } from "@material-tailwind/react";
 import { useFormik } from "formik";
-//import { Link } from "react-router-dom";
 import { array, object, string } from "yup";
-import Dropdown from "./ui/DropdownComponent";
+import Dropdown from "../UI/DropdownComponent";
 import { useState } from "react";
-import { ProfileDataParams } from "../pages/auth/SignupPage";
+import { ProfileDataParams } from "../../pages/auth/SignupPage";
 import { NavLink } from "react-router-dom";
+import {
+  interestsOptions,
+  profileGenderOptions,
+  spokenLanguagesOptions,
+} from "../../data/formOptions";
 
 interface ProfileFormProps {
   onNext?: () => void;
@@ -64,7 +67,7 @@ export function ProfileForm({ onNext, onProfileData }: ProfileFormProps) {
     <Card
       color="transparent"
       shadow={false}
-      className="flex justify-center items-center min-h-screen text-black font-khula"
+      className="flex justify-center items-center min-h-screen text-black "
     >
       <Typography variant="h4" className="font-montserrat">
         Mon profil
@@ -92,7 +95,7 @@ export function ProfileForm({ onNext, onProfileData }: ProfileFormProps) {
             size="lg"
             type="file"
             placeholder="Your profile pic"
-            className={`!border-blue font-khula ${
+            className={`!border-blue  ${
               formik.touched.path_picture && formik.errors.path_picture
                 ? "!border-red-500"
                 : null
@@ -105,11 +108,9 @@ export function ProfileForm({ onNext, onProfileData }: ProfileFormProps) {
           />
         </div>
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Mon genre
-          </Typography>
+          <Typography variant="h6">Mon genre</Typography>
           <Dropdown
-            options={["Homme", "Femme", "Autre"]}
+            options={profileGenderOptions}
             field={formik.getFieldProps("gender")}
             formik={formik}
             label="votre genre"
@@ -117,9 +118,7 @@ export function ProfileForm({ onNext, onProfileData }: ProfileFormProps) {
           />
         </div>
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Bio
-          </Typography>
+          <Typography variant="h6">Bio</Typography>
           <Textarea
             placeholder="Parlez nous de vous!"
             name="description"
@@ -132,31 +131,32 @@ export function ProfileForm({ onNext, onProfileData }: ProfileFormProps) {
           />
         </div>
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Centres d'intérêt
-          </Typography>
+          <Typography variant="h6">Centres d'intérêt</Typography>
           <Dropdown
-            options={["A", "B", "C"]}
+            options={interestsOptions}
             field={formik.getFieldProps("interests")}
             formik={formik}
             label="vos centres d'intérêt"
           />
         </div>
         <div className="flex flex-col mb-6 relative">
-          <Typography variant="h6" className="font-khula">
-            Langues parlées
-          </Typography>
+          <Typography variant="h6">Langues parlées</Typography>
           <Dropdown
-            options={["Français", "English", "Español"]}
+            options={spokenLanguagesOptions}
             field={formik.getFieldProps("spoken_languages")}
             formik={formik}
             label="vos langues parlées"
           />
         </div>
-        <Button size="md" fullWidth className="bg-blue" type="submit">
+        <Button
+          size="md"
+          fullWidth
+          className="bg-blue font-montserrat"
+          type="submit"
+        >
           Suite
         </Button>
-        <Typography className="text-center font-normal font-khula mt-6">
+        <Typography className="text-center font-normal  mt-6">
           <NavLink to="/" className="text-blue">
             Compléter plus tard
           </NavLink>

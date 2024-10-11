@@ -64,7 +64,7 @@ export default function GroupCreateForm() {
   return (
     <Card
       shadow={false}
-      className="flex justify-center items-center min-h-screen text-black font-khula"
+      className="flex justify-center items-center min-h-screen text-black "
     >
       <h1>Création d'un groupe de voyage</h1>
       <form
@@ -72,7 +72,7 @@ export default function GroupCreateForm() {
         className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
       >
         <div className="flex flex-col  mb-3 relative">
-          <Typography variant="h6" className="font-khula">
+          <Typography variant="h6">
             Choisissez une image pour votre groupe de voyage
           </Typography>
           {previewImage ? (
@@ -113,9 +113,7 @@ export default function GroupCreateForm() {
         </div>
 
         <div className="flex flex-col  mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Nom du groupe
-          </Typography>
+          <Typography variant="h6">Nom du groupe</Typography>
           <Input
             crossOrigin={undefined}
             labelProps={{
@@ -141,9 +139,7 @@ export default function GroupCreateForm() {
           ) : null}
         </div>
         <div className="flex flex-col  mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Description
-          </Typography>
+          <Typography variant="h6">Description</Typography>
           <Textarea
             size="lg"
             placeholder="Description du groupe de voyage"
@@ -169,9 +165,7 @@ export default function GroupCreateForm() {
         </div>
 
         <div className="flex flex-col  mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Lieu
-          </Typography>
+          <Typography variant="h6">Lieu</Typography>
           <Input
             crossOrigin={undefined}
             labelProps={{
@@ -197,9 +191,7 @@ export default function GroupCreateForm() {
           ) : null}
         </div>
         <div className="flex flex-col  mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Date de début
-          </Typography>
+          <Typography variant="h6">Date de début</Typography>
           <Input
             crossOrigin={undefined}
             labelProps={{
@@ -226,9 +218,7 @@ export default function GroupCreateForm() {
           ) : null}
         </div>
         <div className="flex flex-col  relative">
-          <Typography variant="h6" className="font-khula">
-            Date de fin
-          </Typography>
+          <Typography variant="h6">Date de fin</Typography>
           <Input
             crossOrigin={undefined}
             labelProps={{

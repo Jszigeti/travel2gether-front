@@ -3,14 +3,17 @@ import { Button, Card, Typography, Input } from "@material-tailwind/react";
 import { useFormik } from "formik";
 import { NavLink } from "react-router-dom";
 import { array, date, object, ref } from "yup";
-import Dropdown from "./ui/DropdownComponent";
+import Dropdown from "../UI/DropdownComponent";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ProfileDataParams } from "../pages/auth/SignupPage";
+import { ProfileDataParams } from "../../pages/auth/SignupPage";
+import {
+  budgetOptions,
+  lodgingsOptions,
+  travelTypesOptions,
+  tripDurationsOptions,
+} from "../../data/formOptions";
 
-/*interface UserFormProps {
-  onSigninFormData: (signinFormData: User) => void;
-}*/
 export function ProfileContForm({
   profileData,
 }: {
@@ -46,7 +49,7 @@ export function ProfileContForm({
     <Card
       color="transparent"
       shadow={false}
-      className="flex justify-center items-center min-h-screen text-black font-khula"
+      className="flex justify-center items-center min-h-screen text-black "
     >
       <Typography variant="h4" className="font-montserrat">
         Mes préférences
@@ -56,22 +59,18 @@ export function ProfileContForm({
         onSubmit={formik.handleSubmit}
       >
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Types de voyage
-          </Typography>
+          <Typography variant="h6">Types de voyage</Typography>
           <Dropdown
-            options={["Randonnée", "Loisirs", "Croisière"]}
+            options={travelTypesOptions}
             field={formik.getFieldProps("travel_types")}
             formik={formik}
             label="vos types de voyage"
           />
         </div>
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Mon budget
-          </Typography>
+          <Typography variant="h6">Mon budget</Typography>
           <Dropdown
-            options={["Economique", "Moyen", "Luxe"]}
+            options={budgetOptions}
             field={formik.getFieldProps("budget")}
             formik={formik}
             label="votre budget"
@@ -79,26 +78,22 @@ export function ProfileContForm({
           />
         </div>
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Préférences d'hébergement
-          </Typography>
+          <Typography variant="h6">Préférences d'hébergement</Typography>
           <Dropdown
-            options={["Hôtel", "Camping", "Auberge de jeunesse"]}
+            options={lodgingsOptions}
             field={formik.getFieldProps("lodgings")}
             formik={formik}
             label="vos préférences d'hébergement"
           />
         </div>
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            Mes disponibilités
-          </Typography>
+          <Typography variant="h6">Mes disponibilités</Typography>
           <Input
             crossOrigin={undefined}
             size="lg"
             type="date"
             placeholder="Début"
-            className={`!border-blue mb-3 font-khula ${
+            className={`!border-blue mb-3  ${
               formik.touched.available_from && formik.errors.available_from
                 ? "!border-red-500"
                 : null
@@ -126,7 +121,7 @@ export function ProfileContForm({
             size="lg"
             type="date"
             placeholder="Fin"
-            className={`!border-blue font-khula ${
+            className={`!border-blue  ${
               formik.touched.available_to && formik.errors.available_to
                 ? "!border-red-500"
                 : null
@@ -149,24 +144,23 @@ export function ProfileContForm({
           )}
         </div>
         <div className="flex flex-col mb-6 relative">
-          <Typography variant="h6" className="font-khula">
-            Durées de voyage
-          </Typography>
+          <Typography variant="h6">Durées de voyage</Typography>
           <Dropdown
-            options={[
-              "Court(moins de 3 jours)",
-              "Moyen(3 à 7 jours)",
-              "Long(plus de 7 jours)",
-            ]}
+            options={tripDurationsOptions}
             field={formik.getFieldProps("trip_durations")}
             formik={formik}
             label="vos durées de voyage"
           />
         </div>
-        <Button size="md" fullWidth className="bg-blue" type="submit">
+        <Button
+          size="md"
+          fullWidth
+          className="bg-blue font-montserrat"
+          type="submit"
+        >
           Valider
         </Button>
-        <Typography className="text-center font-normal font-khula mt-6">
+        <Typography className="text-center font-normal  mt-6">
           <NavLink to="/" className="text-blue">
             Compléter plus tard
           </NavLink>

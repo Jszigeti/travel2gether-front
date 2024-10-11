@@ -44,16 +44,14 @@ export default function ForgotPasswordForm() {
       onSubmit={formik.handleSubmit}
     >
       <div className="flex flex-col relative">
-        <Typography variant="h6" className="font-khula">
-          E-mail
-        </Typography>
+        <Typography variant="h6">E-mail</Typography>
         <Input
           size="lg"
           placeholder="maria.diana@gmail.com"
           name="email"
           value={formik.values.email}
           onChange={formik.handleChange}
-          className={`!border-blue font-khula focus:!border-2 ${
+          className={`!border-blue focus:!border-2 ${
             formik.touched.email && formik.errors.email
               ? "!border-red-500"
               : null
@@ -70,18 +68,14 @@ export default function ForgotPasswordForm() {
           />
         ) : null}
         {formik.errors.email && formik.touched.email && (
-          <div className="mt-1 text-red-500 font-khula">
-            {formik.errors.email}
-          </div>
+          <div className="mt-1 text-red-500">{formik.errors.email}</div>
         )}
       </div>
       <Button className="bg-blue font-montserrat" fullWidth type="submit">
         Me renvoyer mon mot de passe
       </Button>
       {error && (
-        <div className="text-red-500 text-center font-khula">
-          Une erreur est survenue
-        </div>
+        <div className="text-red-500 text-center">Une erreur est survenue</div>
       )}
     </form>
   );

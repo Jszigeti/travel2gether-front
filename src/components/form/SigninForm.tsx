@@ -47,16 +47,14 @@ export default function SigninForm() {
     >
       <div>
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6" className="font-khula">
-            E-mail
-          </Typography>
+          <Typography variant="h6">E-mail</Typography>
           <Input
             size="lg"
             placeholder="maria.diana@gmail.com"
             name="email"
             value={formik.values.email}
             onChange={formik.handleChange}
-            className={`!border-blue font-khula ${
+            className={`!border-blue  ${
               formik.touched.email && formik.errors.email
                 ? "!border-red-500"
                 : null
@@ -73,15 +71,11 @@ export default function SigninForm() {
             />
           ) : null}
           {formik.errors.email && formik.touched.email && (
-            <div className="mt-1 text-red-500 font-khula">
-              {formik.errors.email}
-            </div>
+            <div className="mt-1 text-red-500 ">{formik.errors.email}</div>
           )}
         </div>
         <div className="flex flex-col relative">
-          <Typography variant="h6" className="font-khula">
-            Mot de passe
-          </Typography>
+          <Typography variant="h6">Mot de passe</Typography>
           <Input
             type="password"
             size="lg"
@@ -89,7 +83,7 @@ export default function SigninForm() {
             name="password"
             value={formik.values.password}
             onChange={formik.handleChange}
-            className={`!border-blue font-khula focus:!border-2 ${
+            className={`!border-blue  focus:!border-2 ${
               formik.touched.password && formik.errors.password
                 ? "!border-red-500"
                 : null
@@ -106,9 +100,7 @@ export default function SigninForm() {
             />
           ) : null}
           {formik.errors.password && formik.touched.password && (
-            <div className="mt-1 text-red-500 font-khula">
-              {formik.errors.password}
-            </div>
+            <div className="mt-1 text-red-500 ">{formik.errors.password}</div>
           )}
         </div>
       </div>
@@ -116,7 +108,7 @@ export default function SigninForm() {
         Me connecter
       </Button>
       {error && (
-        <div className="text-red-500 text-center font-khula">
+        <div className="text-red-500 text-center ">
           Identifiant ou mot de passe incorrect
         </div>
       )}

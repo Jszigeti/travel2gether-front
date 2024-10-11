@@ -19,7 +19,7 @@ export default function ForgotPasswordPage() {
       <Card shadow={false} className="flex flex-col gap-6">
         <h1 className="text-center text-black">Mot de passe oublié</h1>
         <ForgotPasswordForm />
-        <Typography color="gray" className="text-center font-normal font-khula">
+        <Typography color="gray" className="text-center font-normal">
           Pas de compte ?{" "}
           <NavLink to="/signup" className="text-blue font-bold">
             S'inscrire

@@ -16,7 +16,6 @@ module.exports = withMT({
       green: "#45CB85",
     },
     fontFamily: {
-      khula: ["Khula", "sans-serif"],
       montserrat: ["Montserrat", "sans-serif"],
     },
     extend: {},

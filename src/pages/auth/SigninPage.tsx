@@ -19,10 +19,10 @@ export default function SigninPage() {
       <Card color="transparent" shadow={false} className="flex flex-col gap-6">
         <h1 className="text-center text-black">Me connecter</h1>
         <SigninForm />
-        <Typography className="text-center font-bold text-blue font-khula">
+        <Typography className="text-center font-bold text-blue ">
           <NavLink to="/forgot-password">Mot de passe oublié ?</NavLink>
         </Typography>
-        <Typography color="gray" className="text-center font-normal font-khula">
+        <Typography color="gray" className="text-center font-normal ">
           Pas de compte ?{" "}
           <NavLink to="/signup" className="text-blue font-bold">
             S'inscrire

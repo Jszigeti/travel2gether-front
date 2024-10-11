@@ -36,7 +36,12 @@ function NavList({ closeNav }: { closeNav?: () => void }) {
   return (
     <nav className="flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row items-center lg:gap-6 text-black">
       {navLinks.map((link, index) => (
-        <NavLink key={index} to={link.path} className="mb-3" onClick={closeNav}>
+        <NavLink
+          key={index}
+          to={link.path}
+          className="mb-3 font-bold"
+          onClick={closeNav}
+        >
           {link.name}
         </NavLink>
       ))}

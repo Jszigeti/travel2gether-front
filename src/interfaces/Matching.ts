@@ -1,0 +1,87 @@
+export enum BudgetEnum {
+  LOW = "LOW",
+  MIDDLE = "MIDDLE",
+  HIGH = "HIGH",
+  LUXURY = "LUXURY",
+}
+
+export enum GroupGenderEnum {
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  OTHER = "OTHER",
+  MIXED = "MIXED",
+}
+
+export enum GroupAgeRangesSet {
+  "18-25",
+  "25-35",
+  "35-50",
+  "50+",
+}
+
+export enum LodgingsSet {
+  YOUTH_HOTEL = "YOUTH_HOTEL",
+  HOTEL = "HOTEL",
+  AIRBNB = "AIRBNB",
+  CAMPING = "CAMPING",
+  ECOLODGE = "ECOLODGE",
+  LUXURY = "LUXURY",
+}
+
+export enum ProfileGenderEnum {
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  OTHER = "OTHER",
+}
+
+export enum ProfileInterestsSet {
+  ADVENTURE_SPORTS = "ADVENTURE_SPORTS",
+  CULTURAL_ARTS = "CULTURAL_ARTS",
+  GASTRONOMIC = "GASTRONOMIC",
+  NATURE = "NATURE",
+  WELLNESS = "WELLNESS",
+  PARTY = "PARTY",
+  AMUSEMENT_PARK = "AMUSEMENT_PARK",
+  BOARD_GAMES = "BOARD_GAMES",
+  TECHNOLOGIES = "TECHNOLOGIES",
+  HISTORY = "HISTORY",
+  WATER_ACTIVITIES = "WATER_ACTIVITIES",
+  SHOPPING = "SHOPPING",
+  FAMILY_ACTIVITIES = "FAMILY_ACTIVITIES",
+}
+
+export enum ProfileTripDurationsSet {
+  SHORT_TRIP = "SHORT_TRIP",
+  MEDIUM_TRIP = "MEDIUM_TRIP",
+  LONG_TRIP = "LONG_TRIP",
+}
+
+export enum SpokenLanguagesSet {
+  FRENCH = "FRENCH",
+  ENGLISH = "ENGLISH",
+  SPANISH = "SPANISH",
+  PORTUGUESE = "PORTUGUESE",
+  ARABIC = "ARABIC",
+  ITALIAN = "ITALIAN",
+  JAPANESE = "JAPANESE",
+  MANDARIN = "MANDARIN",
+  DEUTSCH = "DEUTSCH",
+  DUTCH = "DUTCH",
+  RUSSIAN = "RUSSIAN",
+  HINDI = "HINDI",
+  GREEK = "GREEK",
+}
+
+export enum TravelTypesSet {
+  RELAXATION = "RELAXATION",
+  ADVENTURE = "ADVENTURE",
+  CULTURAL = "CULTURAL",
+  HIKING = "HIKING",
+  BEACH = "BEACH",
+  GASTRONOMIC = "GASTRONOMIC",
+  ROAD_TRIP = "ROAD_TRIP",
+  CRUISE = "CRUISE",
+  FAMILY_TRIP = "FAMILY_TRIP",
+  FRIENDS_TRIP = "FRIENDS_TRIP",
+  ECO_FRIENDLY = "ECO_FRIENDLY",
+}
