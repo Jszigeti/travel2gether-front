@@ -27,8 +27,8 @@ export default function HomePage() {
         </section>
         <section className="flex flex-col gap-3 lg:gap-6">
           <h2>Vos recommandations de voyageurs</h2>
-          <div className="flex flex-wrap justify-around gap-x-10 gap-y-3 lg:gap-y-6">
-            {profilesList.slice(0, 6).map((profile) => (
+          <div className="grid grid-cols-3 lg:grid-cols-4 justify-start gap-x-10 gap-y-3 lg:gap-y-6">
+            {profilesList.slice(0, 9).map((profile) => (
               <AvatarCard profile={profile} key={profile.user_id} />
             ))}
           </div>

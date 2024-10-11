@@ -1,3 +1,10 @@
+// REACT HOOKS
+import { useState, useEffect } from "react";
+
+// ROUTER
+import { NavLink } from "react-router-dom";
+
+// COMPONENTS
 import {
   Navbar,
   Collapse,
@@ -6,9 +13,16 @@ import {
   Input,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
+// PROPS INTERFACE
+interface HeaderProps {
+  pageTitle?: string;
+  backLink?: string;
+}
+
+// NAVLINKS ARRAY
 const navLinks = [
   { path: "/my-profile", name: "Mon profil" },
   { path: "/my-profile/notifications", name: "Mes notifications" },
@@ -17,6 +31,7 @@ const navLinks = [
   { path: "/my-profile/invitations", name: "Mes invitations" },
 ];
 
+// NAVLIST FUNCTION
 function NavList({ closeNav }: { closeNav?: () => void }) {
   return (
     <nav className="flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row items-center lg:gap-6 text-black">
@@ -29,7 +44,7 @@ function NavList({ closeNav }: { closeNav?: () => void }) {
   );
 }
 
-export default function Header() {
+export default function Header({ pageTitle, backLink }: HeaderProps) {
   const [openNav, setOpenNav] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
 
@@ -75,16 +90,30 @@ export default function Header() {
           </div>
         </div>
         <div className="mt-6">
-          <Input
-            type="text"
-            crossOrigin={undefined}
-            className="!border !border-gray-300 bg-white text-gray-900 shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100 focus:!border-gray-900 focus:!border-t-gray-900 focus:ring-gray-900/10"
-            labelProps={{
-              className: "hidden",
-            }}
-            containerProps={{ className: "min-w-[100px]" }}
-            onClick={() => setOpenSearch(!openSearch)}
-          />
+          {pageTitle && backLink ? (
+            <div className="relative">
+              <h1 className="text-green text-center">{pageTitle}</h1>
+
+              <NavLink
+                to={backLink}
+                className="absolute top-0 left-2 text-blue"
+              >
+                <FontAwesomeIcon icon={faArrowLeft} size="2xl" />
+                <span className="ml-4 hidden md:inline font-bold">Retour</span>
+              </NavLink>
+            </div>
+          ) : (
+            <Input
+              type="text"
+              crossOrigin={undefined}
+              className="!border !border-gray-300 bg-white text-gray-900 shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100 focus:!border-gray-900 focus:!border-t-gray-900 focus:ring-gray-900/10"
+              labelProps={{
+                className: "hidden",
+              }}
+              containerProps={{ className: "min-w-[100px]" }}
+              onClick={() => setOpenSearch(!openSearch)}
+            />
+          )}
         </div>
         <Collapse open={openSearch}>
           <div className="min-h-screen flex flex-col items-center pt-10">
