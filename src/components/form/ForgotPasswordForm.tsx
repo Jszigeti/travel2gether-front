@@ -1,3 +1,6 @@
+// AXIOS FUNCTIONS
+import { forgotPassword } from "../../api/auth";
+
 // FORMIK + YUP
 import { useFormik } from "formik";
 import { object, string } from "yup";
@@ -16,8 +19,9 @@ export default function ForgotPasswordForm() {
     validationSchema: object({
       email: string().email("Email invalide").required("Email requis"),
     }),
-    onSubmit: (values) => {
-      console.log({ ...values });
+    onSubmit: async (values) => {
+      const response = await forgotPassword(values);
+      console.log("Soumission du formulaire réussie", response);
       formik.resetForm();
     },
   });

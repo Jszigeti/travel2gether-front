@@ -1,6 +1,9 @@
 // REACT HOOKS
 import { useState } from "react";
 
+// AXIOS FUNCTIONS
+import { signin } from "../../api/auth";
+
 // FORMIK + YUP
 import { useFormik } from "formik";
 import { object, string } from "yup";
@@ -11,35 +14,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 export default function SigninForm() {
-  const [error, setError] = useState(false);
-
-  // FAKE CREDENTIALS CHECK FUNCTION
-  const verifyCredentials = (values: { email: string; password: string }) => {
-    if (
-      values.email === "maria.diana@gmail.com" &&
-      values.password === "1234"
-    ) {
-      setError(false);
-    } else {
-      setError(true);
-    }
-  };
+  // STATES
+  const [error, setError] = useState<null | string>(null);
 
   // FORM LOGIC
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
-      travel_types: [],
     },
     validationSchema: object({
       email: string().email("Email invalide").required("Email requis"),
       password: string().required("Mot de passe requis"),
     }),
-    onSubmit: (values) => {
-      verifyCredentials(values);
-      console.log({ ...values });
-      formik.resetForm();
+    onSubmit: async (values) => {
+      try {
+        setError(null);
+        const response = await signin(values);
+        console.log("Connexion réussie", response);
+        formik.resetForm();
+      } catch (error: unknown) {
+        console.log(error);
+        setError(error);
+      }
     },
   });
 

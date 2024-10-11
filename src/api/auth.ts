@@ -21,8 +21,22 @@ export async function signup(body: UserInterface) {
 
 export async function signin(body: UserInterface) {
   try {
-    const { data } = await axios.post(`${uri}/users/login`, { body });
-    return data.body;
+    // const { data } = await axios.post(`${uri}/users/login`, body);
+    // return data.body;
+    return body;
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError;
+    throw new Error(
+      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
+    );
+  }
+}
+
+export async function forgotPassword(body: UserInterface) {
+  try {
+    // const { data } = await axios.post(`${uri}/users/forgot`, { body });
+    // return data.body;
+    return body;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(
