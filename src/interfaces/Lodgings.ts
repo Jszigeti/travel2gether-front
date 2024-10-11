@@ -1,0 +1,8 @@
+export enum LodgingsSet {
+  YOUTH_HOTEL = "YOUTH_HOTEL",
+  HOTEL = "HOTEL",
+  AIRBNB = "AIRBNB",
+  CAMPING = "CAMPING",
+  ECOLODGE = "ECOLODGE",
+  LUXURY = "LUXURY",
+}
