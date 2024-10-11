@@ -1,7 +1,7 @@
 // ROUTER
 import { NavLink } from "react-router-dom";
 
-// TYPES
+// INTERFACES
 import { ProfileInterface } from "../../interfaces/Profile";
 
 // COMPONENTS

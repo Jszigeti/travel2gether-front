@@ -1,9 +1,13 @@
-import axios, { AxiosError } from "axios";
+// API URI
 import { uri } from "./uri";
 
-// TYPES
+// AXIOS
+import axios, { AxiosError } from "axios";
+
+// INTERFACES
 import { GroupInterface } from "../interfaces/Group";
 import { GroupUserInterface } from "../interfaces/GroupUser";
+import { groupsList } from "../data/groupsList";
 
 export async function createGroup(body: GroupInterface) {
   try {
@@ -55,10 +59,13 @@ export async function getGroup(group_id: number) {
   }
 }
 
-export async function getGroups(body: GroupInterface[]) {
+export async function getGroups() {
+  // body: GroupInterface[] à remettre dans le paramètre de la fonction
   try {
-    const { data } = await axios.post(`${uri}/groups`, { body });
-    return data.body;
+    const data = groupsList;
+    return data;
+    // const { data } = await axios.post(`${uri}/groups`, { body });
+    //return data.body;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(

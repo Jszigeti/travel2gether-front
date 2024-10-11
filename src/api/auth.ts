@@ -1,7 +1,10 @@
-import axios, { AxiosError } from "axios";
+// API URI
 import { uri } from "./uri";
 
-// TYPES
+// AXIOS
+import axios, { AxiosError } from "axios";
+
+// INTERFACES
 import { UserInterface } from "../interfaces/User";
 
 export async function signup(body: UserInterface) {

@@ -1,8 +1,12 @@
-import axios, { AxiosError } from "axios";
+// API URI
 import { uri } from "./uri";
 
-// TYPES
+// AXIOS
+import axios, { AxiosError } from "axios";
+
+// INTERFACES
 import { ProfileInterface } from "../interfaces/Profile";
+import { profilesList } from "../data/profilesList";
 
 export async function createProfile(user_id: number, body: ProfileInterface) {
   try {
@@ -56,10 +60,13 @@ export async function getProfile(user_id: number) {
   }
 }
 
-export async function getProfiles(body: ProfileInterface) {
+export async function getProfiles() {
+  // body: ProfileInterface à remettre dans le paramètre de la fonction
   try {
-    const { data } = await axios.post(`${uri}/users/profiles`, { body });
+    const data = profilesList;
     return data;
+    // const { data } = await axios.post(`${uri}/users/profiles`, { body });
+    // return data.body;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(

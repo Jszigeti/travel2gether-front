@@ -1,3 +1,4 @@
+// INTERFACES
 import { BudgetEnum } from "./Budget";
 import { LodgingsSet } from "./Lodgings";
 import { SpokenLanguagesSet } from "./SpokenLanguages";
@@ -21,6 +22,12 @@ export interface ProfileInterface {
   trip_durations?: ProfileTripDurationsSet[];
   created_at?: Date;
   updated_at?: Date;
+}
+
+export interface AvatarCardInterface {
+  user_id: number;
+  firstname: string;
+  path_picture: string;
 }
 
 export enum ProfileGenderEnum {

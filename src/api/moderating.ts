@@ -1,5 +1,8 @@
-import axios, { AxiosError } from "axios";
+// API URI
 import { uri } from "./uri";
+
+// AXIOS
+import axios, { AxiosError } from "axios";
 
 export async function reportUser(moderated_id: number, moderater_id: number) {
   try {

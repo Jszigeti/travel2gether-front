@@ -1,7 +1,10 @@
-import axios, { AxiosError } from "axios";
+// API URI
 import { uri } from "./uri";
 
-// TYPES
+// AXIOS
+import axios, { AxiosError } from "axios";
+
+// INTERFACES
 import { StageInterface } from "../interfaces/Stage";
 
 export async function createStage(group_id: number, body: StageInterface) {

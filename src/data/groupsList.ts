@@ -1,3 +1,6 @@
+// INTERFACES
+import { GroupUserRoleEnum } from "../interfaces/GroupUser";
+
 export const groupsList = [
   {
     id: 1,
@@ -10,7 +13,7 @@ export const groupsList = [
     profiles: [
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "AUTHOR",
+        role: GroupUserRoleEnum.AUTHOR,
       },
     ],
   },
@@ -25,19 +28,19 @@ export const groupsList = [
     profiles: [
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "AUTHOR",
+        role: GroupUserRoleEnum.AUTHOR,
       },
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "ORGANIZER",
+        role: GroupUserRoleEnum.ORGANIZER,
       },
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
+        role: GroupUserRoleEnum.TRAVELER,
       },
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
+        role: GroupUserRoleEnum.TRAVELER,
       },
     ],
   },
@@ -52,50 +55,19 @@ export const groupsList = [
     profiles: [
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "AUTHOR",
+        role: GroupUserRoleEnum.AUTHOR,
       },
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
+        role: GroupUserRoleEnum.TRAVELER,
       },
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
+        role: GroupUserRoleEnum.TRAVELER,
       },
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
-      },
-    ],
-  },
-  {
-    id: 4,
-    title: "Voyage à Bordeaux",
-    path_picture:
-      "https://voyage-en-photos.fr/wp-content/uploads/2023/04/mirroir-eau-bourse-vieux-bordeaux-saint-pierre-quartier-garonne-aquitaine-sud-ouest-architecture-voyage-photo-grosse-cloche-vincent-schneider-2.jpg",
-    location: "Bordeaux",
-    date_from: "2024-10-25",
-    date_to: "2024-10-31",
-    profiles: [
-      {
-        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "AUTHOR",
-      },
-      {
-        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
-      },
-      {
-        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
-      },
-      {
-        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
-      },
-      {
-        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
+        role: GroupUserRoleEnum.TRAVELER,
       },
     ],
   },
@@ -110,54 +82,23 @@ export const groupsList = [
     profiles: [
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "AUTHOR",
+        role: GroupUserRoleEnum.AUTHOR,
       },
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
+        role: GroupUserRoleEnum.TRAVELER,
       },
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
+        role: GroupUserRoleEnum.TRAVELER,
       },
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
+        role: GroupUserRoleEnum.TRAVELER,
       },
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
-      },
-    ],
-  },
-  {
-    id: 4,
-    title: "Voyage à Bordeaux",
-    path_picture:
-      "https://voyage-en-photos.fr/wp-content/uploads/2023/04/mirroir-eau-bourse-vieux-bordeaux-saint-pierre-quartier-garonne-aquitaine-sud-ouest-architecture-voyage-photo-grosse-cloche-vincent-schneider-2.jpg",
-    location: "Bordeaux",
-    date_from: "2024-10-25",
-    date_to: "2024-10-31",
-    profiles: [
-      {
-        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "AUTHOR",
-      },
-      {
-        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
-      },
-      {
-        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
-      },
-      {
-        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
-      },
-      {
-        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
+        role: GroupUserRoleEnum.TRAVELER,
       },
     ],
   },
@@ -172,23 +113,85 @@ export const groupsList = [
     profiles: [
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "AUTHOR",
+        role: GroupUserRoleEnum.AUTHOR,
       },
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
+        role: GroupUserRoleEnum.TRAVELER,
       },
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
+        role: GroupUserRoleEnum.TRAVELER,
       },
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
+        role: GroupUserRoleEnum.TRAVELER,
       },
       {
         path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
-        role: "TRAVELER",
+        role: GroupUserRoleEnum.TRAVELER,
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "Voyage à Bordeaux",
+    path_picture:
+      "https://voyage-en-photos.fr/wp-content/uploads/2023/04/mirroir-eau-bourse-vieux-bordeaux-saint-pierre-quartier-garonne-aquitaine-sud-ouest-architecture-voyage-photo-grosse-cloche-vincent-schneider-2.jpg",
+    location: "Bordeaux",
+    date_from: "2024-10-25",
+    date_to: "2024-10-31",
+    profiles: [
+      {
+        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
+        role: GroupUserRoleEnum.AUTHOR,
+      },
+      {
+        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
+        role: GroupUserRoleEnum.TRAVELER,
+      },
+      {
+        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
+        role: GroupUserRoleEnum.TRAVELER,
+      },
+      {
+        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
+        role: GroupUserRoleEnum.TRAVELER,
+      },
+      {
+        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
+        role: GroupUserRoleEnum.TRAVELER,
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "Voyage à Bordeaux",
+    path_picture:
+      "https://voyage-en-photos.fr/wp-content/uploads/2023/04/mirroir-eau-bourse-vieux-bordeaux-saint-pierre-quartier-garonne-aquitaine-sud-ouest-architecture-voyage-photo-grosse-cloche-vincent-schneider-2.jpg",
+    location: "Bordeaux",
+    date_from: "2024-10-25",
+    date_to: "2024-10-31",
+    profiles: [
+      {
+        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
+        role: GroupUserRoleEnum.AUTHOR,
+      },
+      {
+        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
+        role: GroupUserRoleEnum.TRAVELER,
+      },
+      {
+        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
+        role: GroupUserRoleEnum.TRAVELER,
+      },
+      {
+        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
+        role: GroupUserRoleEnum.TRAVELER,
+      },
+      {
+        path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
+        role: GroupUserRoleEnum.TRAVELER,
       },
     ],
   },

@@ -1,4 +1,6 @@
+// INTERFACES
 import { BudgetEnum } from "./Budget";
+import { GroupUserRoleEnum } from "./GroupUser";
 import { LodgingsSet } from "./Lodgings";
 import { SpokenLanguagesSet } from "./SpokenLanguages";
 import { TravelTypesSet } from "./TravelTypes";
@@ -20,6 +22,19 @@ export interface GroupInterface {
   age_ranges: GroupAgeRangesSet[];
   created_at?: Date;
   updated_at?: Date;
+}
+
+export interface GroupCardInterface {
+  id: number;
+  title: string;
+  path_picture: string;
+  location: string;
+  date_from: string;
+  date_to: string;
+  profiles: {
+    path_picture: string;
+    role: GroupUserRoleEnum;
+  }[];
 }
 
 export enum GroupStatusEnum {

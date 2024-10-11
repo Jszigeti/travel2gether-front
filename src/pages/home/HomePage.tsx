@@ -1,6 +1,13 @@
-// FAKE DATA
-import { groupsList } from "../../data/groupsList";
-import { profilesList } from "../../data/profilesList";
+// REACT HOOKS
+import { useEffect, useState } from "react";
+
+// AXIOS FUNCTIONS
+import { getGroups } from "../../api/group";
+import { getProfiles } from "../../api/profile";
+
+// INTERFACES
+import { GroupCardInterface } from "../../interfaces/Group";
+import { AvatarCardInterface } from "../../interfaces/Profile";
 
 // COMPONENTS
 import Header from "../../components/UI/Header";
@@ -9,6 +16,24 @@ import AvatarCard from "../../components/UI/AvatarCard";
 import Footer from "../../components/UI/Footer";
 
 export default function HomePage() {
+  // STATES
+  const [groupsList, setGroupsList] = useState<GroupCardInterface[]>([]);
+  const [profilesList, setProfilesList] = useState<AvatarCardInterface[]>([]);
+
+  // RETRIEVE DATA FUNCTIONS
+  useEffect(() => {
+    async function loadGroupCards() {
+      const data = await getGroups();
+      setGroupsList(data);
+    }
+    async function loadAvatarCards() {
+      const data = await getProfiles();
+      setProfilesList(data);
+    }
+    loadGroupCards();
+    loadAvatarCards();
+  }, []);
+
   return (
     <>
       <Header />
