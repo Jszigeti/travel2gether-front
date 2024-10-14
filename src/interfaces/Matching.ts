@@ -1,15 +1,15 @@
 export enum BudgetEnum {
-  LOW = "LOW",
-  MIDDLE = "MIDDLE",
-  HIGH = "HIGH",
-  LUXURY = "LUXURY",
+  LOW = "Bas",
+  MIDDLE = "Moyen",
+  HIGH = "Haut",
+  LUXURY = "Luxe",
 }
 
 export enum GroupGenderEnum {
-  MALE = "MALE",
-  FEMALE = "FEMALE",
-  OTHER = "OTHER",
-  MIXED = "MIXED",
+  MALE = "Homme",
+  FEMALE = "Femme",
+  OTHER = "Autre",
+  MIXED = "Mixte",
 }
 
 export enum GroupAgeRangesSet {
@@ -20,68 +20,68 @@ export enum GroupAgeRangesSet {
 }
 
 export enum LodgingsSet {
-  YOUTH_HOTEL = "YOUTH_HOTEL",
-  HOTEL = "HOTEL",
-  AIRBNB = "AIRBNB",
-  CAMPING = "CAMPING",
-  ECOLODGE = "ECOLODGE",
-  LUXURY = "LUXURY",
+  YOUTH_HOTEL = "Auberge de jeunesse",
+  HOTEL = "Hôtel",
+  AIRBNB = "Airbnb",
+  CAMPING = "Camping",
+  ECOLODGE = "Ecologique",
+  LUXURY = "Luxe",
 }
 
 export enum ProfileGenderEnum {
-  MALE = "MALE",
-  FEMALE = "FEMALE",
-  OTHER = "OTHER",
+  MALE = "Homme",
+  FEMALE = "Femme",
+  OTHER = "Autre",
 }
 
 export enum ProfileInterestsSet {
-  ADVENTURE_SPORTS = "ADVENTURE_SPORTS",
-  CULTURAL_ARTS = "CULTURAL_ARTS",
-  GASTRONOMIC = "GASTRONOMIC",
-  NATURE = "NATURE",
-  WELLNESS = "WELLNESS",
-  PARTY = "PARTY",
-  AMUSEMENT_PARK = "AMUSEMENT_PARK",
-  BOARD_GAMES = "BOARD_GAMES",
-  TECHNOLOGIES = "TECHNOLOGIES",
-  HISTORY = "HISTORY",
-  WATER_ACTIVITIES = "WATER_ACTIVITIES",
-  SHOPPING = "SHOPPING",
-  FAMILY_ACTIVITIES = "FAMILY_ACTIVITIES",
+  ADVENTURE_SPORTS = "Sport/aventure",
+  CULTURAL_ARTS = "Art/culture",
+  GASTRONOMIC = "Gastronomique",
+  NATURE = "Nature",
+  WELLNESS = "Bien-être",
+  PARTY = "Festif",
+  AMUSEMENT_PARK = "Parcs d'attractions",
+  BOARD_GAMES = "Jeux de société",
+  TECHNOLOGIES = "Technologies",
+  HISTORY = "Histoire",
+  WATER_ACTIVITIES = "Activités aquatiques",
+  SHOPPING = "Shopping",
+  FAMILY_ACTIVITIES = "Activités familiales",
 }
 
 export enum ProfileTripDurationsSet {
-  SHORT_TRIP = "SHORT_TRIP",
-  MEDIUM_TRIP = "MEDIUM_TRIP",
-  LONG_TRIP = "LONG_TRIP",
+  SHORT_TRIP = "Court (moins de 3 jours)",
+  MEDIUM_TRIP = "Moyen (3 à 7 jours)",
+  LONG_TRIP = "Long (plus de 7 jours)",
 }
 
 export enum SpokenLanguagesSet {
-  FRENCH = "FRENCH",
-  ENGLISH = "ENGLISH",
-  SPANISH = "SPANISH",
-  PORTUGUESE = "PORTUGUESE",
-  ARABIC = "ARABIC",
-  ITALIAN = "ITALIAN",
-  JAPANESE = "JAPANESE",
-  MANDARIN = "MANDARIN",
-  DEUTSCH = "DEUTSCH",
-  DUTCH = "DUTCH",
-  RUSSIAN = "RUSSIAN",
-  HINDI = "HINDI",
-  GREEK = "GREEK",
+  FRENCH = "Français",
+  ENGLISH = "Anglais",
+  SPANISH = "Espagnol",
+  PORTUGUESE = "Portugais",
+  ARABIC = "Arabe",
+  ITALIAN = "Italien",
+  JAPANESE = "Japonais",
+  MANDARIN = "Mandarin",
+  DEUTSCH = "Allemand",
+  DUTCH = "Hollandais",
+  RUSSIAN = "Russe",
+  HINDI = "Hindi",
+  GREEK = "Grec",
 }
 
 export enum TravelTypesSet {
-  RELAXATION = "RELAXATION",
-  ADVENTURE = "ADVENTURE",
-  CULTURAL = "CULTURAL",
-  HIKING = "HIKING",
-  BEACH = "BEACH",
-  GASTRONOMIC = "GASTRONOMIC",
-  ROAD_TRIP = "ROAD_TRIP",
-  CRUISE = "CRUISE",
-  FAMILY_TRIP = "FAMILY_TRIP",
-  FRIENDS_TRIP = "FRIENDS_TRIP",
-  ECO_FRIENDLY = "ECO_FRIENDLY",
+  RELAXATION = "Détente",
+  ADVENTURE = "Aventure",
+  CULTURAL = "Culturel",
+  HIKING = "Randonnée",
+  BEACH = "Plage",
+  GASTRONOMIC = "Gastronomique",
+  ROAD_TRIP = "Road Trip",
+  CRUISE = "Croisière",
+  FAMILY_TRIP = "Famililale",
+  FRIENDS_TRIP = "Voyage entre ami(e)s",
+  ECO_FRIENDLY = "Écologique",
 }

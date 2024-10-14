@@ -6,6 +6,6 @@ export interface ModeratingInterface {
 }
 
 export enum ModeratingEnum {
-  REPORT = "REPORT",
-  BLOCK = "BLOCK",
+  REPORT = "Reporter",
+  BLOCK = "Bloquer",
 }

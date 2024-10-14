@@ -9,7 +9,7 @@ export interface NotificationInterface {
 }
 
 export enum NotificationEnum {
-  PRIVATE_MESSAGE = "PRIVATE_MESSAGE",
-  GROUP_MESSAGE = "GROUP_MESSAGE",
-  GROUP_MODIFICATION = "GROUP_MODIFICATION",
+  PRIVATE_MESSAGE = "Message privé",
+  GROUP_MESSAGE = "Message de groupe",
+  GROUP_MODIFICATION = "Modification de groupe",
 }

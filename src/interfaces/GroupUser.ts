@@ -8,13 +8,13 @@ export interface GroupUserInterface {
 }
 
 export enum GroupUserRoleEnum {
-  TRAVELER = "TRAVELER",
-  ORGANIZER = "ORGANIZER",
-  AUTHOR = "AUTHOR",
+  TRAVELER = "Voyageur",
+  ORGANIZER = "Organisateur",
+  AUTHOR = "Auteur",
 }
 
 export enum GroupUserStatusEnum {
-  PENDING = "PENDING",
-  ACCEPTED = "ACCEPTED",
-  DENIED = "DENIED",
+  PENDING = "En attente",
+  ACCEPTED = "Accepté",
+  DENIED = "Refusé",
 }

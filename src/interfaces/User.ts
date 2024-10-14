@@ -8,7 +8,7 @@ export interface UserInterface {
 }
 
 export enum UserStatusEnum {
-  NOT_VERIFIED = "NOT_VERIFIED",
-  VERIFIED = "VERIFIED",
-  BANNED = "BANNED",
+  NOT_VERIFIED = "Non vérifié",
+  VERIFIED = "Vérifié",
+  BANNED = "Banni",
 }

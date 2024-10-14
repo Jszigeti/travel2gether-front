@@ -30,12 +30,12 @@ export interface GroupInterface {
 
 export interface GroupCardInterface {
   id: number;
-  title: string;
+  title?: string;
   path_picture: string;
-  location: string;
-  date_from: string;
-  date_to: string;
-  profiles: {
+  location?: string;
+  date_from?: string;
+  date_to?: string;
+  profiles?: {
     user_id: number;
     path_picture: string;
     role: GroupUserRoleEnum;
@@ -43,7 +43,7 @@ export interface GroupCardInterface {
 }
 
 export enum GroupStatusEnum {
-  PENDING = "PENDING",
-  IN_PROGRESS = "IN_PROGRESS",
-  FINISHED = "FINISHED",
+  PENDING = "Pas encore débuté",
+  IN_PROGRESS = "En cours",
+  FINISHED = "Fini",
 }

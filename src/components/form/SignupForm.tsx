@@ -1,42 +1,69 @@
-import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Card, Input, Typography } from "@material-tailwind/react";
-import { useFormik } from "formik";
+// REACT HOOKS
+import { useState } from "react";
+
+// ROUTER
 import { NavLink } from "react-router-dom";
+
+// AXIOS FUNCTIONS
+import { signup } from "../../api/auth";
+
+// FORMIK + YUP
+import { useFormik } from "formik";
 import { object, string, ref } from "yup";
 
+// UTILS FUNCTIONS
+import { capitalizeFirstLetters } from "../../utils/capitalizeFirstLetter";
+
+// COMPONENTS
+import { Button, Card, Input, Typography } from "@material-tailwind/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+
+// PROPS INTERFACE
 interface SignupFormProps {
   onNext: () => void;
 }
 export function SignupForm({ onNext }: SignupFormProps) {
+  // STATES
+  const [error, setError] = useState<null | string>(null);
+
+  // FORM LOGIC
   const formik = useFormik({
     initialValues: {
-      email: "example@mail.com",
-      firstname: "z",
-      lastname: "x",
-      password: "abcdefgh",
-      passwordmatch: "abcdefgh",
+      email: "",
+      firstname: "",
+      lastname: "",
+      password: "",
+      passwordmatch: "",
     },
     validationSchema: object({
-      email: string().email("Adresse email invalide").required("Email requis"),
+      email: string().email("E-mail invalide").required("E-mail requis"),
       password: string()
         .required("Mot de passe requis")
         .min(8, "Au moins 8 caractères"),
       passwordmatch: string()
         .oneOf([ref("password"), ""], "Les mots de passe doivent correspondre")
-        .required(),
+        .required("Confirmation du mot de passe requise"),
       firstname: string().required("Prénom requis"),
       lastname: string().required("Nom requis"),
     }),
-    onSubmit: (values) => {
-      /*const newUser = {
-        id: Date.now(),
-        ...values,
+    onSubmit: async (values) => {
+      const userData = {
+        email: values.email,
+        firstname: values.firstname,
+        lastname: values.lastname,
+        password: values.password,
       };
-      onSigninFormData(newUser);*/
-      console.log(values);
-      onNext();
-      formik.resetForm();
+      try {
+        setError(null);
+        const response = await signup(userData);
+        console.log("Inscription réussie", response);
+        onNext();
+        formik.resetForm();
+      } catch (error: unknown) {
+        console.log(error);
+        setError(error);
+      }
     },
   });
 
@@ -54,7 +81,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
         onSubmit={formik.handleSubmit}
       >
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6">Mon adresse mail</Typography>
+          <Typography variant="h6">E-mail</Typography>
           <Input
             crossOrigin={undefined}
             size="lg"
@@ -83,7 +110,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
           )}
         </div>
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6">Mon prénom</Typography>
+          <Typography variant="h6">Prénom</Typography>
           <Input
             crossOrigin={undefined}
             size="lg"
@@ -96,7 +123,12 @@ export function SignupForm({ onNext }: SignupFormProps) {
             labelProps={{
               className: "before:content-none after:content-none",
             }}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              formik.setFieldValue(
+                "firstname",
+                capitalizeFirstLetters(e.target.value)
+              );
+            }}
             name="firstname"
             value={formik.values.firstname}
           />
@@ -111,7 +143,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
           )}
         </div>
         <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6">Mon nom de famille</Typography>
+          <Typography variant="h6">Nom</Typography>
           <Input
             crossOrigin={undefined}
             size="lg"
@@ -124,7 +156,12 @@ export function SignupForm({ onNext }: SignupFormProps) {
             labelProps={{
               className: "before:content-none after:content-none",
             }}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              formik.setFieldValue(
+                "lastname",
+                capitalizeFirstLetters(e.target.value)
+              );
+            }}
             name="lastname"
             value={formik.values.lastname}
           />
@@ -204,6 +241,11 @@ export function SignupForm({ onNext }: SignupFormProps) {
         >
           M'inscrire
         </Button>
+        {error && (
+          <div className="text-red-500 text-center ">
+            Erreur lors de la création du compte
+          </div>
+        )}
         <Typography className="text-center font-normal  mt-6">
           Déjà inscrit ?{" "}
           <NavLink to="/signin" className="text-blue font-bold">

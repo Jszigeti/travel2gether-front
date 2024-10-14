@@ -24,7 +24,7 @@ export default function SigninForm() {
       password: "",
     },
     validationSchema: object({
-      email: string().email("Email invalide").required("Email requis"),
+      email: string().email("E-mail invalide").required("E-mail requis"),
       password: string().required("Mot de passe requis"),
     }),
     onSubmit: async (values) => {

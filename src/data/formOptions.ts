@@ -1,16 +1,15 @@
 export const travelTypesOptions = [
-  { value: "adventure", label: "Aventure" },
-  { value: "cultural", label: "Culturel" },
-  { value: "relaxation", label: "Détente" },
-  { value: "luxury", label: "Luxe" },
-  { value: "hiking", label: "Randonnée" },
-  { value: "beach", label: "Plage" },
-  { value: "road_trip", label: "Road Trip" },
-  { value: "cruise", label: "Croisière" },
-  { value: "family_trip", label: "Famililale" },
-  { value: "romantic_trip", label: "Romantique" },
-  { value: "friends_trip", label: "Voyage entre ami(e)s" },
-  { value: "eco_friendly", label: "Écologique" },
+  { value: "ADVENTURE", label: "Aventure" },
+  { value: "CULTURAL", label: "Culturel" },
+  { value: "RELAXATION", label: "Détente" },
+  { value: "HIKING", label: "Randonnée" },
+  { value: "BEACH", label: "Plage" },
+  { value: "ROAD_TRIP", label: "Road Trip" },
+  { value: "CRUISE", label: "Croisière" },
+  { value: "FAMILY_TRIP", label: "Famililale" },
+  { value: "GASTRONOMIC", label: "Gastronomique" },
+  { value: "FRIENDS_TRIP", label: "Voyage entre ami(e)s" },
+  { value: "ECO_FRIENDLY", label: "Écologique" },
 ];
 
 export const interestsOptions = [
@@ -36,48 +35,48 @@ export const tripDurationsOptions = [
 ];
 
 export const lodgingsOptions = [
-  { value: "youth_hotel", label: "Auberge" },
-  { value: "hotel", label: "Hotel" },
-  { value: "airbnb", label: "AirBnb" },
-  { value: "camping", label: "Camping" },
-  { value: "ecolodge", label: "Eco logement" },
-  { value: "luxury", label: "Luxueux" },
+  { value: "YOUTH_HOTEL", label: "Auberge" },
+  { value: "HOTEL", label: "Hotel" },
+  { value: "AIRBNB", label: "AirBnb" },
+  { value: "CAMPING", label: "Camping" },
+  { value: "ECOLODGE", label: "Eco logement" },
+  { value: "LUXURY", label: "Luxueux" },
 ];
 
 export const groupGenderOptions = [
-  { value: "male", label: "Masculin" },
-  { value: "female", label: "Féminin" },
-  { value: "other", label: "Autres" },
-  { value: "mixed", label: "Mixte" },
+  { value: "MALE", label: "Masculin" },
+  { value: "FEMALE", label: "Féminin" },
+  { value: "OTHER", label: "Autre" },
+  { value: "MIXED", label: "Mixte" },
 ];
 
 export const profileGenderOptions = [
-  { value: "male", label: "Masculin" },
-  { value: "female", label: "Féminin" },
-  { value: "other", label: "Autres" },
+  { value: "MALE", label: "Masculin" },
+  { value: "FEMALE", label: "Féminin" },
+  { value: "OTHER", label: "Autre" },
 ];
 
 export const spokenLanguagesOptions = [
-  { value: "french", label: "Français" },
-  { value: "english", label: "Anglais" },
-  { value: "spanish", label: "Espagnol" },
-  { value: "portuguese", label: "Portugais" },
-  { value: "arabic", label: "Arabe" },
-  { value: "italian", label: "Italien" },
-  { value: "japanese", label: "Japonais" },
-  { value: "mandarin", label: "Mandarin" },
-  { value: "greek", label: "Grèque" },
-  { value: "deutsch", label: "Allemand" },
-  { value: "dutch", label: "Hollandais" },
-  { value: "russian", label: "Russe" },
-  { value: "hindi", label: "Hindi" },
+  { value: "FRENCH", label: "Français" },
+  { value: "ENGLISH", label: "Anglais" },
+  { value: "SPANISH", label: "Espagnol" },
+  { value: "PORTUGUESE", label: "Portugais" },
+  { value: "ARABIC", label: "Arabe" },
+  { value: "ITALIAN", label: "Italien" },
+  { value: "JAPANESE", label: "Japonais" },
+  { value: "MANDARIN", label: "Mandarin" },
+  { value: "GREEK", label: "Grec" },
+  { value: "DEUTSCH", label: "Allemand" },
+  { value: "DUTCH", label: "Hollandais" },
+  { value: "RUSSIAN", label: "Russe" },
+  { value: "HINDI", label: "Hindi" },
 ];
 
 export const budgetOptions = [
-  { value: "low", label: "Bas" },
-  { value: "middle", label: "Moyen" },
-  { value: "high", label: "Haut" },
-  { value: "luxury", label: "Luxe" },
+  { value: "LOW", label: "Bas" },
+  { value: "MIDDLE", label: "Moyen" },
+  { value: "HIGH", label: "Haut" },
+  { value: "LUXURY", label: "Luxe" },
 ];
 
 export const ageRangesOptions = [
