@@ -47,11 +47,11 @@ export default function ForgotPasswordForm() {
         <Typography variant="h6">E-mail</Typography>
         <Input
           size="lg"
-          placeholder="maria.diana@gmail.com"
+          placeholder="marie.diana@gmail.com"
           name="email"
           value={formik.values.email}
           onChange={formik.handleChange}
-          className={`!border-blue focus:!border-2 ${
+          className={`!border-blue ${
             formik.touched.email && formik.errors.email
               ? "!border-red-500"
               : null

@@ -14,10 +14,10 @@ export interface ProfileInterface {
   firstname?: string;
   lastname?: string;
   birthdate?: string;
-  gender?: ProfileGenderEnum;
+  gender?: ProfileGenderEnum[];
   path_picture?: string;
   description?: string;
-  budget?: BudgetEnum;
+  budget?: BudgetEnum[];
   travel_types?: TravelTypesSet[];
   lodgings?: LodgingsSet[];
   interests?: ProfileInterestsSet[];

@@ -1,3 +1,27 @@
+// REACT HOOKS
+import { useState } from "react";
+
+// REACT QUERY
+import { useQuery } from "@tanstack/react-query";
+
+// ROUTER
+import { useNavigate } from "react-router-dom";
+
+// AXIOS FUNCTIONS
+import {
+  createGroup,
+  editGroup,
+  // getGroup
+} from "../../api/group";
+
+// FORMIK + YUP
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
+// INTERFACES
+import { GroupInterface } from "../../interfaces/Group";
+
+// COMPONENTS
 import {
   Card,
   Input,
@@ -5,59 +29,116 @@ import {
   Typography,
   Textarea,
 } from "@material-tailwind/react";
-import { useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
-export default function GroupCreateForm() {
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const defaultImage =
-    "https://cdn.pixabay.com/photo/2016/01/19/15/48/luggage-1149289_960_720.jpg"; // Image par défaut du formulaire
+// UTILS FUNCTIONS
+import { capitalizeFirstFieldLetter } from "../../utils/capitalizeFirstLetter";
 
+// PROPS INTERFACE
+interface GroupInfoFormProps {
+  groupCreationContext?: boolean;
+  onNext?: () => void;
+  onGroupData?: (values: GroupInterface) => void;
+  paramsId?: number;
+}
+
+export default function GroupInfoForm({
+  groupCreationContext = true,
+  onNext,
+  onGroupData,
+  paramsId,
+}: GroupInfoFormProps) {
+  // STATES
+  const [error, setError] = useState<null | string>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  // REDIRECTION
+  const navigate = useNavigate();
+
+  // RETRIEVE GROUP INFO DATA
+  const {
+    data: groupInfoData,
+    isLoading: isGroupInfoLoading,
+    isError: isGroupInfoError,
+  } = useQuery<GroupInterface>({
+    queryKey: ["groupInfo", paramsId],
+    // queryFn: () => getGroup(groupId),
+    enabled: !groupCreationContext,
+  });
+
+  // DEFAULT AVATAR
+  const defaultImage = groupInfoData?.path_picture
+    ? groupInfoData.path_picture
+    : "https://cdn.pixabay.com/photo/2016/01/19/15/48/luggage-1149289_960_720.jpg";
+
+  // IMAGE FUNCTION
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setPreviewImage(imageUrl);
-      formik.setFieldValue("path_picture", file); // Set the image in Formik
+      formik.setFieldValue("path_picture", file);
     } else {
       setPreviewImage(null);
-      formik.setFieldValue("path_picture", null); // Clear image field in Formik if no image is selected
+      formik.setFieldValue("path_picture", null);
     }
   };
 
+  // FORM LOGIC
   const formik = useFormik({
     initialValues: {
-      title: "",
-      description: "",
-      location: "",
-      date_from: "",
-      date_to: "",
-      path_picture: "",
+      title: groupInfoData?.title ? groupInfoData.title : "",
+      description: groupInfoData?.description ? groupInfoData.description : "",
+      location: groupInfoData?.location ? groupInfoData.location : "",
+      date_from: groupInfoData?.date_from ? groupInfoData.date_from : "",
+      date_to: groupInfoData?.date_to ? groupInfoData.date_to : "",
+      path_picture: groupInfoData?.path_picture
+        ? groupInfoData.path_picture
+        : "",
     },
     validationSchema: Yup.object({
-      path_picture: Yup.mixed().required("Une image est requise"),
-      title: Yup.string().required("Le nom du groupe est requis"),
-      description: Yup.string().required("La description est requise"),
-      location: Yup.string().required("Le lieu est requis"),
-      date_from: Yup.date().required("La date de début est requise"),
+      path_picture: Yup.mixed().required("Image requise"),
+      title: Yup.string().required("Nom du groupe requis"),
+      description: Yup.string().required("Description requise"),
+      location: Yup.string().required("Lieu requis"),
+      date_from: Yup.date().required("Date de début requise"),
       date_to: Yup.date()
-        .required("La date de fin est requise")
+        .required("Date de fin requise")
         .min(
           Yup.ref("date_from"),
           "La date de fin doit être après la date de début"
         ),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const formData = {
         ...values,
-        path_picture: values.path_picture ? values.path_picture : defaultImage, // Utilise l'image par défaut si aucune image n'est sélectionnée
+        path_picture: values.path_picture ? values.path_picture : defaultImage,
       };
-      console.log(formData);
-      formik.resetForm();
-      // Gérer la soumission ici
+      if (groupCreationContext && onNext && onGroupData) {
+        try {
+          setError(null);
+          const response = await createGroup({ ...formData, id: 1 });
+          console.log("Création du groupe réussie", response);
+          onGroupData(response);
+          onNext();
+          formik.resetForm();
+        } catch (error: unknown) {
+          console.log(error);
+          setError(error);
+        }
+      } else if (paramsId) {
+        try {
+          setError(null);
+          const response = await editGroup(paramsId, formData);
+          console.log("Mise à jour du groupe réussie", response);
+          navigate(`/group/${paramsId}/edit`);
+          formik.resetForm();
+        } catch (error: unknown) {
+          console.log(error);
+          setError(error);
+        }
+      }
     },
   });
 
@@ -66,15 +147,12 @@ export default function GroupCreateForm() {
       shadow={false}
       className="flex justify-center items-center min-h-screen text-black "
     >
-      <h1>Création d'un groupe de voyage</h1>
       <form
         onSubmit={formik.handleSubmit}
         className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
       >
         <div className="flex flex-col  mb-3 relative">
-          <Typography variant="h6">
-            Choisissez une image pour votre groupe de voyage
-          </Typography>
+          <Typography variant="h6">Image du groupe</Typography>
           {previewImage ? (
             <img
               src={previewImage}
@@ -90,7 +168,6 @@ export default function GroupCreateForm() {
           )}
           <Input
             type="file"
-            // value={formik.values.path_picture}
             size="lg"
             placeholder="Choisissez une image"
             className={`!border-blue ${
@@ -126,7 +203,14 @@ export default function GroupCreateForm() {
                 ? "!border-red-500"
                 : null
             }`}
-            {...formik.getFieldProps("title")}
+            onChange={(e) => {
+              formik.setFieldValue(
+                "title",
+                capitalizeFirstFieldLetter(e.target.value)
+              );
+            }}
+            name="title"
+            value={formik.values.title}
           />
           {formik.touched.title && formik.errors.title ? (
             <>
@@ -244,14 +328,28 @@ export default function GroupCreateForm() {
             </>
           ) : null}
         </div>
-        {/* </div> */}
         <Button
           className="font-montserrat font-bold mt-6 bg-blue text-white"
           fullWidth
           type="submit"
         >
-          Créer
+          {groupCreationContext ? "Créer" : "Valider"}
         </Button>
+        {error && (
+          <div className="text-red-500 text-center ">
+            {groupCreationContext
+              ? "Erreur lors de la création du groupe"
+              : "Erreur lors de la mise à jour du groupe"}
+          </div>
+        )}
+        {isGroupInfoLoading && (
+          <div className="text-blue text-center">Chargement des données...</div>
+        )}
+        {isGroupInfoError && (
+          <div className="text-red-500 text-center">
+            Erreur lors du chargement des données
+          </div>
+        )}
       </form>
     </Card>
   );

@@ -1,12 +1,26 @@
-//import { User } from "../interfaces/User";
-import { Button, Card, Typography, Input } from "@material-tailwind/react";
+// REACT HOOKS
+import { useState } from "react";
+
+// REACT QUERY
+import { useQuery } from "@tanstack/react-query";
+
+// ROUTER
+import { NavLink, useNavigate } from "react-router-dom";
+
+// AXIOS FUNCTIONS
+import {
+  editProfile,
+  //  getProfile
+} from "../../api/profile";
+
+// FORMIK + YUP
 import { useFormik } from "formik";
-import { NavLink } from "react-router-dom";
 import { array, date, object, ref } from "yup";
-import Dropdown from "../UI/DropdownComponent";
-import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ProfileDataParams } from "../../pages/auth/SignupPage";
+
+// INTERFACES
+import { ProfileInterface } from "../../interfaces/Profile";
+
+// FORM DATA
 import {
   budgetOptions,
   lodgingsOptions,
@@ -14,19 +28,59 @@ import {
   tripDurationsOptions,
 } from "../../data/formOptions";
 
-export function ProfileContForm({
+// COMPONENTS
+import Dropdown from "../UI/DropdownComponent";
+import { Button, Card, Typography, Input } from "@material-tailwind/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+
+// PROPS INTERFACE
+interface ProfilePrefFormProps {
+  profileData?: ProfileInterface;
+  signupContext?: boolean;
+}
+
+// FAKE USER
+const userId = 1;
+
+export function ProfilePrefForm({
   profileData,
-}: {
-  profileData?: ProfileDataParams;
-}) {
-  const formik = useFormik({
+  signupContext = true,
+}: ProfilePrefFormProps) {
+  // STATES
+  const [error, setError] = useState<null | string>(null);
+
+  // REDIRECTION
+  const navigate = useNavigate();
+
+  // RETRIEVE PROFIL PREF DATA
+  const {
+    data: profilePrefData,
+    isLoading: isProfilePrefLoading,
+    isError: isProfilePrefError,
+  } = useQuery<ProfileInterface>({
+    queryKey: ["profilePref", userId],
+    // queryFn: () => getProfile(userId),
+    enabled: !signupContext,
+  });
+
+  // FORM LOGIC
+  const formik = useFormik<ProfileInterface>({
     initialValues: {
-      travel_types: [],
-      budget: [],
-      lodgings: [],
-      available_from: "",
-      available_to: "",
-      trip_durations: [],
+      travel_types: profilePrefData?.travel_types
+        ? profilePrefData.travel_types
+        : [],
+      budget: profilePrefData?.budget ? profilePrefData.budget : [],
+      lodgings: profilePrefData?.lodgings ? profilePrefData.lodgings : [],
+      available_from: profilePrefData?.available_from
+        ? profilePrefData.available_from
+        : "",
+      available_to: profilePrefData?.available_to
+        ? profilePrefData.available_to
+        : "",
+      trip_durations: profilePrefData?.trip_durations
+        ? profilePrefData.trip_durations
+        : [],
     },
     validationSchema: object({
       travel_types: array(),
@@ -39,9 +93,35 @@ export function ProfileContForm({
       ),
       trip_durations: array(),
     }),
-    onSubmit: (values) => {
-      if (profileData) console.log({ ...profileData, ...values });
-      formik.resetForm();
+    onSubmit: async (values) => {
+      // FORM LOGIC IF SIGNUP CONTEXT
+      if (profileData) {
+        const userProfileData = { ...profileData, ...values };
+        try {
+          setError(null);
+          const response = await editProfile(userId, userProfileData);
+          console.log(
+            "Enregistrement des informations du profil réussi",
+            response
+          );
+          navigate(`/`);
+          formik.resetForm();
+        } catch (error: unknown) {
+          console.log(error);
+          setError(error);
+        }
+      } else {
+        // FORM LOGIC IF EDIT CONTEXT
+        try {
+          setError(null);
+          const response = await editProfile(userId, values);
+          console.log("Modification du profil réussie", response);
+          formik.resetForm();
+        } catch (error: unknown) {
+          console.log(error);
+          setError(error);
+        }
+      }
     },
   });
 
@@ -51,9 +131,7 @@ export function ProfileContForm({
       shadow={false}
       className="flex justify-center items-center min-h-screen text-black "
     >
-      <Typography variant="h4" className="font-montserrat">
-        Mes préférences
-      </Typography>
+      <h1>Mes préférences</h1>
       <form
         className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
         onSubmit={formik.handleSubmit}
@@ -160,11 +238,26 @@ export function ProfileContForm({
         >
           Valider
         </Button>
-        <Typography className="text-center font-normal  mt-6">
-          <NavLink to="/" className="text-blue">
-            Compléter plus tard
-          </NavLink>
-        </Typography>
+        {error && (
+          <div className="text-red-500 text-center ">
+            Erreur lors de la mise à jour du profil
+          </div>
+        )}
+        {isProfilePrefLoading && (
+          <div className="text-blue text-center">Chargement des données...</div>
+        )}
+        {isProfilePrefError && (
+          <div className="text-red-500 text-center">
+            Erreur lors du chargement des données
+          </div>
+        )}
+        {signupContext && (
+          <Typography className="text-center font-normal  mt-6">
+            <NavLink to="/" className="text-blue">
+              Compléter plus tard
+            </NavLink>
+          </Typography>
+        )}
       </form>
     </Card>
   );

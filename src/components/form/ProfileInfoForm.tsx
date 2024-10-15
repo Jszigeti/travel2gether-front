@@ -1,3 +1,34 @@
+// REACT HOOKS
+import { useState } from "react";
+
+// REACT QUERY
+import { useQuery } from "@tanstack/react-query";
+
+// ROUTER
+import { NavLink } from "react-router-dom";
+
+// AXIOS FUNCTIONS
+import {
+  editProfile,
+  // getProfile
+} from "../../api/profile";
+
+// FORMIK + YUP
+import { useFormik } from "formik";
+import { array, object, string } from "yup";
+
+// INTERFACES
+import { ProfileInterface } from "../../interfaces/Profile";
+
+// FORM DATA
+import {
+  interestsOptions,
+  profileGenderOptions,
+  spokenLanguagesOptions,
+} from "../../data/formOptions";
+
+// COMPONENTS
+import Dropdown from "../UI/DropdownComponent";
 import {
   Button,
   Card,
@@ -6,47 +37,69 @@ import {
   Input,
   Avatar,
 } from "@material-tailwind/react";
-import { useFormik } from "formik";
-import { array, object, string } from "yup";
-import Dropdown from "../UI/DropdownComponent";
-import { useState } from "react";
-import { ProfileDataParams } from "../../pages/auth/SignupPage";
-import { NavLink } from "react-router-dom";
-import {
-  interestsOptions,
-  profileGenderOptions,
-  spokenLanguagesOptions,
-} from "../../data/formOptions";
 
-interface ProfileFormProps {
+// PROPS INTERFACE
+interface ProfileInfoFormProps {
   onNext?: () => void;
-  onProfileData?: (values: ProfileDataParams) => void;
+  onProfileData?: (values: ProfileInterface) => void;
+  signupContext?: boolean;
 }
 
-export function ProfileForm({ onNext, onProfileData }: ProfileFormProps) {
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const defaultImage =
-    "https://images-ext-1.discordapp.net/external/vj4B_0At5aHV02oJ7BEdIZ2gOKfDu1FphkjY5ojkEko/%3Fs%3D612x612%26w%3D0%26k%3D20%26c%3Dt2RnIzl7hAwIUoupTgTDTYPZ2HCLvw5y-umBEtBsk8g%3D/https/media.istockphoto.com/id/846183008/fr/vectoriel/ic%25C3%25B4ne-de-profil-avatar-par-d%25C3%25A9faut-espace-r%25C3%25A9serv%25C3%25A9-photo-gris.jpg?format=webp"; // Image par défaut du formulaire
+// FAKE USER
+const userId = 1;
 
+export function ProfileInfoForm({
+  onNext,
+  onProfileData,
+  signupContext = true,
+}: ProfileInfoFormProps) {
+  // STATES
+  const [error, setError] = useState<null | string>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  // RETRIEVE PROFIL INFO DATA
+  const {
+    data: profileInfoData,
+    isLoading: isProfileInfoLoading,
+    isError: isProfileInfoError,
+  } = useQuery<ProfileInterface>({
+    queryKey: ["profileInfo", userId],
+    // queryFn: () => getProfile(userId),
+    enabled: !signupContext,
+  });
+
+  // DEFAULT AVATAR
+  const defaultImage = profileInfoData?.path_picture
+    ? profileInfoData.path_picture
+    : "https://images-ext-1.discordapp.net/external/vj4B_0At5aHV02oJ7BEdIZ2gOKfDu1FphkjY5ojkEko/%3Fs%3D612x612%26w%3D0%26k%3D20%26c%3Dt2RnIzl7hAwIUoupTgTDTYPZ2HCLvw5y-umBEtBsk8g%3D/https/media.istockphoto.com/id/846183008/fr/vectoriel/ic%25C3%25B4ne-de-profil-avatar-par-d%25C3%25A9faut-espace-r%25C3%25A9serv%25C3%25A9-photo-gris.jpg?format=webp";
+
+  // IMAGE FUNCTION
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setPreviewImage(imageUrl);
-      formik.setFieldValue("path_picture", file); // Set the image in Formik
+      formik.setFieldValue("path_picture", file);
     } else {
       setPreviewImage(null);
-      formik.setFieldValue("path_picture", null); // Clear image field in Formik if no image is selected
+      formik.setFieldValue("path_picture", null);
     }
   };
 
-  const formik = useFormik({
+  // FORM LOGIC
+  const formik = useFormik<ProfileInterface>({
     initialValues: {
-      path_picture: "",
-      gender: [],
-      description: "",
-      interests: [],
-      spoken_languages: [],
+      path_picture: profileInfoData?.path_picture
+        ? profileInfoData.path_picture
+        : "",
+      gender: profileInfoData?.gender ? profileInfoData.gender : [],
+      description: profileInfoData?.description
+        ? profileInfoData.description
+        : "",
+      interests: profileInfoData?.interests ? profileInfoData.interests : [],
+      spoken_languages: profileInfoData?.spoken_languages
+        ? profileInfoData.spoken_languages
+        : [],
     },
     validationSchema: object({
       path_picture: string(),
@@ -55,11 +108,22 @@ export function ProfileForm({ onNext, onProfileData }: ProfileFormProps) {
       interests: array(),
       spoken_languages: array(),
     }),
-    onSubmit: (values) => {
-      console.log(values);
-      if (onProfileData) onProfileData(values);
-      if (onNext) onNext();
-      formik.resetForm();
+    onSubmit: async (values) => {
+      if (onProfileData && onNext) {
+        onProfileData(values);
+        onNext();
+        formik.resetForm();
+      } else {
+        try {
+          setError(null);
+          const response = await editProfile(userId, values);
+          console.log("Mise à jour du profil réussie", response);
+          formik.resetForm();
+        } catch (error: unknown) {
+          console.log(error);
+          setError(error);
+        }
+      }
     },
   });
 
@@ -69,9 +133,7 @@ export function ProfileForm({ onNext, onProfileData }: ProfileFormProps) {
       shadow={false}
       className="flex justify-center items-center min-h-screen text-black "
     >
-      <Typography variant="h4" className="font-montserrat">
-        Mon profil
-      </Typography>
+      <h1>Mon profil</h1>
       <form
         className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
         onSubmit={formik.handleSubmit}
@@ -154,13 +216,28 @@ export function ProfileForm({ onNext, onProfileData }: ProfileFormProps) {
           className="bg-blue font-montserrat"
           type="submit"
         >
-          Suite
+          {signupContext ? "Suite" : "Valider"}
         </Button>
-        <Typography className="text-center font-normal  mt-6">
-          <NavLink to="/" className="text-blue">
-            Compléter plus tard
-          </NavLink>
-        </Typography>
+        {error && (
+          <div className="text-red-500 text-center ">
+            Erreur lors de la mise à jour du profil
+          </div>
+        )}
+        {isProfileInfoLoading && (
+          <div className="text-blue text-center">Chargement des données...</div>
+        )}
+        {isProfileInfoError && (
+          <div className="text-red-500 text-center">
+            Erreur lors du chargement des données
+          </div>
+        )}
+        {signupContext && (
+          <Typography className="text-center font-normal  mt-6">
+            <NavLink to="/" className="text-blue">
+              Compléter plus tard
+            </NavLink>
+          </Typography>
+        )}
       </form>
     </Card>
   );

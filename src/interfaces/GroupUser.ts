@@ -1,20 +1,20 @@
 export interface GroupUserInterface {
   user_id?: number;
   group_id?: number;
-  role?: GroupUserRoleEnum;
-  status?: GroupUserStatusEnum;
+  role?: GroupUserRoleEnum[];
+  status?: GroupUserStatusEnum[];
   created_at?: Date;
   updated_at?: Date;
 }
 
 export enum GroupUserRoleEnum {
-  TRAVELER = "TRAVELER",
-  ORGANIZER = "ORGANIZER",
-  AUTHOR = "AUTHOR",
+  TRAVELER = "Voyageur",
+  ORGANIZER = "Organisateur",
+  AUTHOR = "Auteur",
 }
 
 export enum GroupUserStatusEnum {
-  PENDING = "PENDING",
-  ACCEPTED = "ACCEPTED",
-  DENIED = "DENIED",
+  PENDING = "En attente",
+  ACCEPTED = "Accepté",
+  DENIED = "Refusé",
 }

@@ -1,25 +1,28 @@
-import { SignupForm } from "../../components/form/SignupForm";
-import { ProfileForm } from "../../components/form/ProfileForm";
-import { ProfileContForm } from "../../components/form/ProfileContForm";
+// REACT HOOKS
 import { useState } from "react";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+// ROUTER
 import { NavLink } from "react-router-dom";
-export interface ProfileDataParams {
-  path_picture: string;
-  gender: Array<string>;
-  description: string;
-  interests: Array<string>;
-  spoken_languages: Array<string>;
-}
+
+// COMPONENTS
+import { SignupForm } from "../../components/form/SignupForm";
+import { ProfileInfoForm } from "../../components/form/ProfileInfoForm";
+import { ProfilePrefForm } from "../../components/form/ProfilePrefForm";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { ProfileInterface } from "../../interfaces/Profile";
+
 export default function SignupPage() {
+  // STATES
   const [view, setView] = useState(0);
-  const [profileData, setProfileData] = useState<ProfileDataParams>();
+  const [profileData, setProfileData] = useState<ProfileInterface>();
+
+  // STATES FUNCTIONS
   function handleNext() {
     if (view < 2) setView((v) => v + 1);
   }
 
-  function handleProfileData(values: ProfileDataParams) {
+  function handleProfileData(values: ProfileInterface) {
     setProfileData(values);
   }
 
@@ -34,9 +37,12 @@ export default function SignupPage() {
       {view === 0 ? (
         <SignupForm onNext={handleNext} />
       ) : view === 1 ? (
-        <ProfileForm onNext={handleNext} onProfileData={handleProfileData} />
+        <ProfileInfoForm
+          onNext={handleNext}
+          onProfileData={handleProfileData}
+        />
       ) : (
-        <ProfileContForm profileData={profileData} />
+        <ProfilePrefForm profileData={profileData} />
       )}
     </main>
   );

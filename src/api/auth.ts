@@ -9,8 +9,9 @@ import { UserInterface } from "../interfaces/User";
 
 export async function signup(body: UserInterface) {
   try {
-    const { data } = await axios.post(`${uri}/users`, { body });
-    return data.body;
+    // const { data } = await axios.post(`${uri}/users`, { body });
+    // return data.body;
+    return body;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(
