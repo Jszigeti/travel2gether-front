@@ -13,10 +13,10 @@ export enum GroupGenderEnum {
 }
 
 export enum GroupAgeRangesSet {
-  "18-25",
-  "25-35",
-  "35-50",
-  "50+",
+  FIRST_AGE_RANGE = "18-25",
+  SECOND_AGE_RANGE = "25-35",
+  THIRD_AGE_RANGE = "35-50",
+  FOURTH_AGE_RANGE = "50+",
 }
 
 export enum LodgingsSet {

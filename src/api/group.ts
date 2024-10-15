@@ -11,8 +11,9 @@ import { groupsList } from "../data/groupsList";
 
 export async function createGroup(body: GroupInterface) {
   try {
-    const { data } = await axios.post(`${uri}/groups`, { body });
-    return data.body;
+    // const { data } = await axios.post(`${uri}/groups`, { body });
+    // return data.body;
+    return body;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(
@@ -23,10 +24,11 @@ export async function createGroup(body: GroupInterface) {
 
 export async function editGroup(group_id: number, body: GroupInterface) {
   try {
-    const { data } = await axios.put(`${uri}/groups/${group_id}`, {
-      body,
-    });
-    return data.body;
+    // const { data } = await axios.put(`${uri}/groups/${group_id}`, {
+    //   body,
+    // });
+    // return data.body;
+    return `${group_id} ${body}`;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(

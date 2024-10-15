@@ -69,7 +69,7 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
       <Navbar className="mx-auto max-w-screen-xl px-6 py-3 rounded-none relative z-30">
         <div className="flex items-end justify-end text-blue-gray-900 relative">
           <NavLink to="/" className="absolute left-1">
-            <img src="./src/assets/logo/logo.svg" />
+            <img src="/src/assets/logo/logo.svg" />
           </NavLink>
           <div className="hidden xl:block lg:mr-4">
             <NavList />

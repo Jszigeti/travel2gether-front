@@ -101,8 +101,8 @@ export const budgetOptions = [
 ];
 
 export const ageRangesOptions = [
-  { value: GroupAgeRangesSet["18-25"], label: "18-25" },
-  { value: GroupAgeRangesSet["25-35"], label: "25-35" },
-  { value: GroupAgeRangesSet["35-50"], label: "35-50" },
-  { value: GroupAgeRangesSet["50+"], label: "50+" },
+  { value: GroupAgeRangesSet.FIRST_AGE_RANGE, label: "18-25" },
+  { value: GroupAgeRangesSet.SECOND_AGE_RANGE, label: "25-35" },
+  { value: GroupAgeRangesSet.THIRD_AGE_RANGE, label: "35-50" },
+  { value: GroupAgeRangesSet.FOURTH_AGE_RANGE, label: "50+" },
 ];

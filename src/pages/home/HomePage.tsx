@@ -47,8 +47,16 @@ export default function HomePage() {
         <section className="flex flex-col gap-3 lg:gap-6">
           <h2>Vos recommandations de groupes</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 w-full lg:gap-6">
-            {isGroupsLoading && <div>Chargement des données</div>}
-            {isGroupsError && <div>Erreur lors du chargement des données</div>}
+            {isGroupsLoading && (
+              <div className="text-blue text-center">
+                Chargement des données...
+              </div>
+            )}
+            {isGroupsError && (
+              <div className="text-red-500 text-center">
+                Erreur lors du chargement des données
+              </div>
+            )}
             {groupsList &&
               groupsList
                 .slice(0, 4)
@@ -60,9 +68,15 @@ export default function HomePage() {
         <section className="flex flex-col gap-3 lg:gap-6">
           <h2>Vos recommandations de voyageurs</h2>
           <div className="grid grid-cols-3 lg:grid-cols-4 justify-start gap-x-10 gap-y-3 lg:gap-y-6">
-            {isProfilesLoading && <div>Chargement des données</div>}
+            {isProfilesLoading && (
+              <div className="text-blue text-center">
+                Chargement des données...
+              </div>
+            )}
             {isProfilesError && (
-              <div>Erreur lors du chargement des données</div>
+              <div className="text-red-500 text-center">
+                Erreur lors du chargement des données
+              </div>
             )}
             {profilesList &&
               profilesList

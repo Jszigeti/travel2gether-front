@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 
 // AXIOS FUNCTIONS
 import { signup } from "../../api/auth";
+import { createProfile } from "../../api/profile";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -18,7 +19,6 @@ import { capitalizeFirstLetters } from "../../utils/capitalizeFirstLetter";
 import { Button, Card, Input, Typography } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { createProfile } from "../../api/profile";
 
 // PROPS INTERFACE
 interface SignupFormProps {
@@ -31,11 +31,11 @@ export function SignupForm({ onNext }: SignupFormProps) {
   // FORM LOGIC
   const formik = useFormik({
     initialValues: {
-      email: "",
-      firstname: "",
-      lastname: "",
-      password: "",
-      passwordmatch: "",
+      email: "test@test.fr",
+      firstname: "Prénom",
+      lastname: "Nom",
+      password: "motdepasse",
+      passwordmatch: "motdepasse",
     },
     validationSchema: object({
       email: string().email("E-mail invalide").required("E-mail requis"),
@@ -83,9 +83,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
       shadow={false}
       className="flex justify-center items-center min-h-screen text-black"
     >
-      <Typography variant="h4" className="font-montserrat">
-        Créer mon compte
-      </Typography>
+      <h1>Créer mon compte</h1>
       <form
         className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
         onSubmit={formik.handleSubmit}
@@ -96,7 +94,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
             crossOrigin={undefined}
             size="lg"
             type="email"
-            placeholder="name@email.com"
+            placeholder="marie.diana@gmail.com"
             className={`!border-blue  ${
               formik.touched.email && formik.errors.email
                 ? "!border-red-500"
@@ -124,7 +122,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
           <Input
             crossOrigin={undefined}
             size="lg"
-            placeholder="Insert title here"
+            placeholder="Prénom"
             className={`!border-blue  ${
               formik.touched.firstname && formik.errors.firstname
                 ? "!border-red-500"
@@ -157,7 +155,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
           <Input
             crossOrigin={undefined}
             size="lg"
-            placeholder="Insert title here"
+            placeholder="Nom"
             className={`!border-blue  ${
               formik.touched.lastname && formik.errors.lastname
                 ? "!border-red-500"
@@ -191,7 +189,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
             crossOrigin={undefined}
             size="lg"
             type="password"
-            placeholder="Insert title here"
+            placeholder="********"
             className={`!border-blue  ${
               formik.touched.password && formik.errors.password
                 ? "!border-red-500"
@@ -220,7 +218,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
             crossOrigin={undefined}
             size="lg"
             type="password"
-            placeholder="Insert title here"
+            placeholder="********"
             className={`!border-blue  ${
               formik.touched.email && formik.errors.email
                 ? "!border-red-500"

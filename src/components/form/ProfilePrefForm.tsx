@@ -1,11 +1,17 @@
 // REACT HOOKS
 import { useState } from "react";
 
+// REACT QUERY
+import { useQuery } from "@tanstack/react-query";
+
 // ROUTER
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import { editProfile } from "../../api/profile";
+import {
+  editProfile,
+  //  getProfile
+} from "../../api/profile";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -29,26 +35,52 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 // PROPS INTERFACE
-interface ProfileContFormProps {
+interface ProfilePrefFormProps {
   profileData?: ProfileInterface;
+  signupContext?: boolean;
 }
 
 // FAKE USER
 const userId = 1;
 
-export function ProfileContForm({ profileData }: ProfileContFormProps) {
+export function ProfilePrefForm({
+  profileData,
+  signupContext = true,
+}: ProfilePrefFormProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
+
+  // REDIRECTION
+  const navigate = useNavigate();
+
+  // RETRIEVE PROFIL PREF DATA
+  const {
+    data: profilePrefData,
+    isLoading: isProfilePrefLoading,
+    isError: isProfilePrefError,
+  } = useQuery<ProfileInterface>({
+    queryKey: ["profilePref", userId],
+    // queryFn: () => getProfile(userId),
+    enabled: !signupContext,
+  });
 
   // FORM LOGIC
   const formik = useFormik<ProfileInterface>({
     initialValues: {
-      travel_types: [],
-      budget: [],
-      lodgings: [],
-      available_from: "",
-      available_to: "",
-      trip_durations: [],
+      travel_types: profilePrefData?.travel_types
+        ? profilePrefData.travel_types
+        : [],
+      budget: profilePrefData?.budget ? profilePrefData.budget : [],
+      lodgings: profilePrefData?.lodgings ? profilePrefData.lodgings : [],
+      available_from: profilePrefData?.available_from
+        ? profilePrefData.available_from
+        : "",
+      available_to: profilePrefData?.available_to
+        ? profilePrefData.available_to
+        : "",
+      trip_durations: profilePrefData?.trip_durations
+        ? profilePrefData.trip_durations
+        : [],
     },
     validationSchema: object({
       travel_types: array(),
@@ -62,8 +94,8 @@ export function ProfileContForm({ profileData }: ProfileContFormProps) {
       trip_durations: array(),
     }),
     onSubmit: async (values) => {
+      // FORM LOGIC IF SIGNUP CONTEXT
       if (profileData) {
-        console.log({ ...profileData, ...values });
         const userProfileData = { ...profileData, ...values };
         try {
           setError(null);
@@ -72,12 +104,14 @@ export function ProfileContForm({ profileData }: ProfileContFormProps) {
             "Enregistrement des informations du profil réussi",
             response
           );
+          navigate(`/`);
           formik.resetForm();
         } catch (error: unknown) {
           console.log(error);
           setError(error);
         }
       } else {
+        // FORM LOGIC IF EDIT CONTEXT
         try {
           setError(null);
           const response = await editProfile(userId, values);
@@ -97,9 +131,7 @@ export function ProfileContForm({ profileData }: ProfileContFormProps) {
       shadow={false}
       className="flex justify-center items-center min-h-screen text-black "
     >
-      <Typography variant="h4" className="font-montserrat">
-        Mes préférences
-      </Typography>
+      <h1>Mes préférences</h1>
       <form
         className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
         onSubmit={formik.handleSubmit}
@@ -211,11 +243,21 @@ export function ProfileContForm({ profileData }: ProfileContFormProps) {
             Erreur lors de la mise à jour du profil
           </div>
         )}
-        <Typography className="text-center font-normal  mt-6">
-          <NavLink to="/" className="text-blue">
-            Compléter plus tard
-          </NavLink>
-        </Typography>
+        {isProfilePrefLoading && (
+          <div className="text-blue text-center">Chargement des données...</div>
+        )}
+        {isProfilePrefError && (
+          <div className="text-red-500 text-center">
+            Erreur lors du chargement des données
+          </div>
+        )}
+        {signupContext && (
+          <Typography className="text-center font-normal  mt-6">
+            <NavLink to="/" className="text-blue">
+              Compléter plus tard
+            </NavLink>
+          </Typography>
+        )}
       </form>
     </Card>
   );

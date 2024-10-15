@@ -23,7 +23,7 @@ export interface GroupInterface {
   gender_type?: GroupGenderEnum[];
   spoken_languages?: SpokenLanguagesSet[];
   budget?: BudgetEnum[];
-  age_ranges: GroupAgeRangesSet[];
+  age_ranges?: GroupAgeRangesSet[];
   created_at?: Date;
   updated_at?: Date;
 }

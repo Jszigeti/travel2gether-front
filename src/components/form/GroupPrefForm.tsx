@@ -1,7 +1,26 @@
-import { Card, Button, Typography } from "@material-tailwind/react";
+// REACT HOOKS
+import { useState } from "react";
+
+// REACT QUERY
+import { useQuery } from "@tanstack/react-query";
+
+// ROUTER
+import { NavLink, useNavigate } from "react-router-dom";
+
+// AXIOS FUNCTIONS
+import {
+  editGroup,
+  // getGroup
+} from "../../api/group";
+
+// FORMIK + YUP
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Dropdown from "../UI/DropdownComponent";
+
+// INTERFACES
+import { GroupInterface } from "../../interfaces/Group";
+
+// FORM DATA
 import {
   ageRangesOptions,
   budgetOptions,
@@ -11,15 +30,55 @@ import {
   travelTypesOptions,
 } from "../../data/formOptions";
 
-export default function GroupPreferenceForm() {
+// COMPONENTS
+import Dropdown from "../UI/DropdownComponent";
+import { Card, Button, Typography } from "@material-tailwind/react";
+
+// PROPS INTERFACE
+interface GroupPrefFormProps {
+  groupCreationContext?: boolean;
+  groupData?: GroupInterface;
+  paramsId?: number;
+}
+
+export default function GroupPrefForm({
+  groupCreationContext = true,
+  groupData,
+  paramsId,
+}: GroupPrefFormProps) {
+  // STATES
+  const [error, setError] = useState<null | string>(null);
+
+  // REDIRECTION
+  const navigate = useNavigate();
+
+  // RETRIEVE GROUP ID
+  const groupId = groupData?.id || paramsId;
+
+  // RETRIEVE GROUP PREF DATA
+  const {
+    data: groupPrefData,
+    isLoading: isGroupPrefLoading,
+    isError: isGroupPrefError,
+  } = useQuery<GroupInterface>({
+    queryKey: ["groupPref", groupId],
+    // queryFn: () => getGroup(groupId),
+    enabled: !groupCreationContext,
+  });
+
+  // FORM LOGIC
   const formik = useFormik({
     initialValues: {
-      travel_types: [],
-      lodgings: [],
-      gender_type: [],
-      spoken_languages: [],
-      budget: [],
-      age_ranges: [],
+      travel_types: groupPrefData?.travel_types
+        ? groupPrefData.travel_types
+        : [],
+      lodgings: groupPrefData?.lodgings ? groupPrefData.lodgings : [],
+      gender_type: groupPrefData?.gender_type ? groupPrefData.gender_type : [],
+      spoken_languages: groupPrefData?.spoken_languages
+        ? groupPrefData.spoken_languages
+        : [],
+      budget: groupPrefData?.budget ? groupPrefData.budget : [],
+      age_ranges: groupPrefData?.age_ranges ? groupPrefData.age_ranges : [],
     },
     validationSchema: Yup.object({
       travel_types: Yup.array(),
@@ -29,9 +88,23 @@ export default function GroupPreferenceForm() {
       budget: Yup.array(),
       age_ranges: Yup.array(),
     }),
-    onSubmit: (values) => {
-      console.log(values);
-      // Gérer la soumission ici
+    onSubmit: async (values) => {
+      if (groupId) {
+        try {
+          setError(null);
+          const response = await editGroup(groupId, values);
+          console.log("Mise à jour du groupe réussie", response);
+          if (groupCreationContext) {
+            navigate(`/group/${groupId}`);
+          } else {
+            navigate(`/group/${groupId}/edit`);
+          }
+          formik.resetForm();
+        } catch (error: unknown) {
+          console.log(error);
+          setError(error);
+        }
+      }
     },
   });
 
@@ -40,7 +113,6 @@ export default function GroupPreferenceForm() {
       shadow={false}
       className="flex justify-center items-center min-h-screen text-black "
     >
-      <h1>Préférences du groupe de voyage</h1>
       <form
         onSubmit={formik.handleSubmit}
         className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
@@ -134,12 +206,27 @@ export default function GroupPreferenceForm() {
           fullWidth
           type="submit"
         >
-          Enregistrer les préférences
+          Valider
         </Button>
+        {error && (
+          <div className="text-red-500 text-center ">
+            Erreur lors de la mise à jour du groupe
+          </div>
+        )}
+        {isGroupPrefLoading && (
+          <div className="text-blue text-center">Chargement des données...</div>
+        )}
+        {isGroupPrefError && (
+          <div className="text-red-500 text-center">
+            Erreur lors du chargement des données
+          </div>
+        )}
       </form>
-      {/* <NavLink className="text-blue" to={`/group/${ groupd_id }/edit`}>
-        Compléter les préférences plus tard
-      </NavLink> */}
+      {groupCreationContext && (
+        <NavLink className="text-blue" to={`/group/${groupId}`}>
+          Compléter les préférences plus tard
+        </NavLink>
+      )}
     </Card>
   );
 }

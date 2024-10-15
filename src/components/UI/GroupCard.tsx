@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 
 // INTERFACES
 import { GroupCardInterface } from "../../interfaces/Group";
+import { GroupUserRoleEnum } from "../../interfaces/GroupUser";
 
 // UTILS FUNCTIONS
 import { formatDate } from "../../utils/formatDate";
@@ -47,7 +48,8 @@ export default function GroupCard({ group }: GroupCardProps) {
                   src={profil.path_picture}
                   alt="Avatar"
                   className={`${
-                    profil.role === "Organisateur" || profil.role === "Auteur"
+                    profil.role.includes(GroupUserRoleEnum.ORGANIZER) ||
+                    profil.role.includes(GroupUserRoleEnum.AUTHOR)
                       ? "border-green"
                       : "border-blue"
                   } border-4 h-12 w-12 md:h-16 md:w-16 lg:h-12 lg:w-12 xl:h-16 xl:w-16`}

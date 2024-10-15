@@ -1,6 +1,9 @@
 // REACT HOOKS
 import { useState } from "react";
 
+// ROUTER
+import { useNavigate } from "react-router-dom";
+
 // AXIOS FUNCTIONS
 import { signin } from "../../api/auth";
 
@@ -17,6 +20,9 @@ export default function SigninForm() {
   // STATES
   const [error, setError] = useState<null | string>(null);
 
+  // REDIRECTION
+  const navigate = useNavigate();
+
   // FORM LOGIC
   const formik = useFormik({
     initialValues: {
@@ -32,6 +38,7 @@ export default function SigninForm() {
         setError(null);
         const response = await signin(values);
         console.log("Connexion réussie", response);
+        navigate(`/`);
         formik.resetForm();
       } catch (error: unknown) {
         console.log(error);
@@ -50,7 +57,7 @@ export default function SigninForm() {
           <Typography variant="h6">E-mail</Typography>
           <Input
             size="lg"
-            placeholder="maria.diana@gmail.com"
+            placeholder="marie.diana@gmail.com"
             name="email"
             value={formik.values.email}
             onChange={formik.handleChange}
@@ -83,7 +90,7 @@ export default function SigninForm() {
             name="password"
             value={formik.values.password}
             onChange={formik.handleChange}
-            className={`!border-blue  focus:!border-2 ${
+            className={`!border-blue ${
               formik.touched.password && formik.errors.password
                 ? "!border-red-500"
                 : null
