@@ -64,7 +64,8 @@ export default function GroupInfoForm({
   } = useQuery<GroupInterface>({
     queryKey: ["groupInfo", paramsId],
     // queryFn: () => getGroup(groupId),
-    enabled: !groupCreationContext,
+    // enabled: !groupCreationContext,
+    enabled: false,
   });
 
   // DEFAULT AVATAR

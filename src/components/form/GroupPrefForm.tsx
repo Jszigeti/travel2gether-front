@@ -63,7 +63,8 @@ export default function GroupPrefForm({
   } = useQuery<GroupInterface>({
     queryKey: ["groupPref", groupId],
     // queryFn: () => getGroup(groupId),
-    enabled: !groupCreationContext,
+    // enabled: !groupCreationContext,
+    enabled: false,
   });
 
   // FORM LOGIC
