@@ -17,6 +17,7 @@ module.exports = withMT({
     },
     fontFamily: {
       montserrat: ["Montserrat", "sans-serif"],
+      roboto: ["Roboto", "sans-serif"],
     },
     extend: {},
   },
