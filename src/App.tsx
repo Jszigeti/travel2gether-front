@@ -7,6 +7,7 @@ import HomePage from "./pages/home/HomePage";
 import GroupCreatePage from "./pages/group/GroupCreatePage";
 import GroupeEditPage from "./pages/group/GroupEditPage";
 import ProfilePage from "./pages/user/ProfilePage";
+import StageCreatePage from "./pages/stage/StageCreatePage";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/group/create" element={<GroupCreatePage />} />
         <Route path="/group/:groupId/edit" element={<GroupeEditPage />} />
+        <Route path="/stage/create" element={<StageCreatePage />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </>
