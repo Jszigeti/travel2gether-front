@@ -30,7 +30,10 @@ export const profileDetails = {
   available_from: "2024-11-02",
   available_to: "2024-11-06",
   spoken_languages: [SpokenLanguagesSet.ENGLISH],
-  trip_durations: [],
+  trip_durations: [
+    ProfileTripDurationsSet.LONG_TRIP,
+    ProfileTripDurationsSet.MEDIUM_TRIP,
+  ],
   groups: [
     {
       id: 1,

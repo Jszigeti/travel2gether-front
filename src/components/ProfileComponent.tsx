@@ -48,10 +48,10 @@ export default function ProfileComponent() {
             {formatDate(profileDetails.available_to)}
           </p>
         </section>
-        {(profileDetails.spoken_languages.length < 1 ||
-          profileDetails.interests.length < 1 ||
-          profileDetails.trip_durations.length < 1 ||
-          profileDetails.lodgings.length < 1) && (
+        {(profileDetails.spoken_languages.length <= 1 ||
+          profileDetails.interests.length <= 1 ||
+          profileDetails.trip_durations.length <= 1 ||
+          profileDetails.lodgings.length <= 1) && (
           <section className=" flex flex-col gap-3 shadow-md p-4 rounded-md">
             <h2 className="font-bold">Informations</h2>
 
