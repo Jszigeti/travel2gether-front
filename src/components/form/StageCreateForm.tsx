@@ -66,7 +66,6 @@ export default function StageCreateForm() {
       shadow={false}
       className="flex justify-center items-center min-h-screen text-black "
     >
-      <h1>Création d'une étape</h1>
       <form
         onSubmit={formik.handleSubmit}
         className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
