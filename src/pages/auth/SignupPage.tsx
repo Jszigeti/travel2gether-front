@@ -1,25 +1,28 @@
+// REACT HOOKS
+import { useState } from "react";
+
+// ROUTER
+import { NavLink } from "react-router-dom";
+
+// COMPONENTS
 import { SignupForm } from "../../components/form/SignupForm";
 import { ProfileForm } from "../../components/form/ProfileForm";
 import { ProfileContForm } from "../../components/form/ProfileContForm";
-import { useState } from "react";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NavLink } from "react-router-dom";
-export interface ProfileDataParams {
-  path_picture: string;
-  gender: Array<string>;
-  description: string;
-  interests: Array<string>;
-  spoken_languages: Array<string>;
-}
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { ProfileInterface } from "../../interfaces/Profile";
+
 export default function SignupPage() {
+  // STATES
   const [view, setView] = useState(0);
-  const [profileData, setProfileData] = useState<ProfileDataParams>();
+  const [profileData, setProfileData] = useState<ProfileInterface>();
+
+  // STATES FUNCTIONS
   function handleNext() {
     if (view < 2) setView((v) => v + 1);
   }
 
-  function handleProfileData(values: ProfileDataParams) {
+  function handleProfileData(values: ProfileInterface) {
     setProfileData(values);
   }
 

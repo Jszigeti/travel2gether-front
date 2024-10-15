@@ -1,12 +1,20 @@
-//import { User } from "../interfaces/User";
-import { Button, Card, Typography, Input } from "@material-tailwind/react";
-import { useFormik } from "formik";
+// REACT HOOKS
+import { useState } from "react";
+
+// ROUTER
 import { NavLink } from "react-router-dom";
+
+// AXIOS FUNCTIONS
+import { editProfile } from "../../api/profile";
+
+// FORMIK + YUP
+import { useFormik } from "formik";
 import { array, date, object, ref } from "yup";
-import Dropdown from "../UI/DropdownComponent";
-import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ProfileDataParams } from "../../pages/auth/SignupPage";
+
+// INTERFACES
+import { ProfileInterface } from "../../interfaces/Profile";
+
+// FORM DATA
 import {
   budgetOptions,
   lodgingsOptions,
@@ -14,12 +22,26 @@ import {
   tripDurationsOptions,
 } from "../../data/formOptions";
 
-export function ProfileContForm({
-  profileData,
-}: {
-  profileData?: ProfileDataParams;
-}) {
-  const formik = useFormik({
+// COMPONENTS
+import Dropdown from "../UI/DropdownComponent";
+import { Button, Card, Typography, Input } from "@material-tailwind/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+
+// PROPS INTERFACE
+interface ProfileContFormProps {
+  profileData?: ProfileInterface;
+}
+
+// FAKE USER
+const userId = 1;
+
+export function ProfileContForm({ profileData }: ProfileContFormProps) {
+  // STATES
+  const [error, setError] = useState<null | string>(null);
+
+  // FORM LOGIC
+  const formik = useFormik<ProfileInterface>({
     initialValues: {
       travel_types: [],
       budget: [],
@@ -39,9 +61,33 @@ export function ProfileContForm({
       ),
       trip_durations: array(),
     }),
-    onSubmit: (values) => {
-      if (profileData) console.log({ ...profileData, ...values });
-      formik.resetForm();
+    onSubmit: async (values) => {
+      if (profileData) {
+        console.log({ ...profileData, ...values });
+        const userProfileData = { ...profileData, ...values };
+        try {
+          setError(null);
+          const response = await editProfile(userId, userProfileData);
+          console.log(
+            "Enregistrement des informations du profil réussi",
+            response
+          );
+          formik.resetForm();
+        } catch (error: unknown) {
+          console.log(error);
+          setError(error);
+        }
+      } else {
+        try {
+          setError(null);
+          const response = await editProfile(userId, values);
+          console.log("Modification du profil réussie", response);
+          formik.resetForm();
+        } catch (error: unknown) {
+          console.log(error);
+          setError(error);
+        }
+      }
     },
   });
 
@@ -160,6 +206,11 @@ export function ProfileContForm({
         >
           Valider
         </Button>
+        {error && (
+          <div className="text-red-500 text-center ">
+            Erreur lors de la mise à jour du profil
+          </div>
+        )}
         <Typography className="text-center font-normal  mt-6">
           <NavLink to="/" className="text-blue">
             Compléter plus tard

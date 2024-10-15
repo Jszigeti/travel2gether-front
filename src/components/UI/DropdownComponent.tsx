@@ -1,16 +1,22 @@
+// REACT HOOKS
 import { useState, useEffect, useRef } from "react";
-import { FieldInputProps, FormikProps } from "formik";
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-// Définir un type pour les options avec des valeurs et des labels
+// INTERFACES
+import { FieldInputProps, FormikProps } from "formik";
+
+// COMPONENTS
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+
+// OPTIONS INTERFACE
 interface Option {
   value: string;
   label: string;
 }
 
+// PROPS INTERFACE
 interface DropdownProps {
-  options: Array<Option>; // Tableau d'options contenant { value, label }
+  options: Array<Option>;
   field: FieldInputProps<string[]>;
   formik: FormikProps<any>;
   label: string;
@@ -24,13 +30,15 @@ export default function Dropdown({
   label,
   multiple = true,
 }: DropdownProps) {
+  // STATES
   const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null); // Référence pour la liste déroulante
 
-  // Fonction pour gérer la sélection des options
+  // DROPDOWN LIST REFERENCE
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // OPTIONS FUNCTIONS
   const handleCheckboxChange = (value: string) => {
     const selectedValues = formik.values[field.name];
-
     if (multiple) {
       const updatedValues = selectedValues.includes(value)
         ? selectedValues.filter((v: string) => v !== value)
@@ -44,21 +52,19 @@ export default function Dropdown({
     }
   };
 
-  // Fermer la liste déroulante lorsque l'on clique en dehors
+  // CLOSING DROPDOWN LIST FUNCTION
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false); // Fermer la liste si le clic est en dehors
+        setIsOpen(false);
       }
     };
-
-    document.addEventListener("mousedown", handleClickOutside); // Attacher l'événement
-
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside); // Détacher lors du démontage
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -99,7 +105,7 @@ export default function Dropdown({
                 checked={formik.values[field.name].includes(option.value)}
                 onChange={() => handleCheckboxChange(option.value)}
               />
-              {option.label} {/* Affichage de l'option en français */}
+              {option.label}
             </label>
           ))}
         </div>

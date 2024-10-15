@@ -2,7 +2,7 @@ export interface UserInterface {
   id?: number;
   email?: string;
   password?: string;
-  status?: UserStatusEnum;
+  status?: UserStatusEnum[];
   created_at?: Date;
   updated_at?: Date;
 }

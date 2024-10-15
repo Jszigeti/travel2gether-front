@@ -17,12 +17,12 @@ export interface GroupInterface {
   date_from?: string;
   date_to?: string;
   path_picture?: string;
-  status?: GroupStatusEnum;
+  status?: GroupStatusEnum[];
   travel_types?: TravelTypesSet[];
   lodgings?: LodgingsSet[];
-  gender_type?: GroupGenderEnum;
+  gender_type?: GroupGenderEnum[];
   spoken_languages?: SpokenLanguagesSet[];
-  budget?: BudgetEnum;
+  budget?: BudgetEnum[];
   age_ranges: GroupAgeRangesSet[];
   created_at?: Date;
   updated_at?: Date;
@@ -38,7 +38,7 @@ export interface GroupCardInterface {
   profiles?: {
     user_id: number;
     path_picture: string;
-    role: GroupUserRoleEnum;
+    role: GroupUserRoleEnum[];
   }[];
 }
 

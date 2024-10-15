@@ -18,6 +18,7 @@ import { capitalizeFirstLetters } from "../../utils/capitalizeFirstLetter";
 import { Button, Card, Input, Typography } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { createProfile } from "../../api/profile";
 
 // PROPS INTERFACE
 interface SignupFormProps {
@@ -56,8 +57,17 @@ export function SignupForm({ onNext }: SignupFormProps) {
       };
       try {
         setError(null);
-        const response = await signup(userData);
+        const response = await signup({ ...userData, id: 1 });
         console.log("Inscription réussie", response);
+        if (response.id) {
+          try {
+            const response2 = await createProfile(response.id);
+            console.log("Création du profil réussie", response2);
+          } catch (error: unknown) {
+            console.log(error);
+            setError(error);
+          }
+        }
         onNext();
         formik.resetForm();
       } catch (error: unknown) {
@@ -106,7 +116,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
             />
           ) : null}
           {formik.errors.email && formik.touched.email && (
-            <div>{formik.errors.email}</div>
+            <div className="mt-1 text-red-500">{formik.errors.email}</div>
           )}
         </div>
         <div className="flex flex-col mb-3 relative">
@@ -139,7 +149,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
             />
           ) : null}
           {formik.errors.firstname && formik.touched.firstname && (
-            <div>{formik.errors.firstname}</div>
+            <div className="mt-1 text-red-500">{formik.errors.firstname}</div>
           )}
         </div>
         <div className="flex flex-col mb-3 relative">
@@ -172,7 +182,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
             />
           ) : null}
           {formik.errors.lastname && formik.touched.lastname && (
-            <div>{formik.errors.lastname}</div>
+            <div className="mt-1 text-red-500">{formik.errors.lastname}</div>
           )}
         </div>
         <div className="flex flex-col mb-3 relative">
@@ -201,7 +211,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
             />
           ) : null}
           {formik.errors.password && formik.touched.password && (
-            <div>{formik.errors.password}</div>
+            <div className="mt-1 text-red-500">{formik.errors.password}</div>
           )}
         </div>
         <div className="flex flex-col mb-6 relative">
@@ -230,7 +240,9 @@ export function SignupForm({ onNext }: SignupFormProps) {
             />
           ) : null}
           {formik.errors.passwordmatch && formik.touched.passwordmatch && (
-            <div>{formik.errors.passwordmatch}</div>
+            <div className="mt-1 text-red-500">
+              {formik.errors.passwordmatch}
+            </div>
           )}
         </div>
         <Button

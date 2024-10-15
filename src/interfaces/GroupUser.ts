@@ -1,8 +1,8 @@
 export interface GroupUserInterface {
   user_id?: number;
   group_id?: number;
-  role?: GroupUserRoleEnum;
-  status?: GroupUserStatusEnum;
+  role?: GroupUserRoleEnum[];
+  status?: GroupUserStatusEnum[];
   created_at?: Date;
   updated_at?: Date;
 }
