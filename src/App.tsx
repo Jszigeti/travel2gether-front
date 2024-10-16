@@ -10,6 +10,7 @@ import GroupEditInfoPage from "./pages/group/GroupEditInfoPage";
 import GroupEditPrefPage from "./pages/group/GroupEditPrefPage";
 import ProfilePage from "./pages/user/ProfilePage";
 import StageCreatePage from "./pages/stage/StageCreatePage";
+import StageEditPage from "./pages/stage/StageEditPage";
 
 export default function App() {
   return (
@@ -22,9 +23,22 @@ export default function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/group/create" element={<GroupCreatePage />} />
         <Route path="/group/:groupId/edit" element={<GroupEditPage />} />
-        <Route path="/group/:groupId/edit/info" element={<GroupEditInfoPage />} />
-        <Route path="/group/:groupId/edit/pref" element={<GroupEditPrefPage />} />
-        <Route path="/stage/create" element={<StageCreatePage />} />
+        <Route
+          path="/group/:groupId/edit/info"
+          element={<GroupEditInfoPage />}
+        />
+        <Route
+          path="/group/:groupId/edit/pref"
+          element={<GroupEditPrefPage />}
+        />
+        <Route
+          path="/group/:groupId/stage/create"
+          element={<StageCreatePage />}
+        />
+        <Route
+          path="/group/:groupId/stage/:stageId/edit"
+          element={<StageEditPage />}
+        />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </>

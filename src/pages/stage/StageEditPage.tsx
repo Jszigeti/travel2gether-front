@@ -3,13 +3,20 @@ import StageInfoForm from "../../components/form/StageInfoForm";
 import Footer from "../../components/UI/Footer";
 import Header from "../../components/UI/Header";
 
-export default function StageCreatePage() {
+export default function StageEditPage() {
   // ROUTER
   const params = useParams();
   return (
     <div>
-      <Header pageTitle="Création d'une étape" backLink="/group/:groupId" />
-      <StageInfoForm groupId={Number(params.groupId)} />
+      <Header
+        pageTitle="Édition d'une étape"
+        backLink="/group/:groupId/manage"
+      />
+      <StageInfoForm
+        groupId={Number(params.groupId)}
+        stageId={Number(params.stageId)}
+        stageCreationContext={false}
+      />
       <Footer />
     </div>
   );
