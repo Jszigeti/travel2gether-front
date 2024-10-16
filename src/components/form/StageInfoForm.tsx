@@ -12,7 +12,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "@tanstack/react-query";
 import { StageInterface } from "../../interfaces/Stage";
-import { createStage, editStage, getStageFromGroup } from "../../api/stage";
+import {
+  createStage,
+  deleteStage,
+  editStage,
+  getStageFromGroup,
+} from "../../api/stage";
 import { useNavigate } from "react-router-dom";
 
 interface StageInfoFormProps {
@@ -42,7 +47,6 @@ export default function StageInfoForm({
       stageId ? getStageFromGroup(groupId, stageId) : Promise.resolve({}),
     enabled: !stageCreationContext,
   });
-  console.log("stageInfoData : ", stageInfoData);
 
   const defaultImage = stageInfoData?.path_picture
     ? stageInfoData.path_picture
@@ -129,6 +133,25 @@ export default function StageInfoForm({
       formik.setFieldValue("date_to", stageInfoData.date_to);
     }
   }, [stageInfoData]);
+
+  const handleDeleteStage = async () => {
+    if (stageId) {
+      try {
+        setError(null);
+        const response = await deleteStage(groupId, stageId);
+        console.log("Étape supprimée ", response);
+
+        navigate(`/group/${groupId}/manage`);
+      } catch (errors: unknown) {
+        if (errors instanceof Error) {
+          setError(errors.message);
+        } else {
+          setError("Une erreur est survenue");
+        }
+        console.log(errors);
+      }
+    }
+  };
 
   return (
     <Card
@@ -312,7 +335,6 @@ export default function StageInfoForm({
             </>
           ) : null}
         </div>
-        {/* </div> */}
         <Button
           className="font-montserrat font-bold mt-6 bg-blue text-white"
           fullWidth
@@ -320,6 +342,16 @@ export default function StageInfoForm({
         >
           {stageCreationContext ? "Créer" : "Éditer"}
         </Button>
+        {!stageCreationContext && (
+          <Button
+            className="font-montserrat font-bold mt-6 bg-red-500 text-white"
+            fullWidth
+            onClick={() => handleDeleteStage()}
+          >
+            Supprimer
+          </Button>
+        )}
+
         {error && (
           <div className="text-red-500 text-center ">
             {stageCreationContext

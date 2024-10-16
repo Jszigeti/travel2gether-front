@@ -29,7 +29,6 @@ export async function getStageFromGroup(group_id: number, stage_id: number) {
     //   `${uri}/groups/${group_id}/stages/${stage_id}`
     // );
     const data = stageDetails;
-    console.log("getStageFromGroup : ", data);
 
     return data;
   } catch (error: unknown) {
@@ -76,10 +75,11 @@ export async function editStage(
 
 export async function deleteStage(group_id: number, stage_id: number) {
   try {
-    const { data } = await axios.delete(
-      `${uri}/groups/${group_id}/stages/${stage_id}`
-    );
-    return data;
+    // const { data } = await axios.delete(
+    //   `${uri}/groups/${group_id}/stages/${stage_id}`
+    // );
+    // return data;
+    return stage_id;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(
