@@ -1,16 +1,9 @@
 // REACT HOOKS
 import { useState } from "react";
 
-// ROUTER
-import { NavLink } from "react-router-dom";
-
-// AXIOS FUNCTIONS
-import { signup } from "../../api/auth";
-import { createProfile } from "../../api/profile";
-
 // FORMIK + YUP
 import { useFormik } from "formik";
-import { object, string, ref } from "yup";
+import { object, string } from "yup";
 
 // UTILS FUNCTIONS
 import { capitalizeFirstLetters } from "../../utils/capitalizeFirstLetter";
@@ -20,11 +13,7 @@ import { Button, Card, Input, Typography } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
-// PROPS INTERFACE
-interface SignupFormProps {
-  onNext: () => void;
-}
-export function SignupForm({ onNext }: SignupFormProps) {
+export function ProfileAccountForm() {
   // STATES
   const [error, setError] = useState<null | string>(null);
 
@@ -34,46 +23,37 @@ export function SignupForm({ onNext }: SignupFormProps) {
       email: "test@test.fr",
       firstname: "Prénom",
       lastname: "Nom",
-      password: "motdepasse",
-      passwordmatch: "motdepasse",
     },
     validationSchema: object({
       email: string().email("E-mail invalide").required("E-mail requis"),
-      password: string()
-        .required("Mot de passe requis")
-        .min(8, "Au moins 8 caractères"),
-      passwordmatch: string()
-        .oneOf([ref("password"), ""], "Les mots de passe doivent correspondre")
-        .required("Confirmation du mot de passe requise"),
       firstname: string().required("Prénom requis"),
       lastname: string().required("Nom requis"),
     }),
     onSubmit: async (values) => {
-      const userData = {
-        email: values.email,
-        firstname: values.firstname,
-        lastname: values.lastname,
-        password: values.password,
-      };
-      try {
-        setError(null);
-        const response = await signup({ ...userData, id: 1 });
-        console.log("Inscription réussie", response);
-        if (response.id) {
-          try {
-            const response2 = await createProfile(response.id);
-            console.log("Création du profil réussie", response2);
-          } catch (error: unknown) {
-            console.log(error);
-            setError(error);
-          }
-        }
-        onNext();
-        formik.resetForm();
-      } catch (error: unknown) {
-        console.log(error);
-        setError(error);
-      }
+      // const userData = {
+      //   email: values.email,
+      //   firstname: values.firstname,
+      //   lastname: values.lastname,
+      // };
+      // try {
+      //   setError(null);
+      //   const response = await signup({ ...userData, id: 1 });
+      //   console.log("Inscription réussie", response);
+      //   if (response.id) {
+      //     try {
+      //       const response2 = await createProfile(response.id);
+      //       console.log("Création du profil réussie", response2);
+      //     } catch (error: unknown) {
+      //       console.log(error);
+      //       setError(error);
+      //     }
+      //   }
+      //   onNext();
+      //   formik.resetForm();
+      // } catch (error: unknown) {
+      //   console.log(error);
+      //   setError(error);
+      // }
     },
   });
 
@@ -81,11 +61,10 @@ export function SignupForm({ onNext }: SignupFormProps) {
     <Card
       color="transparent"
       shadow={false}
-      className="flex justify-center items-center min-h-screen text-black"
+      className="flex justify-center items-center text-black"
     >
-      <h1>Créer mon compte</h1>
       <form
-        className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
+        className=" mb-2 w-80 max-w-screen-lg sm:w-96"
         onSubmit={formik.handleSubmit}
       >
         <div className="flex flex-col mb-3 relative">
@@ -150,7 +129,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
             <div className="mt-1 text-red-500">{formik.errors.firstname}</div>
           )}
         </div>
-        <div className="flex flex-col mb-3 relative">
+        <div className="flex flex-col mb-6 relative">
           <Typography variant="h6">Nom</Typography>
           <Input
             crossOrigin={undefined}
@@ -183,85 +162,20 @@ export function SignupForm({ onNext }: SignupFormProps) {
             <div className="mt-1 text-red-500">{formik.errors.lastname}</div>
           )}
         </div>
-        <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6">Mot de passe</Typography>
-          <Input
-            crossOrigin={undefined}
-            size="lg"
-            type="password"
-            placeholder="********"
-            className={`!border-blue  ${
-              formik.touched.password && formik.errors.password
-                ? "!border-red-500"
-                : null
-            }`}
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            onChange={formik.handleChange}
-            name="password"
-            value={formik.values.password}
-          />
-          {formik.touched.password && formik.errors.password ? (
-            <FontAwesomeIcon
-              icon={faCircleExclamation}
-              className="absolute right-3 top-[40px] text-red-500"
-            />
-          ) : null}
-          {formik.errors.password && formik.touched.password && (
-            <div className="mt-1 text-red-500">{formik.errors.password}</div>
-          )}
-        </div>
-        <div className="flex flex-col mb-6 relative">
-          <Typography variant="h6">Confirmer le mot de passe</Typography>
-          <Input
-            crossOrigin={undefined}
-            size="lg"
-            type="password"
-            placeholder="********"
-            className={`!border-blue  ${
-              formik.touched.passwordmatch && formik.errors.passwordmatch
-                ? "!border-red-500"
-                : null
-            }`}
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            onChange={formik.handleChange}
-            name="passwordmatch"
-            value={formik.values.passwordmatch}
-          />
-          {formik.touched.passwordmatch && formik.errors.passwordmatch ? (
-            <FontAwesomeIcon
-              icon={faCircleExclamation}
-              className="absolute right-3 top-[40px] text-red-500"
-            />
-          ) : null}
-          {formik.errors.passwordmatch && formik.touched.passwordmatch && (
-            <div className="mt-1 text-red-500">
-              {formik.errors.passwordmatch}
-            </div>
-          )}
-        </div>
+
         <Button
           size="md"
           fullWidth
           className="bg-blue font-montserrat"
           type="submit"
         >
-          M'inscrire
+          Valider
         </Button>
         {error && (
           <div className="text-red-500 text-center ">
-            Erreur lors de la création du compte
+            Erreur lors de la mise à jour du compte
           </div>
         )}
-        <Typography className="text-center font-normal  mt-6">
-          Déjà inscrit ?{" "}
-          <NavLink to="/signin" className="text-blue font-bold">
-            Se connecter
-          </NavLink>
-        </Typography>
       </form>
     </Card>
   );
