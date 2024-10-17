@@ -1,13 +1,17 @@
 import { Chip, Avatar, Rating, Button } from "@material-tailwind/react";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faCog, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
 import { profileDetails } from "../data/profileDetails";
 import { formatDate } from "../utils/formatDate";
 import { displayAge } from "../utils/displayAge";
 import GroupCard from "./UI/GroupCard";
-
-export default function ProfileComponent() {
+interface ProfileComponentProps {
+  myProfileContext?: boolean;
+}
+export default function ProfileComponent({
+  myProfileContext = false,
+}: ProfileComponentProps) {
   return (
     <>
       <section className="flex md:gap-12 lg:gap-20 xl:gap-24 justify-center gap-6 shadow-md p-4 rounded-md ">
@@ -36,9 +40,15 @@ export default function ProfileComponent() {
             />
           </section>
         </section>
-        <NavLink to={`/my-profile/messages/${profileDetails.user_id}`}>
-          <FontAwesomeIcon icon={faEnvelope} color="#68baf5" size="2xl" />
-        </NavLink>
+        {myProfileContext ? (
+          <NavLink to={`/my-profile/edit`}>
+            <FontAwesomeIcon icon={faCog} color="#68baf5" size="2xl" />
+          </NavLink>
+        ) : (
+          <NavLink to={`/my-profile/messages/${profileDetails.user_id}`}>
+            <FontAwesomeIcon icon={faEnvelope} color="#68baf5" size="2xl" />
+          </NavLink>
+        )}
       </section>
       <section className="flex flex-col md:grid md:grid-cols-2 gap-6">
         <section className="flex flex-col justify-between shadow-md p-4 rounded-md">
@@ -113,14 +123,16 @@ export default function ProfileComponent() {
           ))}
         </div>
       </section>
-      <section className="flex justify-center gap-3 md:gap-6 lg:gap-12">
-        <NavLink to={"/a"}>
-          <Button className="bg-red-500 sm:w-40">Signaler</Button>
-        </NavLink>
-        <NavLink to={"/a"}>
-          <Button className="bg-red-500 sm:w-40">Bloquer</Button>
-        </NavLink>
-      </section>
+      {!myProfileContext && (
+        <section className="flex justify-center gap-3 md:gap-6 lg:gap-12">
+          <NavLink to={"/a"}>
+            <Button className="bg-red-500 sm:w-40">Signaler</Button>
+          </NavLink>
+          <NavLink to={"/a"}>
+            <Button className="bg-red-500 sm:w-40">Bloquer</Button>
+          </NavLink>
+        </section>
+      )}
     </>
   );
 }

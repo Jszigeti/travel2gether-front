@@ -65,7 +65,7 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
   }, []);
 
   return (
-    <header>
+    <header className="lg:sticky lg:bg-white lg:top-0  lg:z-50">
       <Navbar className="mx-auto max-w-screen-xl px-6 py-3 rounded-none relative z-30">
         <div className="flex items-end justify-end text-blue-gray-900 relative">
           <NavLink to="/" className="absolute left-1">

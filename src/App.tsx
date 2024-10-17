@@ -8,8 +8,14 @@ import GroupCreatePage from "./pages/group/GroupCreatePage";
 import GroupEditPage from "./pages/group/GroupEditPage";
 import GroupEditInfoPage from "./pages/group/GroupEditInfoPage";
 import GroupEditPrefPage from "./pages/group/GroupEditPrefPage";
-import ProfilePage from "./pages/user/ProfilePage";
+import ProfilePage from "./pages/profile/ProfilePage";
 import StageCreatePage from "./pages/stage/StageCreatePage";
+import MyProfilePage from "./pages/profile/MyProfilePage";
+import MyProfileEditPage from "./pages/profile/MyProfileEditPage";
+import MyProfileEditAccountPage from "./pages/profile/MyProfileEditAccountPage";
+import MyProfileEditInfoPage from "./pages/profile/MyProfileEditInfoPage";
+import MyProfileEditPrefPage from "./pages/profile/MyProfileEditPrefPage";
+import MyProfileEditPasswordPage from "./pages/profile/MyProfileEditPasswordPage";
 import StageEditPage from "./pages/stage/StageEditPage";
 
 export default function App() {
@@ -17,6 +23,24 @@ export default function App() {
     <>
       <Routes>
         <Route path="/a" element={<ProfilePage />} />
+        <Route path="/my-profile" element={<MyProfilePage />} />
+        <Route path="/my-profile/edit" element={<MyProfileEditPage />} />
+        <Route
+          path="/my-profile/edit/account"
+          element={<MyProfileEditAccountPage />}
+        />
+        <Route
+          path="/my-profile/edit/password"
+          element={<MyProfileEditPasswordPage />}
+        />
+        <Route
+          path="/my-profile/edit/info"
+          element={<MyProfileEditInfoPage />}
+        />
+        <Route
+          path="/my-profile/edit/pref"
+          element={<MyProfileEditPrefPage />}
+        />
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/signin" element={<SigninPage />} />
