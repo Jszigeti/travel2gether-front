@@ -15,6 +15,7 @@ import { ProfileInterface } from "../../interfaces/Profile";
 export default function SignupPage() {
   // STATES
   const [view, setView] = useState(0);
+  const [userId, setUserId] = useState<number>();
   const [profileData, setProfileData] = useState<ProfileInterface>();
 
   // STATES FUNCTIONS
@@ -35,14 +36,15 @@ export default function SignupPage() {
         </span>
       </NavLink>
       {view === 0 ? (
-        <SignupForm onNext={handleNext} />
+        <SignupForm onNext={handleNext} onUserId={setUserId} />
       ) : view === 1 ? (
         <ProfileInfoForm
           onNext={handleNext}
           onProfileData={handleProfileData}
+          userId={userId}
         />
       ) : (
-        <ProfilePrefForm profileData={profileData} />
+        <ProfilePrefForm profileData={profileData} userId={userId} />
       )}
     </main>
   );

@@ -41,8 +41,12 @@ export default function SigninForm() {
         navigate(`/`);
         formik.resetForm();
       } catch (error: unknown) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Une erreur inconnue est survenue");
+        }
         console.log(error);
-        setError(error);
       }
     },
   });

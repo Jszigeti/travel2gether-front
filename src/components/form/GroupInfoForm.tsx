@@ -1,5 +1,5 @@
 // REACT HOOKS
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // REACT QUERY
 import { useQuery } from "@tanstack/react-query";
@@ -8,11 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import {
-  createGroup,
-  editGroup,
-  // getGroup
-} from "../../api/group";
+import { createGroup, editGroup, getGroup } from "../../api/group";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -63,9 +59,9 @@ export default function GroupInfoForm({
     isError: isGroupInfoError,
   } = useQuery<GroupInterface>({
     queryKey: ["groupInfo", paramsId],
-    // queryFn: () => getGroup(groupId),
-    // enabled: !groupCreationContext,
-    enabled: false,
+    queryFn: () => (paramsId ? getGroup(paramsId) : Promise.resolve({})),
+    enabled: !groupCreationContext,
+    // enabled: false,
   });
 
   // DEFAULT AVATAR
@@ -89,14 +85,12 @@ export default function GroupInfoForm({
   // FORM LOGIC
   const formik = useFormik({
     initialValues: {
-      title: groupInfoData?.title ? groupInfoData.title : "",
-      description: groupInfoData?.description ? groupInfoData.description : "",
-      location: groupInfoData?.location ? groupInfoData.location : "",
-      date_from: groupInfoData?.date_from ? groupInfoData.date_from : "",
-      date_to: groupInfoData?.date_to ? groupInfoData.date_to : "",
-      path_picture: groupInfoData?.path_picture
-        ? groupInfoData.path_picture
-        : "",
+      title: "",
+      description: "",
+      location: "",
+      date_from: "",
+      date_to: "",
+      path_picture: "",
     },
     validationSchema: Yup.object({
       path_picture: Yup.mixed().required("Image requise"),
@@ -125,8 +119,12 @@ export default function GroupInfoForm({
           onNext();
           formik.resetForm();
         } catch (error: unknown) {
+          if (error instanceof Error) {
+            setError(error.message);
+          } else {
+            setError("Une erreur inconnue est survenue");
+          }
           console.log(error);
-          setError(error);
         }
       } else if (paramsId) {
         try {
@@ -136,12 +134,29 @@ export default function GroupInfoForm({
           navigate(`/group/${paramsId}/edit`);
           formik.resetForm();
         } catch (error: unknown) {
+          if (error instanceof Error) {
+            setError(error.message);
+          } else {
+            setError("Une erreur inconnue est survenue");
+          }
           console.log(error);
-          setError(error);
         }
       }
     },
   });
+
+  useEffect(() => {
+    if (groupInfoData) {
+      formik.setValues({
+        title: groupInfoData.title || "",
+        description: groupInfoData.description || "",
+        location: groupInfoData.location || "",
+        date_from: groupInfoData.date_from || "",
+        date_to: groupInfoData.date_to || "",
+        path_picture: groupInfoData.path_picture || "",
+      });
+    }
+  }, [groupInfoData]);
 
   return (
     <Card

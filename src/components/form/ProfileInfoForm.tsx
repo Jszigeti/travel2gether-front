@@ -1,24 +1,29 @@
 // REACT HOOKS
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // REACT QUERY
 import { useQuery } from "@tanstack/react-query";
 
 // ROUTER
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import {
-  editProfile,
-  // getProfile
-} from "../../api/profile";
+import { editProfile, getProfile } from "../../api/profile";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
 import { array, object, string } from "yup";
 
+// JWT DECODE
+import { jwtDecode } from "jwt-decode";
+
 // INTERFACES
 import { ProfileInterface } from "../../interfaces/Profile";
+import {
+  ProfileGenderEnum,
+  ProfileInterestsSet,
+  SpokenLanguagesSet,
+} from "../../interfaces/Matching";
 
 // FORM DATA
 import {
@@ -43,19 +48,33 @@ interface ProfileInfoFormProps {
   onNext?: () => void;
   onProfileData?: (values: ProfileInterface) => void;
   signupContext?: boolean;
+  userId?: number;
 }
-
-// FAKE USER
-const userId = 1;
 
 export function ProfileInfoForm({
   onNext,
   onProfileData,
   signupContext = true,
+  userId,
 }: ProfileInfoFormProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const userIdRef = useRef<number | null>(null);
+
+  // REDIRECTION
+  const navigate = useNavigate();
+
+  // RETRIEVE THE USER ID FROM THE TOKEN IF SIGNUPCONTEXT IS FALSE
+  useEffect(() => {
+    if (!signupContext) {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decodedToken = jwtDecode<{ userId: number }>(token);
+        userIdRef.current = decodedToken.userId;
+      }
+    }
+  }, [signupContext]);
 
   // RETRIEVE PROFIL INFO DATA
   const {
@@ -63,8 +82,9 @@ export function ProfileInfoForm({
     isLoading: isProfileInfoLoading,
     isError: isProfileInfoError,
   } = useQuery<ProfileInterface>({
-    queryKey: ["profileInfo", userId],
-    // queryFn: () => getProfile(userId),
+    queryKey: ["profileInfo", userIdRef.current],
+    queryFn: () =>
+      userIdRef.current ? getProfile(userIdRef.current) : Promise.resolve({}),
     enabled: !signupContext,
   });
 
@@ -89,17 +109,11 @@ export function ProfileInfoForm({
   // FORM LOGIC
   const formik = useFormik<ProfileInterface>({
     initialValues: {
-      path_picture: profileInfoData?.path_picture
-        ? profileInfoData.path_picture
-        : "",
-      gender: profileInfoData?.gender ? profileInfoData.gender : [],
-      description: profileInfoData?.description
-        ? profileInfoData.description
-        : "",
-      interests: profileInfoData?.interests ? profileInfoData.interests : [],
-      spoken_languages: profileInfoData?.spoken_languages
-        ? profileInfoData.spoken_languages
-        : [],
+      path_picture: "",
+      gender: [] as ProfileGenderEnum[],
+      description: "",
+      interests: [] as ProfileInterestsSet[],
+      spoken_languages: [] as SpokenLanguagesSet[],
     },
     validationSchema: object({
       path_picture: string(),
@@ -114,18 +128,37 @@ export function ProfileInfoForm({
         onNext();
         formik.resetForm();
       } else {
-        try {
-          setError(null);
-          const response = await editProfile(userId, values);
-          console.log("Mise à jour du profil réussie", response);
-          formik.resetForm();
-        } catch (error: unknown) {
-          console.log(error);
-          setError(error);
+        if (userId) {
+          try {
+            setError(null);
+            const response = await editProfile(userId, values);
+            console.log("Mise à jour du profil réussie", response);
+            navigate(`/my-profile/edit`);
+            formik.resetForm();
+          } catch (error: unknown) {
+            if (error instanceof Error) {
+              setError(error.message);
+            } else {
+              setError("Une erreur inconnue est survenue");
+            }
+            console.log(error);
+          }
         }
       }
     },
   });
+
+  useEffect(() => {
+    if (profileInfoData) {
+      formik.setValues({
+        path_picture: profileInfoData.path_picture || "",
+        gender: profileInfoData.gender || [],
+        description: profileInfoData.description || "",
+        interests: profileInfoData.interests || [],
+        spoken_languages: profileInfoData.spoken_languages || [],
+      });
+    }
+  }, [profileInfoData]);
 
   return (
     <Card
@@ -133,7 +166,7 @@ export function ProfileInfoForm({
       shadow={false}
       className="flex justify-center items-center min-h-screen text-black "
     >
-      <h1>Mon profil</h1>
+      {signupContext && <h1>Mon profil</h1>}
       <form
         className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
         onSubmit={formik.handleSubmit}

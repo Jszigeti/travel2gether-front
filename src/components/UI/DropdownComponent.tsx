@@ -7,7 +7,6 @@ import { FieldInputProps, FormikProps } from "formik";
 // COMPONENTS
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
-
 // OPTIONS INTERFACE
 interface Option {
   value: string;

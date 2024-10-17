@@ -8,6 +8,7 @@ import axios, { AxiosError } from "axios";
 import { GroupInterface } from "../interfaces/Group";
 import { GroupUserInterface } from "../interfaces/GroupUser";
 import { groupsList } from "../data/groupsList";
+import { groupDetails } from "../data/groupDetails";
 
 export async function createGroup(body: GroupInterface) {
   try {
@@ -28,7 +29,7 @@ export async function editGroup(group_id: number, body: GroupInterface) {
     //   body,
     // });
     // return data.body;
-    return `${group_id} ${body}`;
+    return body;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(
@@ -51,7 +52,8 @@ export async function deleteGroup(group_id: number) {
 
 export async function getGroup(group_id: number) {
   try {
-    const { data } = await axios.get(`${uri}/groups/${group_id}`);
+    // const { data } = await axios.get(`${uri}/groups/${group_id}`);
+    const data = groupDetails;
     return data;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
@@ -61,8 +63,7 @@ export async function getGroup(group_id: number) {
   }
 }
 
-export async function getGroups() {
-  // body: GroupInterface[] à remettre dans le paramètre de la fonction
+export async function getGroups(body: GroupInterface[]) {
   try {
     const data = groupsList;
     return data;
