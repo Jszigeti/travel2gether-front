@@ -28,7 +28,7 @@ export async function editProfile(user_id: number, body: ProfileInterface) {
     //   body,
     // });
     // return data.body;
-    return `${user_id} ${body}`;
+    return body;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(

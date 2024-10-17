@@ -15,11 +15,11 @@ export const profileDetails = {
   birthdate: "1983-06-11",
   average_rating: 4.3,
   ratings: 5,
-  gender: ProfileGenderEnum.FEMALE,
+  gender: [ProfileGenderEnum.FEMALE],
   path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
   description:
     "Hello, this is just a test profile. It'll be deleted once we get a proper back-end. In the meantime let's fill this box to test how it looks like, even if some will leave it empty.",
-  budget: BudgetEnum.MIDDLE,
+  budget: [BudgetEnum.MIDDLE],
   travel_types: [TravelTypesSet.CRUISE, TravelTypesSet.CULTURAL],
   lodgings: [LodgingsSet.CAMPING, LodgingsSet.HOTEL],
   interests: [

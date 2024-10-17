@@ -51,6 +51,7 @@ export default function StageInfoForm({
   const defaultImage = stageInfoData?.path_picture
     ? stageInfoData.path_picture
     : "https://media.istockphoto.com/id/489556478/fr/photo/outils-de-voyage.jpg?s=1024x1024&w=is&k=20&c=dqsRCnDCKNcDi8Fnlzs96pAapEbH5PR01VQ6cEtC72U="; // Image par défaut du formulaire
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -131,6 +132,7 @@ export default function StageInfoForm({
       formik.setFieldValue("address", stageInfoData.address);
       formik.setFieldValue("date_from", stageInfoData.date_from);
       formik.setFieldValue("date_to", stageInfoData.date_to);
+      formik.setFieldValue("path_picture", stageInfoData.path_picture);
     }
   }, [stageInfoData]);
 

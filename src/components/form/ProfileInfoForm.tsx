@@ -10,9 +10,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 // AXIOS FUNCTIONS
 import { editProfile, getProfile } from "../../api/profile";
 
-// FORMIK + YUP
+// FORMIK
 import { useFormik } from "formik";
-import { array, object, string } from "yup";
+import { object, array, string } from "yup";
 
 // JWT DECODE
 import { jwtDecode } from "jwt-decode";
@@ -55,7 +55,6 @@ export function ProfileInfoForm({
   onNext,
   onProfileData,
   signupContext = true,
-  userId,
 }: ProfileInfoFormProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
@@ -127,22 +126,20 @@ export function ProfileInfoForm({
         onProfileData(values);
         onNext();
         formik.resetForm();
-      } else {
-        if (userId) {
-          try {
-            setError(null);
-            const response = await editProfile(userId, values);
-            console.log("Mise à jour du profil réussie", response);
-            navigate(`/my-profile/edit`);
-            formik.resetForm();
-          } catch (error: unknown) {
-            if (error instanceof Error) {
-              setError(error.message);
-            } else {
-              setError("Une erreur inconnue est survenue");
-            }
-            console.log(error);
+      } else if (userIdRef.current) {
+        try {
+          setError(null);
+          const response = await editProfile(userIdRef.current, values);
+          console.log("Mise à jour du profil réussie", response);
+          navigate(`/my-profile/edit`);
+          formik.resetForm();
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            setError(error.message);
+          } else {
+            setError("Une erreur inconnue est survenue");
           }
+          console.log(error);
         }
       }
     },
@@ -218,6 +215,7 @@ export function ProfileInfoForm({
             placeholder="Parlez nous de vous!"
             name="description"
             size="lg"
+            value={formik.values.description}
             onChange={formik.handleChange}
             className="!border-blue"
             labelProps={{

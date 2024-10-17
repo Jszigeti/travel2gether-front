@@ -83,7 +83,7 @@ export function ProfilePrefForm({
   });
 
   // FORM LOGIC
-  const formik = useFormik<ProfileInterface>({
+  const formik = useFormik({
     initialValues: {
       travel_types: [] as TravelTypesSet[],
       budget: [] as BudgetEnum[],
@@ -124,11 +124,11 @@ export function ProfilePrefForm({
           }
           console.log(error);
         }
-      } else if (userId) {
+      } else if (userIdRef.current) {
         // FORM LOGIC IF EDIT CONTEXT
         try {
           setError(null);
-          const response = await editProfile(userId, values);
+          const response = await editProfile(userIdRef.current, values);
           console.log("Modification du profil réussie", response);
           navigate(`/my-profile/edit`);
           formik.resetForm();
