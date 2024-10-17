@@ -16,6 +16,7 @@ import MyProfileEditAccountPage from "./pages/profile/MyProfileEditAccountPage";
 import MyProfileEditInfoPage from "./pages/profile/MyProfileEditInfoPage";
 import MyProfileEditPrefPage from "./pages/profile/MyProfileEditPrefPage";
 import MyProfileEditPasswordPage from "./pages/profile/MyProfileEditPasswordPage";
+import StageEditPage from "./pages/stage/StageEditPage";
 
 export default function App() {
   return (
@@ -54,7 +55,14 @@ export default function App() {
           path="/group/:groupId/edit/pref"
           element={<GroupEditPrefPage />}
         />
-        <Route path="/stage/create" element={<StageCreatePage />} />
+        <Route
+          path="/group/:groupId/stage/create"
+          element={<StageCreatePage />}
+        />
+        <Route
+          path="/group/:groupId/stage/:stageId/edit"
+          element={<StageEditPage />}
+        />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </>

@@ -5,17 +5,52 @@ import {
   Typography,
   Textarea,
 } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { useQuery } from "@tanstack/react-query";
+import { StageInterface } from "../../interfaces/Stage";
+import {
+  createStage,
+  deleteStage,
+  editStage,
+  getStageFromGroup,
+} from "../../api/stage";
+import { useNavigate } from "react-router-dom";
 
-export default function StageCreateForm() {
+interface StageInfoFormProps {
+  stageCreationContext?: boolean;
+  groupId: number;
+  stageId?: number;
+}
+
+export default function StageInfoForm({
+  stageCreationContext = true,
+  groupId,
+  stageId,
+}: StageInfoFormProps) {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const defaultImage =
-    "https://media.istockphoto.com/id/489556478/fr/photo/outils-de-voyage.jpg?s=1024x1024&w=is&k=20&c=dqsRCnDCKNcDi8Fnlzs96pAapEbH5PR01VQ6cEtC72U="; // Image par défaut du formulaire
 
+  const [error, setError] = useState<null | string>(null);
+
+  const navigate = useNavigate();
+  // RETRIEVE STAGE INFO DATA
+  const {
+    data: stageInfoData,
+    isLoading: isStageInfoLoading,
+    isError: isStageInfoError,
+  } = useQuery<StageInterface>({
+    queryKey: ["stageInfo"],
+    queryFn: () =>
+      stageId ? getStageFromGroup(groupId, stageId) : Promise.resolve({}),
+    enabled: !stageCreationContext,
+  });
+
+  const defaultImage = stageInfoData?.path_picture
+    ? stageInfoData.path_picture
+    : "https://media.istockphoto.com/id/489556478/fr/photo/outils-de-voyage.jpg?s=1024x1024&w=is&k=20&c=dqsRCnDCKNcDi8Fnlzs96pAapEbH5PR01VQ6cEtC72U="; // Image par défaut du formulaire
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -32,7 +67,7 @@ export default function StageCreateForm() {
     initialValues: {
       title: "",
       description: "",
-      location: "",
+      address: "",
       date_from: "",
       date_to: "",
       path_picture: "",
@@ -41,7 +76,7 @@ export default function StageCreateForm() {
       path_picture: Yup.mixed().required("Une image est requise"),
       title: Yup.string().required("Le nom du groupe est requis"),
       description: Yup.string().required("La description est requise"),
-      location: Yup.string().required("Le lieu est requis"),
+      address: Yup.string().required("Le lieu est requis"),
       date_from: Yup.date().required("La date de début est requise"),
       date_to: Yup.date()
         .required("La date de fin est requise")
@@ -50,16 +85,73 @@ export default function StageCreateForm() {
           "La date de fin doit être après la date de début"
         ),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const formData = {
         ...values,
         path_picture: values.path_picture ? values.path_picture : defaultImage, // Utilise l'image par défaut si aucune image n'est sélectionnée
       };
-      console.log(formData);
-      formik.resetForm();
-      // Gérer la soumission ici
+
+      if (stageCreationContext) {
+        try {
+          setError(null);
+          const response = await createStage(groupId, formData);
+          console.log("Création de l'étape réussie ", response);
+          formik.resetForm();
+          navigate(`/group/${groupId}/stage/${response.id}`);
+        } catch (errors: unknown) {
+          if (errors instanceof Error) {
+            setError(errors.message);
+          } else {
+            setError("Une erreur est survenue");
+          }
+          console.log(errors);
+        }
+      } else if (stageId) {
+        try {
+          setError(null);
+          const response = await editStage(groupId, stageId, formData);
+          console.log("Modification de l'étape réussie ", response);
+          navigate(`/group/${groupId}/stage/${stageId}`);
+        } catch (errors: unknown) {
+          if (errors instanceof Error) {
+            setError(errors.message);
+          } else {
+            setError("Une erreur est survenue");
+          }
+          console.log(errors);
+        }
+      }
     },
   });
+
+  useEffect(() => {
+    if (stageInfoData) {
+      formik.setFieldValue("title", stageInfoData.title);
+      formik.setFieldValue("description", stageInfoData.description);
+      formik.setFieldValue("address", stageInfoData.address);
+      formik.setFieldValue("date_from", stageInfoData.date_from);
+      formik.setFieldValue("date_to", stageInfoData.date_to);
+    }
+  }, [stageInfoData]);
+
+  const handleDeleteStage = async () => {
+    if (stageId) {
+      try {
+        setError(null);
+        const response = await deleteStage(groupId, stageId);
+        console.log("Étape supprimée ", response);
+
+        navigate(`/group/${groupId}/manage`);
+      } catch (errors: unknown) {
+        if (errors instanceof Error) {
+          setError(errors.message);
+        } else {
+          setError("Une erreur est survenue");
+        }
+        console.log(errors);
+      }
+    }
+  };
 
   return (
     <Card
@@ -173,15 +265,15 @@ export default function StageCreateForm() {
             size="lg"
             placeholder="Lieu de l'étape"
             className={`!border-blue ${
-              formik.touched.location && formik.errors.location
+              formik.touched.address && formik.errors.address
                 ? "!border-red-500"
                 : null
             }`}
-            {...formik.getFieldProps("location")}
+            {...formik.getFieldProps("address")}
           />
-          {formik.touched.location && formik.errors.location ? (
+          {formik.touched.address && formik.errors.address ? (
             <>
-              <Typography color="red">{formik.errors.location}</Typography>
+              <Typography color="red">{formik.errors.address}</Typography>
               <FontAwesomeIcon
                 icon={faCircleExclamation}
                 className="absolute right-3 top-10 text-red-500"
@@ -243,14 +335,38 @@ export default function StageCreateForm() {
             </>
           ) : null}
         </div>
-        {/* </div> */}
         <Button
           className="font-montserrat font-bold mt-6 bg-blue text-white"
           fullWidth
           type="submit"
         >
-          Créer
+          {stageCreationContext ? "Créer" : "Éditer"}
         </Button>
+        {!stageCreationContext && (
+          <Button
+            className="font-montserrat font-bold mt-6 bg-red-500 text-white"
+            fullWidth
+            onClick={() => handleDeleteStage()}
+          >
+            Supprimer
+          </Button>
+        )}
+
+        {error && (
+          <div className="text-red-500 text-center ">
+            {stageCreationContext
+              ? "Erreur lors de la création de l'étape"
+              : "Erreur lors de la mise à jour de l'étape"}
+          </div>
+        )}
+        {isStageInfoLoading && (
+          <div className="text-blue text-center">Chargement des données...</div>
+        )}
+        {isStageInfoError && (
+          <div className="text-red-500 text-center">
+            Erreur lors du chargement des données
+          </div>
+        )}
       </form>
     </Card>
   );
