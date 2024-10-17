@@ -23,8 +23,9 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 // PROPS INTERFACE
 interface SignupFormProps {
   onNext: () => void;
+  onUserId: (userId: number) => void;
 }
-export function SignupForm({ onNext }: SignupFormProps) {
+export function SignupForm({ onNext, onUserId }: SignupFormProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
 
@@ -59,20 +60,32 @@ export function SignupForm({ onNext }: SignupFormProps) {
         setError(null);
         const response = await signup({ ...userData, id: 1 });
         console.log("Inscription réussie", response);
+        const token =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxNTEyMzQ1NiwiZXhwIjoxNzE1NzI4MjU2fQ.1JddZnGu8xdMOJJm6xXtNTYDKLU0OGic-wqmqPvyEf4";
+        localStorage.setItem("token", token);
         if (response.id) {
           try {
             const response2 = await createProfile(response.id);
+            onUserId(response.id);
             console.log("Création du profil réussie", response2);
           } catch (error: unknown) {
+            if (error instanceof Error) {
+              setError(error.message);
+            } else {
+              setError("Une erreur inconnue est survenue");
+            }
             console.log(error);
-            setError(error);
           }
         }
         onNext();
         formik.resetForm();
       } catch (error: unknown) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Une erreur inconnue est survenue");
+        }
         console.log(error);
-        setError(error);
       }
     },
   });

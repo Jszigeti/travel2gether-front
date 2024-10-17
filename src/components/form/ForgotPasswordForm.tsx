@@ -32,8 +32,12 @@ export default function ForgotPasswordForm() {
         console.log("Soumission du formulaire réussie", response);
         formik.resetForm();
       } catch (error: unknown) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Une erreur inconnue est survenue");
+        }
         console.log(error);
-        setError(error);
       }
     },
   });

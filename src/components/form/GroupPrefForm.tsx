@@ -1,5 +1,5 @@
 // REACT HOOKS
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // REACT QUERY
 import { useQuery } from "@tanstack/react-query";
@@ -8,10 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { NavLink, useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import {
-  editGroup,
-  // getGroup
-} from "../../api/group";
+import { editGroup, getGroup } from "../../api/group";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -19,6 +16,14 @@ import * as Yup from "yup";
 
 // INTERFACES
 import { GroupInterface } from "../../interfaces/Group";
+import {
+  TravelTypesSet,
+  LodgingsSet,
+  GroupGenderEnum,
+  SpokenLanguagesSet,
+  BudgetEnum,
+  GroupAgeRangesSet,
+} from "../../interfaces/Matching";
 
 // FORM DATA
 import {
@@ -62,24 +67,20 @@ export default function GroupPrefForm({
     isError: isGroupPrefError,
   } = useQuery<GroupInterface>({
     queryKey: ["groupPref", groupId],
-    // queryFn: () => getGroup(groupId),
-    // enabled: !groupCreationContext,
-    enabled: false,
+    queryFn: () => (groupId ? getGroup(groupId) : Promise.resolve({})),
+    enabled: !groupCreationContext,
+    // enabled: false,
   });
 
   // FORM LOGIC
   const formik = useFormik({
     initialValues: {
-      travel_types: groupPrefData?.travel_types
-        ? groupPrefData.travel_types
-        : [],
-      lodgings: groupPrefData?.lodgings ? groupPrefData.lodgings : [],
-      gender_type: groupPrefData?.gender_type ? groupPrefData.gender_type : [],
-      spoken_languages: groupPrefData?.spoken_languages
-        ? groupPrefData.spoken_languages
-        : [],
-      budget: groupPrefData?.budget ? groupPrefData.budget : [],
-      age_ranges: groupPrefData?.age_ranges ? groupPrefData.age_ranges : [],
+      travel_types: [] as TravelTypesSet[],
+      lodgings: [] as LodgingsSet[],
+      gender_type: [] as GroupGenderEnum[],
+      spoken_languages: [] as SpokenLanguagesSet[],
+      budget: [] as BudgetEnum[],
+      age_ranges: [] as GroupAgeRangesSet[],
     },
     validationSchema: Yup.object({
       travel_types: Yup.array(),
@@ -102,12 +103,29 @@ export default function GroupPrefForm({
           }
           formik.resetForm();
         } catch (error: unknown) {
+          if (error instanceof Error) {
+            setError(error.message);
+          } else {
+            setError("Une erreur inconnue est survenue");
+          }
           console.log(error);
-          setError(error);
         }
       }
     },
   });
+
+  useEffect(() => {
+    if (groupPrefData) {
+      formik.setValues({
+        travel_types: groupPrefData.travel_types || [],
+        lodgings: groupPrefData.lodgings || [],
+        gender_type: groupPrefData.gender_type || [],
+        spoken_languages: groupPrefData.spoken_languages || [],
+        budget: groupPrefData.budget || [],
+        age_ranges: groupPrefData.age_ranges || [],
+      });
+    }
+  }, [groupPrefData]);
 
   return (
     <Card

@@ -1,5 +1,5 @@
 // REACT HOOKS
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // REACT QUERY
 import { useQuery } from "@tanstack/react-query";
@@ -8,17 +8,23 @@ import { useQuery } from "@tanstack/react-query";
 import { NavLink, useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import {
-  editProfile,
-  //  getProfile
-} from "../../api/profile";
+import { editProfile, getProfile } from "../../api/profile";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
 import { array, date, object, ref } from "yup";
 
+// JWT DECODE
+import { jwtDecode } from "jwt-decode";
+
 // INTERFACES
 import { ProfileInterface } from "../../interfaces/Profile";
+import {
+  BudgetEnum,
+  LodgingsSet,
+  ProfileTripDurationsSet,
+  TravelTypesSet,
+} from "../../interfaces/Matching";
 
 // FORM DATA
 import {
@@ -38,20 +44,31 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 interface ProfilePrefFormProps {
   profileData?: ProfileInterface;
   signupContext?: boolean;
+  userId?: number;
 }
-
-// FAKE USER
-const userId = 1;
 
 export function ProfilePrefForm({
   profileData,
   signupContext = true,
+  userId,
 }: ProfilePrefFormProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
+  const userIdRef = useRef<number | null>(null);
 
   // REDIRECTION
   const navigate = useNavigate();
+
+  // RETRIEVE THE USER ID FROM THE TOKEN IF SIGNUPCONTEXT IS FALSE
+  useEffect(() => {
+    if (!signupContext) {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decodedToken = jwtDecode<{ userId: number }>(token);
+        userIdRef.current = decodedToken.userId;
+      }
+    }
+  }, [signupContext]);
 
   // RETRIEVE PROFIL PREF DATA
   const {
@@ -59,28 +76,21 @@ export function ProfilePrefForm({
     isLoading: isProfilePrefLoading,
     isError: isProfilePrefError,
   } = useQuery<ProfileInterface>({
-    queryKey: ["profilePref", userId],
-    // queryFn: () => getProfile(userId),
+    queryKey: ["profilePref", userIdRef.current],
+    queryFn: () =>
+      userIdRef.current ? getProfile(userIdRef.current) : Promise.resolve({}),
     enabled: !signupContext,
   });
 
   // FORM LOGIC
   const formik = useFormik<ProfileInterface>({
     initialValues: {
-      travel_types: profilePrefData?.travel_types
-        ? profilePrefData.travel_types
-        : [],
-      budget: profilePrefData?.budget ? profilePrefData.budget : [],
-      lodgings: profilePrefData?.lodgings ? profilePrefData.lodgings : [],
-      available_from: profilePrefData?.available_from
-        ? profilePrefData.available_from
-        : "",
-      available_to: profilePrefData?.available_to
-        ? profilePrefData.available_to
-        : "",
-      trip_durations: profilePrefData?.trip_durations
-        ? profilePrefData.trip_durations
-        : [],
+      travel_types: [] as TravelTypesSet[],
+      budget: [] as BudgetEnum[],
+      lodgings: [] as LodgingsSet[],
+      available_from: "",
+      available_to: "",
+      trip_durations: [] as ProfileTripDurationsSet[],
     },
     validationSchema: object({
       travel_types: array(),
@@ -95,7 +105,7 @@ export function ProfilePrefForm({
     }),
     onSubmit: async (values) => {
       // FORM LOGIC IF SIGNUP CONTEXT
-      if (profileData) {
+      if (profileData && userId) {
         const userProfileData = { ...profileData, ...values };
         try {
           setError(null);
@@ -107,23 +117,45 @@ export function ProfilePrefForm({
           navigate(`/`);
           formik.resetForm();
         } catch (error: unknown) {
+          if (error instanceof Error) {
+            setError(error.message);
+          } else {
+            setError("Une erreur inconnue est survenue");
+          }
           console.log(error);
-          setError(error);
         }
-      } else {
+      } else if (userId) {
         // FORM LOGIC IF EDIT CONTEXT
         try {
           setError(null);
           const response = await editProfile(userId, values);
           console.log("Modification du profil réussie", response);
+          navigate(`/my-profile/edit`);
           formik.resetForm();
         } catch (error: unknown) {
+          if (error instanceof Error) {
+            setError(error.message);
+          } else {
+            setError("Une erreur inconnue est survenue");
+          }
           console.log(error);
-          setError(error);
         }
       }
     },
   });
+
+  useEffect(() => {
+    if (profilePrefData) {
+      formik.setValues({
+        travel_types: profilePrefData.travel_types || [],
+        budget: profilePrefData.budget || [],
+        lodgings: profilePrefData.lodgings || [],
+        available_from: profilePrefData.available_from || "",
+        available_to: profilePrefData.available_to || "",
+        trip_durations: profilePrefData.trip_durations || [],
+      });
+    }
+  }, [profilePrefData]);
 
   return (
     <Card
@@ -131,7 +163,7 @@ export function ProfilePrefForm({
       shadow={false}
       className="flex justify-center items-center min-h-screen text-black "
     >
-      <h1>Mes préférences</h1>
+      {signupContext && <h1>Mes préférences</h1>}
       <form
         className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
         onSubmit={formik.handleSubmit}
