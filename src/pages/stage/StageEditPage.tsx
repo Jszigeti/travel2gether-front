@@ -10,7 +10,7 @@ export default function StageEditPage() {
     <div>
       <Header
         pageTitle="Édition d'une étape"
-        backLink="/group/:groupId/manage"
+        backLink={`/group/${params.groupId}/manage`}
       />
       <StageInfoForm
         groupId={Number(params.groupId)}

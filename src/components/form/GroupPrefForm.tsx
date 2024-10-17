@@ -130,11 +130,11 @@ export default function GroupPrefForm({
   return (
     <Card
       shadow={false}
-      className="flex justify-center items-center min-h-screen text-black "
+      className="flex justify-center items-center text-black "
     >
       <form
         onSubmit={formik.handleSubmit}
-        className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
+        className="mt-6 mb-6 w-80 max-w-screen-lg sm:w-96"
       >
         <div className="mb-1 flex flex-col gap-2">
           <Typography variant="h6" className="mt-1 ">

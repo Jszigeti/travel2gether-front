@@ -46,6 +46,19 @@ export async function forgotPassword(body: UserInterface) {
   }
 }
 
+export async function editPassword(id: number, body: UserInterface) {
+  try {
+    // const { data } = await axios.post(`${uri}/users/${id}/password`, { body });
+    // return data.body;
+    return body;
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError;
+    throw new Error(
+      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
+    );
+  }
+}
+
 export async function deleteUser(id: number) {
   try {
     const { data } = await axios.delete(`${uri}/users/${id}`);

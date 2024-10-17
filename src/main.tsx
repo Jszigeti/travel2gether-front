@@ -13,6 +13,7 @@ import App from "./App.tsx";
 // TAILWIND + MATERIAL TAILWIND
 import "./index.css";
 import { ThemeProvider } from "@material-tailwind/react";
+import { UserProvider } from "./hooks/context/user.context.tsx";
 
 // CREATE QUERY CLIENT
 const queryClient = new QueryClient();
@@ -22,7 +23,9 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <App />
+          <UserProvider>
+            <App />
+          </UserProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>

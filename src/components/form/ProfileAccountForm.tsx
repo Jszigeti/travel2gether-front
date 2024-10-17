@@ -64,7 +64,7 @@ export function ProfileAccountForm() {
       className="flex justify-center items-center text-black"
     >
       <form
-        className=" mb-2 w-80 max-w-screen-lg sm:w-96"
+        className="mt-6 mb-6 w-80 max-w-screen-lg sm:w-96"
         onSubmit={formik.handleSubmit}
       >
         <div className="flex flex-col mb-3 relative">

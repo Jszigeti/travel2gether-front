@@ -1,5 +1,5 @@
 // REACT HOOKS
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // REACT QUERY
 import { useQuery } from "@tanstack/react-query";
@@ -13,9 +13,6 @@ import { editProfile, getProfile } from "../../api/profile";
 // FORMIK + YUP
 import { useFormik } from "formik";
 import { array, date, object, ref } from "yup";
-
-// JWT DECODE
-import { jwtDecode } from "jwt-decode";
 
 // INTERFACES
 import { ProfileInterface } from "../../interfaces/Profile";
@@ -39,36 +36,28 @@ import Dropdown from "../UI/DropdownComponent";
 import { Button, Card, Typography, Input } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import UserContext from "../../hooks/context/user.context";
 
 // PROPS INTERFACE
 interface ProfilePrefFormProps {
   profileData?: ProfileInterface;
   signupContext?: boolean;
-  userId?: number;
+  paramsId?: number;
 }
 
 export function ProfilePrefForm({
   profileData,
   signupContext = true,
-  userId,
+  paramsId,
 }: ProfilePrefFormProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
-  const userIdRef = useRef<number | null>(null);
 
   // REDIRECTION
   const navigate = useNavigate();
 
-  // RETRIEVE THE USER ID FROM THE TOKEN IF SIGNUPCONTEXT IS FALSE
-  useEffect(() => {
-    if (!signupContext) {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const decodedToken = jwtDecode<{ userId: number }>(token);
-        userIdRef.current = decodedToken.userId;
-      }
-    }
-  }, [signupContext]);
+  // RETRIEVE USER ID
+  const { userId } = useContext(UserContext) || { paramsId };
 
   // RETRIEVE PROFIL PREF DATA
   const {
@@ -76,9 +65,8 @@ export function ProfilePrefForm({
     isLoading: isProfilePrefLoading,
     isError: isProfilePrefError,
   } = useQuery<ProfileInterface>({
-    queryKey: ["profilePref", userIdRef.current],
-    queryFn: () =>
-      userIdRef.current ? getProfile(userIdRef.current) : Promise.resolve({}),
+    queryKey: ["profilePref", userId],
+    queryFn: () => (userId ? getProfile(userId) : Promise.resolve({})),
     enabled: !signupContext,
   });
 
@@ -124,11 +112,11 @@ export function ProfilePrefForm({
           }
           console.log(error);
         }
-      } else if (userIdRef.current) {
+      } else if (userId && !signupContext) {
         // FORM LOGIC IF EDIT CONTEXT
         try {
           setError(null);
-          const response = await editProfile(userIdRef.current, values);
+          const response = await editProfile(userId, values);
           console.log("Modification du profil réussie", response);
           navigate(`/my-profile/edit`);
           formik.resetForm();
@@ -161,11 +149,11 @@ export function ProfilePrefForm({
     <Card
       color="transparent"
       shadow={false}
-      className="flex justify-center items-center min-h-screen text-black "
+      className="mt-6 mb-6 flex justify-center items-center text-black "
     >
-      {signupContext && <h1>Mes préférences</h1>}
+      {signupContext && <h1 className="mb-6">Mes préférences</h1>}
       <form
-        className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
+        className="w-80 max-w-screen-lg sm:w-96"
         onSubmit={formik.handleSubmit}
       >
         <div className="flex flex-col mb-3 relative">

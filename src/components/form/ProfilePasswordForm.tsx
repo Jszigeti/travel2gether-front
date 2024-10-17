@@ -1,5 +1,5 @@
 // REACT HOOKS
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -9,10 +9,19 @@ import { object, string, ref } from "yup";
 import { Button, Card, Input, Typography } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { editPassword } from "../../api/auth";
+import { useNavigate } from "react-router-dom";
+import UserContext from "../../hooks/context/user.context";
 
 export function ProfilePasswordForm() {
   // STATES
   const [error, setError] = useState<null | string>(null);
+
+  // RETRIEVE USER ID
+  const { userId } = useContext(UserContext) || {};
+
+  // REDIRECTION
+  const navigate = useNavigate();
 
   // FORM LOGIC
   const formik = useFormik({
@@ -33,31 +42,22 @@ export function ProfilePasswordForm() {
         .required("Confirmation du mot de passe requise"),
     }),
     onSubmit: async (values) => {
-      // const userData = {
-      //   email: values.email,
-      //   firstname: values.firstname,
-      //   lastname: values.lastname,
-      //   password: values.password,
-      // };
-      // try {
-      //   setError(null);
-      //   const response = await signup({ ...userData, id: 1 });
-      //   console.log("Inscription réussie", response);
-      //   if (response.id) {
-      //     try {
-      //       const response2 = await createProfile(response.id);
-      //       console.log("Création du profil réussie", response2);
-      //     } catch (error: unknown) {
-      //       console.log(error);
-      //       setError(error);
-      //     }
-      //   }
-      //   onNext();
-      //   formik.resetForm();
-      // } catch (error: unknown) {
-      //   console.log(error);
-      //   setError(error);
-      // }
+      if (userId) {
+        try {
+          setError(null);
+          const response = await editPassword(userId, values);
+          console.log("Modification du mot de passe réussie", response);
+          navigate("/my-profile/edit/account");
+          formik.resetForm();
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            setError(error.message);
+          } else {
+            setError("Une erreur inconnue est survenue");
+          }
+          console.log(error);
+        }
+      }
     },
   });
 
@@ -68,7 +68,7 @@ export function ProfilePasswordForm() {
       className="flex justify-center items-center text-black"
     >
       <form
-        className=" mb-2 w-80 max-w-screen-lg sm:w-96"
+        className="mt-6 mb-6 w-80 max-w-screen-lg sm:w-96"
         onSubmit={formik.handleSubmit}
       >
         <div className="flex flex-col mb-3 relative">

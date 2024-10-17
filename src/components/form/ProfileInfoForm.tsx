@@ -1,5 +1,5 @@
 // REACT HOOKS
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // REACT QUERY
 import { useQuery } from "@tanstack/react-query";
@@ -13,9 +13,6 @@ import { editProfile, getProfile } from "../../api/profile";
 // FORMIK
 import { useFormik } from "formik";
 import { object, array, string } from "yup";
-
-// JWT DECODE
-import { jwtDecode } from "jwt-decode";
 
 // INTERFACES
 import { ProfileInterface } from "../../interfaces/Profile";
@@ -42,6 +39,7 @@ import {
   Input,
   Avatar,
 } from "@material-tailwind/react";
+import UserContext from "../../hooks/context/user.context";
 
 // PROPS INTERFACE
 interface ProfileInfoFormProps {
@@ -59,21 +57,12 @@ export function ProfileInfoForm({
   // STATES
   const [error, setError] = useState<null | string>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const userIdRef = useRef<number | null>(null);
 
   // REDIRECTION
   const navigate = useNavigate();
 
-  // RETRIEVE THE USER ID FROM THE TOKEN IF SIGNUPCONTEXT IS FALSE
-  useEffect(() => {
-    if (!signupContext) {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const decodedToken = jwtDecode<{ userId: number }>(token);
-        userIdRef.current = decodedToken.userId;
-      }
-    }
-  }, [signupContext]);
+  // RETRIEVE USER ID
+  const { userId } = useContext(UserContext) || {};
 
   // RETRIEVE PROFIL INFO DATA
   const {
@@ -81,9 +70,8 @@ export function ProfileInfoForm({
     isLoading: isProfileInfoLoading,
     isError: isProfileInfoError,
   } = useQuery<ProfileInterface>({
-    queryKey: ["profileInfo", userIdRef.current],
-    queryFn: () =>
-      userIdRef.current ? getProfile(userIdRef.current) : Promise.resolve({}),
+    queryKey: ["profileInfo", userId],
+    queryFn: () => (userId ? getProfile(userId) : Promise.resolve({})),
     enabled: !signupContext,
   });
 
@@ -126,10 +114,10 @@ export function ProfileInfoForm({
         onProfileData(values);
         onNext();
         formik.resetForm();
-      } else if (userIdRef.current) {
+      } else if (userId) {
         try {
           setError(null);
-          const response = await editProfile(userIdRef.current, values);
+          const response = await editProfile(userId, values);
           console.log("Mise à jour du profil réussie", response);
           navigate(`/my-profile/edit`);
           formik.resetForm();
@@ -161,11 +149,11 @@ export function ProfileInfoForm({
     <Card
       color="transparent"
       shadow={false}
-      className="flex justify-center items-center min-h-screen text-black "
+      className="mt-6 mb-6 flex justify-center items-center text-black "
     >
-      {signupContext && <h1>Mon profil</h1>}
+      {signupContext && <h1 className="mb-6">Mon profil</h1>}
       <form
-        className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96"
+        className="w-80 max-w-screen-lg sm:w-96"
         onSubmit={formik.handleSubmit}
       >
         <div className="flex flex-col mb-3 relative">

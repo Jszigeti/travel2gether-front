@@ -44,7 +44,7 @@ export default function SignupPage() {
           userId={userId}
         />
       ) : (
-        <ProfilePrefForm profileData={profileData} userId={userId} />
+        <ProfilePrefForm profileData={profileData} paramsId={userId} />
       )}
     </main>
   );
