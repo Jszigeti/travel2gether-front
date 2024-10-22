@@ -1,5 +1,5 @@
 // INTERFACES
-import { GroupUserRoleEnum } from "./GroupUser";
+import { GroupUserRoleEnum, GroupUserStatusEnum } from "./GroupUser";
 import {
   TravelTypesSet,
   LodgingsSet,
@@ -30,15 +30,40 @@ export interface GroupInterface {
 
 export interface GroupCardInterface {
   id: number;
-  title?: string;
+  title: string;
   path_picture: string;
-  location?: string;
-  date_from?: string;
-  date_to?: string;
+  location: string;
+  date_from: string;
+  date_to: string;
   profiles?: {
     user_id: number;
     path_picture: string;
     role: GroupUserRoleEnum[];
+    status: GroupUserStatusEnum[];
+  }[];
+}
+
+export interface GroupPageInterface {
+  id: number;
+  title: string;
+  description: string;
+  path_picture: string;
+  location: string;
+  date_from: string;
+  date_to: string;
+  profiles: {
+    user_id: number;
+    firstname: string;
+    path_picture: string;
+    role: GroupUserRoleEnum[];
+    status: GroupUserStatusEnum[];
+  }[];
+  stages?: {
+    id: number;
+    title: string;
+    address: string;
+    date_from: string;
+    date_to: string;
   }[];
 }
 

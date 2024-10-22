@@ -1,6 +1,15 @@
 // REACT HOOKS
 import { useContext, useState } from "react";
 
+// CONTEXT
+import UserContext from "../../hooks/context/user.context";
+
+// ROUTER
+import { useNavigate } from "react-router-dom";
+
+// AXIOS FUNCTIONS
+import { editPassword } from "../../api/auth";
+
 // FORMIK + YUP
 import { useFormik } from "formik";
 import { object, string, ref } from "yup";
@@ -9,9 +18,6 @@ import { object, string, ref } from "yup";
 import { Button, Card, Input, Typography } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { editPassword } from "../../api/auth";
-import { useNavigate } from "react-router-dom";
-import UserContext from "../../hooks/context/user.context";
 
 export function ProfilePasswordForm() {
   // STATES

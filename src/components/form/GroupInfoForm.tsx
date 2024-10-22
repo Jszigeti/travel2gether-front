@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 // REACT QUERY
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // ROUTER
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,9 @@ import * as Yup from "yup";
 // INTERFACES
 import { GroupInterface } from "../../interfaces/Group";
 
+// UTILS FUNCTIONS
+import { capitalizeFirstFieldLetter } from "../../utils/capitalizeFirstLetter";
+
 // COMPONENTS
 import {
   Card,
@@ -27,9 +30,6 @@ import {
 } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
-
-// UTILS FUNCTIONS
-import { capitalizeFirstFieldLetter } from "../../utils/capitalizeFirstLetter";
 
 // PROPS INTERFACE
 interface GroupInfoFormProps {
@@ -52,16 +52,21 @@ export default function GroupInfoForm({
   // REDIRECTION
   const navigate = useNavigate();
 
-  // RETRIEVE GROUP INFO DATA
+  // QUERY CLIENT DECLARATION
+  const queryClient = useQueryClient();
+
+  // RETRIEVE GROUP DATA
   const {
     data: groupInfoData,
     isLoading: isGroupInfoLoading,
     isError: isGroupInfoError,
   } = useQuery<GroupInterface>({
     queryKey: ["groupInfo", paramsId],
-    queryFn: () => (paramsId ? getGroup(paramsId) : Promise.resolve({})),
+    queryFn: () =>
+      paramsId
+        ? getGroup(paramsId)
+        : Promise.reject(new Error("Group ID is required")),
     enabled: !groupCreationContext,
-    // enabled: false,
   });
 
   // DEFAULT AVATAR
@@ -131,6 +136,10 @@ export default function GroupInfoForm({
           setError(null);
           const response = await editGroup(paramsId, formData);
           console.log("Mise à jour du groupe réussie", response);
+          queryClient.setQueryData(["groupInfo", paramsId], formData);
+          queryClient.invalidateQueries({
+            queryKey: ["groupDetails", paramsId],
+          });
           navigate(`/group/${paramsId}/edit`);
           formik.resetForm();
         } catch (error: unknown) {

@@ -1,9 +1,24 @@
 // REACT HOOKS
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+
+// REACT QUERY
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+// CONTEXT
+import UserContext from "../../hooks/context/user.context";
+
+// ROUTER
+import { useNavigate } from "react-router-dom";
+
+// AXIOS FUNCTIONS
+import { editUser, getUser } from "../../api/auth";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
 import { object, string } from "yup";
+
+// INTERFACES
+import { UserInterface } from "../../interfaces/User";
 
 // UTILS FUNCTIONS
 import { capitalizeFirstLetters } from "../../utils/capitalizeFirstLetter";
@@ -12,17 +27,40 @@ import { capitalizeFirstLetters } from "../../utils/capitalizeFirstLetter";
 import { Button, Card, Input, Typography } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { ProfileInterface } from "../../interfaces/Profile";
 
 export function ProfileAccountForm() {
   // STATES
   const [error, setError] = useState<null | string>(null);
 
+  // RETRIEVE USER ID
+  const { userId } = useContext(UserContext) || {};
+
+  // REDIRECTION
+  const navigate = useNavigate();
+
+  // QUERY CLIENT DECLARATION
+  const queryClient = useQueryClient();
+
+  // RETRIEVE PROFIL INFO DATA
+  const {
+    data: profileAccountData,
+    isLoading: isProfileAccountLoading,
+    isError: isProfileAccountError,
+  } = useQuery<UserInterface & ProfileInterface>({
+    queryKey: ["profileAccount", userId],
+    queryFn: () =>
+      userId
+        ? getUser(userId)
+        : Promise.reject(new Error("User ID is required")),
+  });
+
   // FORM LOGIC
   const formik = useFormik({
     initialValues: {
-      email: "test@test.fr",
-      firstname: "Prénom",
-      lastname: "Nom",
+      email: "",
+      firstname: "",
+      lastname: "",
     },
     validationSchema: object({
       email: string().email("E-mail invalide").required("E-mail requis"),
@@ -30,32 +68,38 @@ export function ProfileAccountForm() {
       lastname: string().required("Nom requis"),
     }),
     onSubmit: async (values) => {
-      // const userData = {
-      //   email: values.email,
-      //   firstname: values.firstname,
-      //   lastname: values.lastname,
-      // };
-      // try {
-      //   setError(null);
-      //   const response = await signup({ ...userData, id: 1 });
-      //   console.log("Inscription réussie", response);
-      //   if (response.id) {
-      //     try {
-      //       const response2 = await createProfile(response.id);
-      //       console.log("Création du profil réussie", response2);
-      //     } catch (error: unknown) {
-      //       console.log(error);
-      //       setError(error);
-      //     }
-      //   }
-      //   onNext();
-      //   formik.resetForm();
-      // } catch (error: unknown) {
-      //   console.log(error);
-      //   setError(error);
-      // }
+      if (userId) {
+        try {
+          setError(null);
+          const response = await editUser(userId, values);
+          console.log("Modification des informations réussie", response);
+          queryClient.setQueryData(["profileAccount", userId], values);
+          queryClient.invalidateQueries({
+            queryKey: ["profileData", userId],
+          });
+          navigate("/my-profile/edit");
+          formik.resetForm();
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            setError(error.message);
+          } else {
+            setError("Une erreur inconnue est survenue");
+          }
+          console.log(error);
+        }
+      }
     },
   });
+
+  useEffect(() => {
+    if (profileAccountData) {
+      formik.setValues({
+        email: profileAccountData.email || "",
+        firstname: profileAccountData.firstname || "",
+        lastname: profileAccountData.lastname || "",
+      });
+    }
+  }, [profileAccountData]);
 
   return (
     <Card
@@ -174,6 +218,14 @@ export function ProfileAccountForm() {
         {error && (
           <div className="text-red-500 text-center ">
             Erreur lors de la mise à jour du compte
+          </div>
+        )}
+        {isProfileAccountLoading && (
+          <div className="text-blue text-center">Chargement des données...</div>
+        )}
+        {isProfileAccountError && (
+          <div className="text-red-500 text-center">
+            Erreur lors du chargement des données
           </div>
         )}
       </form>

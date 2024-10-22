@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 // REACT QUERY
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // ROUTER
 import { NavLink, useNavigate } from "react-router-dom";
@@ -57,19 +57,24 @@ export default function GroupPrefForm({
   // REDIRECTION
   const navigate = useNavigate();
 
+  // QUERY CLIENT DECLARATION
+  const queryClient = useQueryClient();
+
   // RETRIEVE GROUP ID
   const groupId = groupData?.id || paramsId;
 
-  // RETRIEVE GROUP PREF DATA
+  // RETRIEVE GROUP DATA
   const {
     data: groupPrefData,
     isLoading: isGroupPrefLoading,
     isError: isGroupPrefError,
   } = useQuery<GroupInterface>({
     queryKey: ["groupPref", groupId],
-    queryFn: () => (groupId ? getGroup(groupId) : Promise.resolve({})),
+    queryFn: () =>
+      groupId
+        ? getGroup(groupId)
+        : Promise.reject(new Error("Group ID is required")),
     enabled: !groupCreationContext,
-    // enabled: false,
   });
 
   // FORM LOGIC
@@ -100,6 +105,10 @@ export default function GroupPrefForm({
             navigate(`/group/${groupId}`);
           } else {
             navigate(`/group/${groupId}/edit`);
+            queryClient.setQueryData(["groupPref", groupId], values);
+            queryClient.invalidateQueries({
+              queryKey: ["groupDetails", groupId],
+            });
           }
           formik.resetForm();
         } catch (error: unknown) {

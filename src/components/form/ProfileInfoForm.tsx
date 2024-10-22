@@ -1,11 +1,14 @@
 // REACT HOOKS
 import { useContext, useEffect, useState } from "react";
 
+// CONTEXT
+import UserContext from "../../hooks/context/user.context";
+
 // REACT QUERY
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // ROUTER
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
 import { editProfile, getProfile } from "../../api/profile";
@@ -39,30 +42,35 @@ import {
   Input,
   Avatar,
 } from "@material-tailwind/react";
-import UserContext from "../../hooks/context/user.context";
 
 // PROPS INTERFACE
 interface ProfileInfoFormProps {
   onNext?: () => void;
   onProfileData?: (values: ProfileInterface) => void;
   signupContext?: boolean;
-  userId?: number;
+  token?: string;
+  saveUserToken?: (token: string) => void;
 }
 
 export function ProfileInfoForm({
   onNext,
   onProfileData,
   signupContext = true,
+  token,
+  saveUserToken,
 }: ProfileInfoFormProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
+  // RETRIEVE USER ID
+  const { userId } = useContext(UserContext) || {};
+
   // REDIRECTION
   const navigate = useNavigate();
 
-  // RETRIEVE USER ID
-  const { userId } = useContext(UserContext) || {};
+  // QUERY CLIENT DECLARATION
+  const queryClient = useQueryClient();
 
   // RETRIEVE PROFIL INFO DATA
   const {
@@ -71,7 +79,10 @@ export function ProfileInfoForm({
     isError: isProfileInfoError,
   } = useQuery<ProfileInterface>({
     queryKey: ["profileInfo", userId],
-    queryFn: () => (userId ? getProfile(userId) : Promise.resolve({})),
+    queryFn: () =>
+      userId
+        ? getProfile(userId)
+        : Promise.reject(new Error("User ID is required")),
     enabled: !signupContext,
   });
 
@@ -119,6 +130,10 @@ export function ProfileInfoForm({
           setError(null);
           const response = await editProfile(userId, values);
           console.log("Mise à jour du profil réussie", response);
+          queryClient.setQueryData(["profileInfo", userId], values);
+          queryClient.invalidateQueries({
+            queryKey: ["profileData", userId],
+          });
           navigate(`/my-profile/edit`);
           formik.resetForm();
         } catch (error: unknown) {
@@ -251,10 +266,11 @@ export function ProfileInfoForm({
           </div>
         )}
         {signupContext && (
-          <Typography className="text-center font-normal  mt-6">
-            <NavLink to="/" className="text-blue">
-              Compléter plus tard
-            </NavLink>
+          <Typography
+            className="text-center text-blue font-normal mt-6 cursor-pointer"
+            onClick={() => token && saveUserToken?.(token)}
+          >
+            Compléter plus tard
           </Typography>
         )}
       </form>

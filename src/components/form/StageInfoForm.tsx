@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { StageInterface } from "../../interfaces/Stage";
 import {
   createStage,
@@ -36,15 +36,21 @@ export default function StageInfoForm({
   const [error, setError] = useState<null | string>(null);
 
   const navigate = useNavigate();
+
+  // QUERY CLIENT DECLARATION
+  const queryClient = useQueryClient();
+
   // RETRIEVE STAGE INFO DATA
   const {
     data: stageInfoData,
     isLoading: isStageInfoLoading,
     isError: isStageInfoError,
   } = useQuery<StageInterface>({
-    queryKey: ["stageInfo"],
+    queryKey: ["stageInfo", stageId],
     queryFn: () =>
-      stageId ? getStageFromGroup(groupId, stageId) : Promise.resolve({}),
+      stageId
+        ? getStageFromGroup(groupId, stageId)
+        : Promise.reject(new Error("Group ID and stage ID are required")),
     enabled: !stageCreationContext,
   });
 
@@ -97,6 +103,9 @@ export default function StageInfoForm({
           setError(null);
           const response = await createStage(groupId, formData);
           console.log("Création de l'étape réussie ", response);
+          queryClient.invalidateQueries({
+            queryKey: ["groupDetails", groupId],
+          });
           formik.resetForm();
           navigate(`/group/${groupId}/stage/${response.id}`);
         } catch (errors: unknown) {
@@ -112,6 +121,10 @@ export default function StageInfoForm({
           setError(null);
           const response = await editStage(groupId, stageId, formData);
           console.log("Modification de l'étape réussie ", response);
+          queryClient.setQueryData(["stageInfo", stageId], formData);
+          queryClient.invalidateQueries({
+            queryKey: ["groupDetails", groupId],
+          });
           navigate(`/group/${groupId}/stage/${stageId}`);
         } catch (errors: unknown) {
           if (errors instanceof Error) {
@@ -142,7 +155,7 @@ export default function StageInfoForm({
         setError(null);
         const response = await deleteStage(groupId, stageId);
         console.log("Étape supprimée ", response);
-
+        queryClient.invalidateQueries({ queryKey: ["groupDetails", groupId] });
         navigate(`/group/${groupId}/manage`);
       } catch (errors: unknown) {
         if (errors instanceof Error) {

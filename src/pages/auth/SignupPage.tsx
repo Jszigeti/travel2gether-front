@@ -4,28 +4,35 @@ import { useState } from "react";
 // ROUTER
 import { NavLink } from "react-router-dom";
 
+// INTERFACES
+import { ProfileInterface } from "../../interfaces/Profile";
+
 // COMPONENTS
 import { SignupForm } from "../../components/form/SignupForm";
 import { ProfileInfoForm } from "../../components/form/ProfileInfoForm";
 import { ProfilePrefForm } from "../../components/form/ProfilePrefForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { ProfileInterface } from "../../interfaces/Profile";
 
 export default function SignupPage() {
   // STATES
   const [view, setView] = useState(0);
   const [userId, setUserId] = useState<number>();
   const [profileData, setProfileData] = useState<ProfileInterface>();
+  const [userToken, setUserToken] = useState<string | undefined>(undefined);
 
   // STATES FUNCTIONS
-  function handleNext() {
+  const handleNext = () => {
     if (view < 2) setView((v) => v + 1);
-  }
+  };
 
-  function handleProfileData(values: ProfileInterface) {
+  const handleProfileData = (values: ProfileInterface) => {
     setProfileData(values);
-  }
+  };
+
+  const saveUserToken = (token: string) => {
+    localStorage.setItem("token", token);
+  };
 
   return (
     <main className="mx-auto min-h-screen flex flex-col items-center justify-center relative">
@@ -36,15 +43,25 @@ export default function SignupPage() {
         </span>
       </NavLink>
       {view === 0 ? (
-        <SignupForm onNext={handleNext} onUserId={setUserId} />
+        <SignupForm
+          onNext={handleNext}
+          onUserId={setUserId}
+          onUserToken={setUserToken}
+        />
       ) : view === 1 ? (
         <ProfileInfoForm
           onNext={handleNext}
           onProfileData={handleProfileData}
-          userId={userId}
+          token={userToken}
+          saveUserToken={saveUserToken}
         />
       ) : (
-        <ProfilePrefForm profileData={profileData} paramsId={userId} />
+        <ProfilePrefForm
+          profileData={profileData}
+          formUserId={userId}
+          token={userToken}
+          saveUserToken={saveUserToken}
+        />
       )}
     </main>
   );

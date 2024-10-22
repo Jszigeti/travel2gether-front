@@ -39,17 +39,17 @@ export async function getStageFromGroup(group_id: number, stage_id: number) {
   }
 }
 
-export async function getStagesFromGroup(group_id: number) {
-  try {
-    const { data } = await axios.post(`${uri}/groups/${group_id}/stages`);
-    return data;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
+// export async function getStagesFromGroup(group_id: number) {
+//   try {
+//     const { data } = await axios.post(`${uri}/groups/${group_id}/stages`);
+//     return data;
+//   } catch (error: unknown) {
+//     const axiosError = error as AxiosError;
+//     throw new Error(
+//       `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
+//     );
+//   }
+// }
 
 export async function editStage(
   group_id: number,

@@ -17,8 +17,8 @@ interface Option {
 interface DropdownProps {
   options: Array<Option>;
   field: FieldInputProps<string[]>;
-  formik: FormikProps<any>;
-  label: string;
+  formik?: FormikProps<any>;
+  label?: string;
   multiple?: boolean;
 }
 
@@ -37,14 +37,14 @@ export default function Dropdown({
 
   // OPTIONS FUNCTIONS
   const handleCheckboxChange = (value: string) => {
-    const selectedValues = formik.values[field.name];
+    const selectedValues = formik?.values[field.name];
     if (multiple) {
       const updatedValues = selectedValues.includes(value)
         ? selectedValues.filter((v: string) => v !== value)
         : [...selectedValues, value];
-      formik.setFieldValue(field.name, updatedValues);
+      formik?.setFieldValue(field.name, updatedValues);
     } else {
-      formik.setFieldValue(
+      formik?.setFieldValue(
         field.name,
         selectedValues.includes(value) ? [] : [value]
       );
@@ -73,10 +73,10 @@ export default function Dropdown({
         className="border border-blue p-2 rounded-md cursor-pointer relative flex items-center"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {formik.values[field.name].length > 0
+        {formik?.values[field.name].length > 0
           ? options
               .filter((option) =>
-                formik.values[field.name].includes(option.value)
+                formik?.values[field.name].includes(option.value)
               )
               .map((option) => option.label)
               .join(", ")
@@ -101,7 +101,7 @@ export default function Dropdown({
               <input
                 type={multiple ? "checkbox" : "radio"}
                 className="mr-2"
-                checked={formik.values[field.name].includes(option.value)}
+                checked={formik?.values[field.name].includes(option.value)}
                 onChange={() => handleCheckboxChange(option.value)}
               />
               {option.label}
