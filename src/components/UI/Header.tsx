@@ -8,21 +8,52 @@ import UserContext from "../../hooks/context/user.context";
 import { NavLink } from "react-router-dom";
 
 // COMPONENTS
-import {
-  Navbar,
-  Collapse,
-  IconButton,
-  Avatar,
-  Input,
-} from "@material-tailwind/react";
+import { Navbar, Collapse, IconButton, Avatar, Badge } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faMagnifyingGlass,
+} from "@fortawesome/free-solid-svg-icons";
+import SearchMenu from "./SearchMenu";
+import { notifList } from "../../data/notifList";
 
 // PROPS INTERFACE
 interface HeaderProps {
   pageTitle?: string;
   backLink?: string;
+}
+
+// NAVLINKS ARRAY
+const navLinks = [
+  { path: "/my-profile", name: "Mon profil" },
+  { path: "/my-profile/notifications", name: "Mes notifications" },
+  { path: "/my-profile/messages", name: "Mes messages" },
+  { path: "/my-profile/groups", name: "Mes groupes" },
+  { path: "/my-profile/invitations", name: "Mes invitations" },
+];
+
+// NAVLIST FUNCTION
+function NavList({ closeNav }: { closeNav?: () => void }) {
+  return (
+    <nav className="flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row items-center lg:gap-6 text-black">
+      {navLinks.map((link, index) => (
+        <NavLink
+          key={index}
+          to={link.path}
+          className="mb-3 font-bold"
+          onClick={closeNav}
+        >
+          {link.name}
+          {link.name === "Mes notifications" ? (
+            <Badge content={notifList.length}></Badge>
+          ) : (
+            ""
+          )}
+        </NavLink>
+      ))}
+    </nav>
+  );
 }
 
 export default function Header({ pageTitle, backLink }: HeaderProps) {
@@ -86,7 +117,7 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
   }, []);
 
   return (
-    <header className="lg:sticky lg:bg-white lg:top-0  lg:z-50 pt-6">
+    <header>
       <Navbar className="mx-auto max-w-screen-xl px-6 py-3 rounded-none relative z-30">
         <div className="flex items-end justify-end text-blue-gray-900 relative">
           <NavLink to="/" className="absolute left-1">
@@ -131,28 +162,20 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
               </NavLink>
             </div>
           ) : (
-            <Input
-              type="text"
-              crossOrigin={undefined}
-              className="!border !border-gray-300 bg-white text-gray-900 shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 placeholder:opacity-100 focus:!border-gray-900 focus:!border-t-gray-900 focus:ring-gray-900/10"
-              labelProps={{
-                className: "hidden",
-              }}
-              containerProps={{ className: "min-w-[100px]" }}
+            <div
               onClick={() => setOpenSearch(!openSearch)}
-            />
+              className="bg-white text-black border border-blue rounded-lg p-2 cursor-pointer"
+            >
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                className="text-gray-500"
+              />
+            </div>
           )}
         </div>
         <Collapse open={openSearch}>
-          <div className="min-h-screen flex flex-col items-center pt-10">
-            <h1 className="text-black mb-6">RECHERCHE</h1>
-            <h1 className="text-black mb-6">RECHERCHE</h1>
-            <h1 className="text-black mb-6">RECHERCHE</h1>
-            <h1 className="text-black mb-6">RECHERCHE</h1>
-            <h1 className="text-black mb-6">RECHERCHE</h1>
-            <h1 className="text-black mb-6">RECHERCHE</h1>
-            <h1 className="text-black mb-6">RECHERCHE</h1>
-            <h1 className="text-black mb-6">RECHERCHE</h1>
+          <div className="h-fit flex flex-col items-center pt-10">
+            <SearchMenu />
           </div>
         </Collapse>
       </Navbar>
