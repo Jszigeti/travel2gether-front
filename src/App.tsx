@@ -17,12 +17,14 @@ import MyProfileEditInfoPage from "./pages/profile/MyProfileEditInfoPage";
 import MyProfileEditPrefPage from "./pages/profile/MyProfileEditPrefPage";
 import MyProfileEditPasswordPage from "./pages/profile/MyProfileEditPasswordPage";
 import StageEditPage from "./pages/stage/StageEditPage";
+import ResultsPage from "./pages/result/ResultsPage";
 import NotificationPage from "./pages/NotificationPage";
 
 export default function App() {
   return (
     <>
       <Routes>
+        <Route path="/results" element={<ResultsPage />} />
         <Route path="/a" element={<ProfilePage />} />
         <Route path="/my-profile" element={<MyProfilePage />} />
         <Route path="/my-profile/edit" element={<MyProfileEditPage />} />

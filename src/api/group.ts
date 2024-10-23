@@ -63,7 +63,7 @@ export async function getGroup(group_id: number) {
   }
 }
 
-export async function getGroups(body: GroupInterface[]) {
+export async function getGroups(body: GroupInterface) {
   try {
     const data = groupsList;
     return data;
