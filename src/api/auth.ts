@@ -49,7 +49,7 @@ export async function forgotPassword(body: UserInterface) {
 
 export async function editPassword(id: number, body: UserInterface) {
   try {
-    // const { data } = await axios.post(`${uri}/users/${id}/password`, { body });
+    // const { data } = await axios.put(`${uri}/users/${id}/password`, { body });
     // return data.body;
     return body;
   } catch (error: unknown) {
@@ -76,7 +76,7 @@ export async function getUser(id: number) {
 
 export async function editUser(id: number, body: UserInterface) {
   try {
-    // const { data } = await axios.post(`${uri}/users/${id}/password`, { body });
+    // const { data } = await axios.put(`${uri}/users/${id}`, { body });
     // return data.body;
     return body;
   } catch (error: unknown) {

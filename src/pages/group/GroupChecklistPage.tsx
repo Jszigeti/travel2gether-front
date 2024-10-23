@@ -1,8 +1,11 @@
+// ROUTER
 import { useParams } from "react-router-dom";
+import ProtectGroupRoute from "../../components/protectedRoutes/ProtectGroupRoute";
+
+// COMPONENTS
 import Footer from "../../components/UI/Footer";
 import Header from "../../components/UI/Header";
 import Checklist from "../../components/UI/Checklist";
-import ProtectGroupRoute from "../../components/protectedRoutes/ProtectGroupRoute";
 
 export default function GroupChecklistPage() {
   // USEPARAMS HOOK
