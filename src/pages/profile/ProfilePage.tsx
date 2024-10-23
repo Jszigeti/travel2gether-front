@@ -1,4 +1,4 @@
-import ProfileComponent from "../../components/ProfileComponent";
+import ProfileComponent from "../../components/profilePages/ProfileComponent";
 import Header from "../../components/UI/Header";
 import Footer from "../../components/UI/Footer";
 import { useParams } from "react-router-dom";

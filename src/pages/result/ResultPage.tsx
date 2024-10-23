@@ -6,7 +6,7 @@ import Footer from "../../components/UI/Footer";
 import { AvatarCardInterface } from "../../interfaces/Profile";
 import { GroupCardInterface } from "../../interfaces/Group";
 
-export default function ResultsPage() {
+export default function ResultPage() {
   const location = useLocation();
 
   const profiles = location.state?.profiles || [];

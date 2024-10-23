@@ -1,8 +1,8 @@
-import NotificationComponent from "../components/UI/NotificationComponent";
-import { notifList } from "../data/notifList";
-import { NotificationComponentInterface } from "../interfaces/Notification";
-import Header from "../components/UI/Header";
-import Footer from "../components/UI/Footer";
+import NotificationComponent from "../../components/notificationPage/NotificationComponent";
+import { notifList } from "../../data/notifList";
+import { NotificationComponentInterface } from "../../interfaces/Notification";
+import Header from "../../components/UI/Header";
+import Footer from "../../components/UI/Footer";
 
 function NotificationPage() {
   return (

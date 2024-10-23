@@ -7,7 +7,7 @@ import HomePage from "./pages/home/HomePage";
 import NoPage from "./NoPage";
 import GroupPage from "./pages/group/GroupPage";
 import ProfilePage from "./pages/profile/ProfilePage";
-import ResultsPage from "./pages/result/ResultsPage";
+import ResultPage from "./pages/result/ResultPage";
 
 // PAGES ACCESS. WITHOUT BEING CONNECTED
 import SignupPage from "./pages/auth/SignupPage";
@@ -21,7 +21,7 @@ import MyProfileEditAccountPage from "./pages/profile/MyProfileEditAccountPage";
 import MyProfileEditPasswordPage from "./pages/profile/MyProfileEditPasswordPage";
 import MyProfileEditInfoPage from "./pages/profile/MyProfileEditInfoPage";
 import MyProfileEditPrefPage from "./pages/profile/MyProfileEditPrefPage";
-import NotificationPage from "./pages/NotificationPage";
+import NotificationPage from "./pages/profile/NotificationPage";
 import GroupCreatePage from "./pages/group/GroupCreatePage";
 import GroupChecklistPage from "./pages/group/GroupChecklistPage";
 import GroupManagePage from "./pages/group/GroupManagePage";
@@ -41,7 +41,7 @@ export default function App() {
         <Route path="*" element={<NoPage />} />
         <Route path="/group/:groupId" element={<GroupPage />} />
         <Route path="/profile/:userId" element={<ProfilePage />} />
-        <Route path="/results" element={<ResultsPage />} />
+        <Route path="/results" element={<ResultPage />} />
 
         {/* ROUTES ACCESS. WITHOUT BEING CONNECTED */}
         <Route element={<ProtectRoute isLoggedIn={true} />}>
@@ -54,9 +54,9 @@ export default function App() {
         <Route element={<ProtectRoute />}>
           <Route path="/my-profile" element={<MyProfilePage />} />
           <Route
-          path="/my-profile/notifications"
-          element={<NotificationPage />}
-        />
+            path="/my-profile/notifications"
+            element={<NotificationPage />}
+          />
           <Route path="/my-profile/edit" element={<MyProfileEditPage />} />
           <Route
             path="/my-profile/edit/account"

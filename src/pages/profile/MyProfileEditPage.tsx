@@ -1,4 +1,4 @@
-import MyProfileEditComponent from "../../components/MyProfileEditComponent";
+import MyProfileEditComponent from "../../components/profilePages/MyProfileEditComponent";
 import Header from "../../components/UI/Header";
 import Footer from "../../components/UI/Footer";
 

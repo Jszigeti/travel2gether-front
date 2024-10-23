@@ -8,7 +8,13 @@ import UserContext from "../../hooks/context/user.context";
 import { NavLink } from "react-router-dom";
 
 // COMPONENTS
-import { Navbar, Collapse, IconButton, Avatar, Badge } from "@material-tailwind/react";
+import {
+  Navbar,
+  Collapse,
+  IconButton,
+  Avatar,
+  Badge,
+} from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -24,37 +30,7 @@ interface HeaderProps {
   backLink?: string;
 }
 
-// NAVLINKS ARRAY
-const navLinks = [
-  { path: "/my-profile", name: "Mon profil" },
-  { path: "/my-profile/notifications", name: "Mes notifications" },
-  { path: "/my-profile/messages", name: "Mes messages" },
-  { path: "/my-profile/groups", name: "Mes groupes" },
-  { path: "/my-profile/invitations", name: "Mes invitations" },
-];
-
-// NAVLIST FUNCTION
-function NavList({ closeNav }: { closeNav?: () => void }) {
-  return (
-    <nav className="flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row items-center lg:gap-6 text-black">
-      {navLinks.map((link, index) => (
-        <NavLink
-          key={index}
-          to={link.path}
-          className="mb-3 font-bold"
-          onClick={closeNav}
-        >
-          {link.name}
-          {link.name === "Mes notifications" ? (
-            <Badge content={notifList.length}></Badge>
-          ) : (
-            ""
-          )}
-        </NavLink>
-      ))}
-    </nav>
-  );
-}
+const notReadNotifList = notifList.filter((notif) => !notif.isRead);
 
 export default function Header({ pageTitle, backLink }: HeaderProps) {
   // STATES
@@ -68,7 +44,7 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
   const navLinks = userId
     ? [
         { path: "/my-profile", name: "Mon profil" },
-        { path: "/my-profile/notifications", name: "Mes notifications" },
+        { path: "/my-profile/notifications", name: "Mes notification" },
         { path: "/my-profile/messages", name: "Mes messages" },
         { path: "/my-profile/groups", name: "Mes groupes" },
         { path: "/my-profile/invitations", name: "Mes invitations" },
@@ -90,6 +66,9 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
             onClick={closeNav}
           >
             {link.name}
+            {link.name === "Mes notification" && (
+              <Badge content={notReadNotifList.length}>s</Badge>
+            )}
           </NavLink>
         ))}
         {userId && (

@@ -5,17 +5,17 @@ import { useQuery } from "@tanstack/react-query";
 import { NavLink } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import { getProfile } from "../api/profile";
+import { getProfile } from "../../api/profile";
 
 // INTERFACES
-import { ProfilePageInterface } from "../interfaces/Profile";
+import { ProfilePageInterface } from "../../interfaces/Profile";
 
 // UTILS FUNCTIONS
-import { formatDate } from "../utils/formatDate";
-import { displayAge } from "../utils/displayAge";
+import { formatDate } from "../../utils/formatDate";
+import { displayAge } from "../../utils/displayAge";
 
 // COMPONENTS
-import GroupCard from "./UI/GroupCard";
+import GroupCard from "../UI/GroupCard";
 import { Chip, Avatar, Rating, Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog, faEnvelope } from "@fortawesome/free-solid-svg-icons";

@@ -121,7 +121,7 @@ export default function GroupPage() {
     }
   };
 
-  if (!params.groupId || !groupDetailsData || isGroupDetailsError)
+  if (!params.groupId || isGroupDetailsError)
     return (
       <>
         <Header pageTitle="Erreur" backLink="/" />
@@ -132,12 +132,18 @@ export default function GroupPage() {
       </>
     );
 
+  if (!groupDetailsData || isGroupDetailsLoading)
+    return (
+      <>
+        <Header pageTitle="Chargement" backLink="/" />
+        <div className="text-blue text-center">Chargement des données...</div>
+        <Footer />
+      </>
+    );
+
   return (
     <>
       <Header pageTitle={groupDetailsData.title} backLink="/" />
-      {isGroupDetailsLoading && (
-        <div className="text-blue text-center">Chargement des données...</div>
-      )}
       <GroupCoverDisplay
         groupDetails={groupDetailsData}
         userRole={userRole}

@@ -5,7 +5,7 @@ import ProtectGroupRoute from "../../components/protectedRoutes/ProtectGroupRout
 // COMPONENTS
 import Footer from "../../components/UI/Footer";
 import Header from "../../components/UI/Header";
-import Checklist from "../../components/UI/Checklist";
+import Checklist from "../../components/checklistPages/Checklist";
 
 export default function GroupChecklistPage() {
   // USEPARAMS HOOK
