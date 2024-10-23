@@ -11,10 +11,12 @@ import {
   IconButton,
   Avatar,
   Input,
+  Badge,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { notifList } from "../../data/notifList";
 
 // PROPS INTERFACE
 interface HeaderProps {
@@ -43,6 +45,11 @@ function NavList({ closeNav }: { closeNav?: () => void }) {
           onClick={closeNav}
         >
           {link.name}
+          {link.name === "Mes notifications" ? (
+            <Badge content={notifList.length}></Badge>
+          ) : (
+            ""
+          )}
         </NavLink>
       ))}
     </nav>
