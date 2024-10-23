@@ -1,5 +1,5 @@
 // REACT HOOKS
-import { createContext, useState, ReactNode, useRef, useEffect } from "react";
+import { createContext, useState, ReactNode, useEffect } from "react";
 
 // TOKEN DECODER
 import { jwtDecode } from "jwt-decode";
@@ -7,6 +7,7 @@ import { jwtDecode } from "jwt-decode";
 // CONTEXT INTERFACE
 interface UserContextType {
   userId: number | null;
+  logout: () => void;
 }
 
 // PROVIDER INTERFACE
@@ -14,25 +15,74 @@ interface UserProviderType {
   children: ReactNode;
 }
 
-// CREATE CONTEXT
+// CONTEXT CREATION
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-// CREATE PROVIDER
+// DECODE TOKEN FUNCTION
+const getUserIdFromToken = () => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const decodedToken = jwtDecode<{ userId: number }>(token);
+      return decodedToken.userId;
+    } catch {
+      console.error("Invalid token format");
+      return null;
+    }
+  }
+  return null;
+};
+
+// PROVIDER CREATION
 export const UserProvider = ({ children }: UserProviderType) => {
-  const [userId, setUserId] = useState<number | null>(null);
-  const userIdRef = useRef<number | null>(null);
+  // STATES
+  const [userId, setUserId] = useState<number | null>(getUserIdFromToken());
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decodedToken = jwtDecode<{ userId: number }>(token);
-      userIdRef.current = decodedToken.userId;
-      setUserId(userIdRef.current);
-    }
+    // STORE USER ID FROM TOKEN
+    const handleTokenChange = () => {
+      const newUserId = getUserIdFromToken();
+      setUserId(newUserId);
+    };
+
+    // RENAME LOCALSTORAGE FUNCTIONS
+    const originalSetItem = localStorage.setItem;
+    const originalRemoveItem = localStorage.removeItem;
+
+    // EDIT LOCALSTORAGE FUNCTIONS
+    localStorage.setItem = function (...args) {
+      originalSetItem.apply(this, args);
+      if (args[0] === "token") {
+        handleTokenChange();
+      }
+    };
+    localStorage.removeItem = function (...args) {
+      originalRemoveItem.apply(this, args);
+      if (args[0] === "token") {
+        handleTokenChange();
+      }
+    };
+
+    // INITIAL CHECK
+    handleTokenChange();
+
+    // CLEANING FUNCTION
+    return () => {
+      localStorage.setItem = originalSetItem;
+      localStorage.removeItem = originalRemoveItem;
+    };
   }, []);
 
+  // LOGOUT FUNCTION
+  const logout = () => {
+    localStorage.removeItem("token");
+    setUserId(null);
+  };
+
   return (
-    <UserContext.Provider value={{ userId }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ userId, logout }}>
+      {children}
+    </UserContext.Provider>
   );
 };
 

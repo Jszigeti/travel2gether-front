@@ -1,5 +1,6 @@
 // ROUTER
 import { useParams } from "react-router-dom";
+import ProtectGroupRoute from "../../components/protectedRoutes/ProtectGroupRoute";
 
 // COMPONENTS
 import Header from "../../components/UI/Header";
@@ -11,7 +12,7 @@ export default function GroupEditPrefPage() {
   const params = useParams();
 
   return (
-    <>
+    <ProtectGroupRoute editPage={true}>
       <Header
         pageTitle="Les préférences"
         backLink={`/group/${params.groupId}/edit`}
@@ -23,6 +24,6 @@ export default function GroupEditPrefPage() {
         />
       </main>
       <Footer />
-    </>
+    </ProtectGroupRoute>
   );
 }

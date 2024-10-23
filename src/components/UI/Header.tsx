@@ -1,5 +1,8 @@
 // REACT HOOKS
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+
+// CONTEXT
+import UserContext from "../../hooks/context/user.context";
 
 // ROUTER
 import { NavLink } from "react-router-dom";
@@ -54,8 +57,53 @@ function NavList({ closeNav }: { closeNav?: () => void }) {
 }
 
 export default function Header({ pageTitle, backLink }: HeaderProps) {
+  // STATES
   const [openNav, setOpenNav] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
+
+  // CONTEXT
+  const { userId, logout } = useContext(UserContext) || {};
+
+  // NAVLINKS ARRAY
+  const navLinks = userId
+    ? [
+        { path: "/my-profile", name: "Mon profil" },
+        { path: "/my-profile/notifications", name: "Mes notifications" },
+        { path: "/my-profile/messages", name: "Mes messages" },
+        { path: "/my-profile/groups", name: "Mes groupes" },
+        { path: "/my-profile/invitations", name: "Mes invitations" },
+      ]
+    : [
+        { path: "/signin", name: "Connexion" },
+        { path: "/signup", name: "Inscription" },
+      ];
+
+  // NAVLIST FUNCTION
+  function NavList({ closeNav }: { closeNav?: () => void }) {
+    return (
+      <nav className="flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row items-center lg:gap-6 text-black">
+        {navLinks.map((link, index) => (
+          <NavLink
+            key={index}
+            to={link.path}
+            className="mb-3 font-bold"
+            onClick={closeNav}
+          >
+            {link.name}
+          </NavLink>
+        ))}
+        {userId && (
+          <NavLink
+            to="/"
+            onClick={closeNav}
+            className="mb-3 font-bold text-red-500"
+          >
+            <span onClick={logout}>Déconnexion</span>
+          </NavLink>
+        )}
+      </nav>
+    );
+  }
 
   const handleWindowResize = () =>
     window.innerWidth >= 960 && setOpenNav(false);
@@ -79,11 +127,13 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
             <NavList />
           </div>
           <div className="flex items-center gap-6">
-            <Avatar
-              src="https://docs.material-tailwind.com/img/face-2.jpg"
-              alt="avatar"
-              size="md"
-            />
+            {userId && (
+              <Avatar
+                src="https://docs.material-tailwind.com/img/face-2.jpg"
+                alt="avatar"
+                size="md"
+              />
+            )}
             <IconButton
               variant="text"
               className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent xl:hidden"

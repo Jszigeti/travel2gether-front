@@ -1,11 +1,14 @@
 // REACT HOOKS
 import { useContext, useEffect, useState } from "react";
 
+// CONTEXT
+import UserContext from "../../hooks/context/user.context";
+
 // REACT QUERY
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // ROUTER
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
 import { editProfile, getProfile } from "../../api/profile";
@@ -36,19 +39,22 @@ import Dropdown from "../UI/DropdownComponent";
 import { Button, Card, Typography, Input } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
-import UserContext from "../../hooks/context/user.context";
 
 // PROPS INTERFACE
 interface ProfilePrefFormProps {
   profileData?: ProfileInterface;
   signupContext?: boolean;
-  paramsId?: number;
+  formUserId?: number;
+  token?: string;
+  saveUserToken?: (token: string) => void;
 }
 
 export function ProfilePrefForm({
   profileData,
   signupContext = true,
-  paramsId,
+  formUserId,
+  token,
+  saveUserToken,
 }: ProfilePrefFormProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
@@ -57,7 +63,10 @@ export function ProfilePrefForm({
   const navigate = useNavigate();
 
   // RETRIEVE USER ID
-  const { userId } = useContext(UserContext) || { paramsId };
+  const { userId } = useContext(UserContext) || {};
+
+  // QUERY CLIENT DECLARATION
+  const queryClient = useQueryClient();
 
   // RETRIEVE PROFIL PREF DATA
   const {
@@ -66,7 +75,10 @@ export function ProfilePrefForm({
     isError: isProfilePrefError,
   } = useQuery<ProfileInterface>({
     queryKey: ["profilePref", userId],
-    queryFn: () => (userId ? getProfile(userId) : Promise.resolve({})),
+    queryFn: () =>
+      userId
+        ? getProfile(userId)
+        : Promise.reject(new Error("User ID is required")),
     enabled: !signupContext,
   });
 
@@ -93,16 +105,16 @@ export function ProfilePrefForm({
     }),
     onSubmit: async (values) => {
       // FORM LOGIC IF SIGNUP CONTEXT
-      if (profileData && userId) {
+      if (profileData && formUserId) {
         const userProfileData = { ...profileData, ...values };
         try {
           setError(null);
-          const response = await editProfile(userId, userProfileData);
+          const response = await editProfile(formUserId, userProfileData);
           console.log(
             "Enregistrement des informations du profil réussi",
             response
           );
-          navigate(`/`);
+          if (token) saveUserToken?.(token);
           formik.resetForm();
         } catch (error: unknown) {
           if (error instanceof Error) {
@@ -118,6 +130,10 @@ export function ProfilePrefForm({
           setError(null);
           const response = await editProfile(userId, values);
           console.log("Modification du profil réussie", response);
+          queryClient.setQueryData(["profilePref", userId], values);
+          queryClient.invalidateQueries({
+            queryKey: ["profileData", userId],
+          });
           navigate(`/my-profile/edit`);
           formik.resetForm();
         } catch (error: unknown) {
@@ -272,10 +288,11 @@ export function ProfilePrefForm({
           </div>
         )}
         {signupContext && (
-          <Typography className="text-center font-normal  mt-6">
-            <NavLink to="/" className="text-blue">
-              Compléter plus tard
-            </NavLink>
+          <Typography
+            className="text-center text-blue font-normal mt-6 cursor-pointer"
+            onClick={() => token && saveUserToken?.(token)}
+          >
+            Compléter plus tard
           </Typography>
         )}
       </form>

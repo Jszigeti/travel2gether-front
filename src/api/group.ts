@@ -40,8 +40,9 @@ export async function editGroup(group_id: number, body: GroupInterface) {
 
 export async function deleteGroup(group_id: number) {
   try {
-    const { data } = await axios.delete(`${uri}/groups/${group_id}`);
-    return data;
+    // const { data } = await axios.delete(`${uri}/groups/${group_id}`);
+    // return data;
+    return group_id;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(
@@ -79,36 +80,11 @@ export async function getGroups(body: GroupInterface) {
 
 export async function addUserToGroup(group_id: number, user_id: number) {
   try {
-    const { data } = await axios.post(
-      `${uri}/groups/${group_id}/users/${user_id}`
-    );
-    return data;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
-
-export async function getUserFromGroup(group_id: number, user_id: number) {
-  try {
-    const { data } = await axios.get(
-      `${uri}/groups/${group_id}/users/${user_id}`
-    );
-    return data;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
-
-export async function getUsersFromGroup(group_id: number) {
-  try {
-    const { data } = await axios.get(`${uri}/groups/${group_id}/users`);
-    return data;
+    // const { data } = await axios.post(
+    //   `${uri}/groups/${group_id}/users/${user_id}`
+    // );
+    // return data;
+    return user_id;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(
@@ -123,11 +99,12 @@ export async function editUserFromGroup(
   body: GroupUserInterface
 ) {
   try {
-    const { data } = await axios.put(
-      `${uri}/groups/${group_id}/users/${user_id}`,
-      { body }
-    );
-    return data.body;
+    //   const { data } = await axios.put(
+    //     `${uri}/groups/${group_id}/users/${user_id}`,
+    //     { body }
+    //   );
+    //   return data.body;
+    return body;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(
@@ -138,10 +115,11 @@ export async function editUserFromGroup(
 
 export async function deleteUserFromGroup(group_id: number, user_id: number) {
   try {
-    const { data } = await axios.delete(
-      `${uri}/groups/${group_id}/users/${user_id}`
-    );
-    return data;
+    // const { data } = await axios.delete(
+    //   `${uri}/groups/${group_id}/users/${user_id}`
+    // );
+    // return data;
+    return user_id;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(

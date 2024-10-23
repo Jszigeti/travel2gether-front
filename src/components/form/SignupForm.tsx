@@ -24,8 +24,9 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 interface SignupFormProps {
   onNext: () => void;
   onUserId: (userId: number) => void;
+  onUserToken: (token: string) => void;
 }
-export function SignupForm({ onNext, onUserId }: SignupFormProps) {
+export function SignupForm({ onNext, onUserId, onUserToken }: SignupFormProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
 
@@ -62,7 +63,7 @@ export function SignupForm({ onNext, onUserId }: SignupFormProps) {
         console.log("Inscription réussie", response);
         const token =
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxNTEyMzQ1NiwiZXhwIjoxNzE1NzI4MjU2fQ.1JddZnGu8xdMOJJm6xXtNTYDKLU0OGic-wqmqPvyEf4";
-        localStorage.setItem("token", token);
+        onUserToken(token);
         if (response.id) {
           try {
             const response2 = await createProfile(response.id);

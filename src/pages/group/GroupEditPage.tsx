@@ -1,5 +1,6 @@
 // ROUTER
 import { NavLink, useParams } from "react-router-dom";
+import ProtectGroupRoute from "../../components/protectedRoutes/ProtectGroupRoute";
 
 // COMPONENTS
 import Header from "../../components/UI/Header";
@@ -11,11 +12,8 @@ export default function GroupeEditPage() {
   const params = useParams();
 
   return (
-    <>
-      <Header
-        pageTitle="Edition du groupe"
-        backLink={`/group/${params.groupId}`}
-      />
+    <ProtectGroupRoute editPage={true}>
+      <Header pageTitle="Edition" backLink={`/group/${params.groupId}`} />
       <main className="flex flex-col justify-center items-center px-5 gap-6 py-6 max-w-screen-xl min-h-[70vh] mx-auto lg:gap-12">
         <NavLink to={`/group/${params.groupId}/edit/info`}>
           <Button className="bg-blue">Editer les informations</Button>
@@ -25,6 +23,6 @@ export default function GroupeEditPage() {
         </NavLink>
       </main>
       <Footer />
-    </>
+    </ProtectGroupRoute>
   );
 }
