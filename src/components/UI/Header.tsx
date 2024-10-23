@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 // COMPONENTS
-import { Navbar, Collapse, IconButton, Avatar } from "@material-tailwind/react";
+import { Navbar, Collapse, IconButton, Avatar, Badge } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,6 +13,7 @@ import {
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import SearchMenu from "./SearchMenu";
+import { notifList } from "../../data/notifList";
 
 // PROPS INTERFACE
 interface HeaderProps {
@@ -41,6 +42,11 @@ function NavList({ closeNav }: { closeNav?: () => void }) {
           onClick={closeNav}
         >
           {link.name}
+          {link.name === "Mes notifications" ? (
+            <Badge content={notifList.length}></Badge>
+          ) : (
+            ""
+          )}
         </NavLink>
       ))}
     </nav>

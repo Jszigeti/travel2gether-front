@@ -18,6 +18,7 @@ import MyProfileEditPrefPage from "./pages/profile/MyProfileEditPrefPage";
 import MyProfileEditPasswordPage from "./pages/profile/MyProfileEditPasswordPage";
 import StageEditPage from "./pages/stage/StageEditPage";
 import ResultsPage from "./pages/result/ResultsPage";
+import NotificationPage from "./pages/NotificationPage";
 
 export default function App() {
   return (
@@ -64,6 +65,10 @@ export default function App() {
         <Route
           path="/group/:groupId/stage/:stageId/edit"
           element={<StageEditPage />}
+        />
+        <Route
+          path="/my-profile/notifications"
+          element={<NotificationPage />}
         />
         <Route path="*" element={<NoPage />} />
       </Routes>
