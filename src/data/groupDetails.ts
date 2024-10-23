@@ -43,7 +43,7 @@ export const groupDetails = {
       firstname: "Marie",
       path_picture: "https://docs.material-tailwind.com/img/face-3.jpg",
       role: [GroupUserRoleEnum.ORGANIZER],
-      status: [GroupUserStatusEnum.DENIED],
+      status: [GroupUserStatusEnum.ACCEPTED],
     },
     {
       user_id: 3,

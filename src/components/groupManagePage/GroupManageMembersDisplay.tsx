@@ -123,12 +123,10 @@ export default function GroupManageMembersDisplay({
                 </Option>
               </Select>
             </div>
-            <div
-              className="flex justify-end items-center order-2 sm:order-3"
-              onClick={() => handleDeleteUser(profile.user_id)}
-            >
+            <div className="flex justify-end items-center order-2 sm:order-3">
               <FontAwesomeIcon
-                className={`${
+                onClick={() => handleDeleteUser(profile.user_id)}
+                className={`cursor-pointer ${
                   profile.role[0] === GroupUserRoleEnum.AUTHOR ||
                   profile.user_id === userId
                     ? "hidden"

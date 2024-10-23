@@ -101,10 +101,12 @@ export default function GroupManageRequestsDisplay({
             </NavLink>
             <div className="flex gap-10">
               <FontAwesomeIcon
+                className="cursor-pointer"
                 icon={faCheck}
                 onClick={() => handleAcceptedRequest(pendingUser.user_id)}
               />
               <FontAwesomeIcon
+                className="cursor-pointer"
                 icon={faX}
                 onClick={() => handleDeniedRequest(pendingUser.user_id)}
               />

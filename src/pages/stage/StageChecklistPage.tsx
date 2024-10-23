@@ -1,24 +1,24 @@
 import { useParams } from "react-router-dom";
-import StageInfoForm from "../../components/form/StageInfoForm";
 import Footer from "../../components/UI/Footer";
 import Header from "../../components/UI/Header";
+import Checklist from "../../components/UI/Checklist";
 import ProtectGroupRoute from "../../components/protectedRoutes/ProtectGroupRoute";
 
-export default function StageEditPage() {
+export default function StageChecklistPage() {
   // USEPARAMS HOOK
   const params = useParams();
 
   return (
-    <ProtectGroupRoute editPage={true}>
+    <ProtectGroupRoute>
       <Header
-        pageTitle="Édition d'une étape"
-        backLink={`/group/${params.groupId}/manage`}
+        pageTitle="Checklist"
+        backLink={`/group/${params.groupId}/stage/${params.stageId}`}
       />
-      <main>
-        <StageInfoForm
+      <main className="flex flex-col justify-start items-center px-5 gap-6 py-6 max-w-screen-xl min-h-[70vh] mx-auto lg:gap-12">
+        <Checklist
           groupId={Number(params.groupId)}
           stageId={Number(params.stageId)}
-          stageCreationContext={false}
+          stageCheckList={true}
         />
       </main>
       <Footer />

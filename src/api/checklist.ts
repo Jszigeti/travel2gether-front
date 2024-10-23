@@ -6,16 +6,18 @@ import axios, { AxiosError } from "axios";
 
 // INTERFACES
 import { ChecklistInterface } from "../interfaces/Checklist";
+import { checklistItems } from "../data/checklistItems";
 
 export async function createGroupChecklistItem(
   group_id: number,
   body: ChecklistInterface
 ) {
   try {
-    const { data } = await axios.post(`${uri}/groups/${group_id}/checklist`, {
-      body,
-    });
-    return data.body;
+    //   const { data } = await axios.post(`${uri}/groups/${group_id}/checklist`, {
+    //     body,
+    //   });
+    //   return data.body;
+    return body;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(
@@ -30,13 +32,14 @@ export async function createStageChecklistItem(
   body: ChecklistInterface
 ) {
   try {
-    const { data } = await axios.post(
-      `${uri}/groups/${group_id}/stages/${stage_id}/checklist`,
-      {
-        body,
-      }
-    );
-    return data.body;
+    // const { data } = await axios.post(
+    //   `${uri}/groups/${group_id}/stages/${stage_id}/checklist`,
+    //   {
+    //     body,
+    //   }
+    // );
+    // return data.body;
+    return body;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(
@@ -47,7 +50,8 @@ export async function createStageChecklistItem(
 
 export async function getGroupChecklist(group_id: number) {
   try {
-    const { data } = await axios.get(`${uri}/groups/${group_id}/checklist`);
+    // const { data } = await axios.get(`${uri}/groups/${group_id}/checklist`);
+    const data = checklistItems;
     return data;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
@@ -59,9 +63,10 @@ export async function getGroupChecklist(group_id: number) {
 
 export async function getStageChecklist(group_id: number, stage_id: number) {
   try {
-    const { data } = await axios.get(
-      `${uri}/groups/${group_id}/stages/${stage_id}/checklist`
-    );
+    // const { data } = await axios.get(
+    //   `${uri}/groups/${group_id}/stages/${stage_id}/checklist`
+    // );
+    const data = checklistItems;
     return data;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
@@ -76,10 +81,11 @@ export async function deleteGroupChecklistItem(
   checklist_id: number
 ) {
   try {
-    const { data } = await axios.delete(
-      `${uri}/groups/${group_id}/checklist/${checklist_id}`
-    );
-    return data;
+    // const { data } = await axios.delete(
+    //   `${uri}/groups/${group_id}/checklist/${checklist_id}`
+    // );
+    // return data;
+    return checklist_id;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(
@@ -94,10 +100,11 @@ export async function deleteStageChecklistItem(
   checklist_id: number
 ) {
   try {
-    const { data } = await axios.delete(
-      `${uri}/groups/${group_id}/stages/${stage_id}/checklist/${checklist_id}`
-    );
-    return data;
+    // const { data } = await axios.delete(
+    //   `${uri}/groups/${group_id}/stages/${stage_id}/checklist/${checklist_id}`
+    // );
+    // return data;
+    return checklist_id;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(

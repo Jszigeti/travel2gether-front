@@ -1,6 +1,6 @@
 // ROUTER
 import { useParams } from "react-router-dom";
-import ProtectEditRoute from "../../components/protectedRoutes/ProtectEditRoute";
+import ProtectGroupRoute from "../../components/protectedRoutes/ProtectGroupRoute";
 
 // COMPONENTS
 import GroupInfoForm from "../../components/form/GroupInfoForm";
@@ -12,7 +12,7 @@ export default function GroupEditInfoPage() {
   const params = useParams();
 
   return (
-    <ProtectEditRoute>
+    <ProtectGroupRoute editPage={true}>
       <Header
         pageTitle="Les informations"
         backLink={`/group/${params.groupId}/edit`}
@@ -24,6 +24,6 @@ export default function GroupEditInfoPage() {
         />
       </main>
       <Footer />
-    </ProtectEditRoute>
+    </ProtectGroupRoute>
   );
 }

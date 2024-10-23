@@ -9,7 +9,7 @@ import UserContext from "../../hooks/context/user.context";
 
 // ROUTER
 import { useNavigate, useParams } from "react-router-dom";
-import ProtectEditRoute from "../../components/protectedRoutes/ProtectEditRoute";
+import ProtectGroupRoute from "../../components/protectedRoutes/ProtectGroupRoute";
 
 // AXIOS FUNCTIONS
 import { deleteGroup, getGroup } from "../../api/group";
@@ -102,7 +102,7 @@ export default function GroupManagePage() {
     );
 
   return (
-    <ProtectEditRoute>
+    <ProtectGroupRoute editPage={true}>
       <Header pageTitle="Gestion" backLink={`/group/${params.groupId}`} />
       <main className="flex flex-col justify-center items-center px-5 gap-6 py-6 max-w-screen-xl min-h-[70vh] mx-auto lg:gap-12">
         <section className="grid gap-6 w-full lg:grid-cols-4">
@@ -140,6 +140,6 @@ export default function GroupManagePage() {
         )}
       </main>
       <Footer />
-    </ProtectEditRoute>
+    </ProtectGroupRoute>
   );
 }

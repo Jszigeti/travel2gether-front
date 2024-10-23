@@ -21,11 +21,13 @@ import MyProfileEditPasswordPage from "./pages/profile/MyProfileEditPasswordPage
 import MyProfileEditInfoPage from "./pages/profile/MyProfileEditInfoPage";
 import MyProfileEditPrefPage from "./pages/profile/MyProfileEditPrefPage";
 import GroupCreatePage from "./pages/group/GroupCreatePage";
+import GroupChecklistPage from "./pages/group/GroupChecklistPage";
 import GroupManagePage from "./pages/group/GroupManagePage";
 import GroupEditPage from "./pages/group/GroupEditPage";
 import GroupEditInfoPage from "./pages/group/GroupEditInfoPage";
 import GroupEditPrefPage from "./pages/group/GroupEditPrefPage";
 import StageCreatePage from "./pages/stage/StageCreatePage";
+import StageChecklistPage from "./pages/stage/StageChecklistPage";
 import StageEditPage from "./pages/stage/StageEditPage";
 
 export default function App() {
@@ -66,6 +68,10 @@ export default function App() {
             element={<MyProfileEditPrefPage />}
           />
           <Route path="/group/create" element={<GroupCreatePage />} />
+          <Route
+            path="/group/:groupId/checklist"
+            element={<GroupChecklistPage />}
+          />
           <Route path="/group/:groupId/manage" element={<GroupManagePage />} />
           <Route path="/group/:groupId/edit" element={<GroupEditPage />} />
           <Route
@@ -79,6 +85,10 @@ export default function App() {
           <Route
             path="/group/:groupId/stage/create"
             element={<StageCreatePage />}
+          />
+          <Route
+            path="/group/:groupId/stage/:stageId/checklist"
+            element={<StageChecklistPage />}
           />
           <Route
             path="/group/:groupId/stage/:stageId/edit"

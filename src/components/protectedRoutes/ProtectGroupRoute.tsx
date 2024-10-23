@@ -22,10 +22,14 @@ import {
 
 // PROPS INTERFACE
 interface ProtectEditRouteProps {
+  editPage?: boolean;
   children: ReactNode;
 }
 
-export default function ProtectEditRoute({ children }: ProtectEditRouteProps) {
+export default function ProtectGroupRoute({
+  editPage = false,
+  children,
+}: ProtectEditRouteProps) {
   // STATES
   const [redirect, setRedirect] = useState(false);
 
@@ -50,8 +54,15 @@ export default function ProtectEditRoute({ children }: ProtectEditRouteProps) {
         (profile) => profile.user_id === userId
       );
       if (
+        editPage &&
+        (!userProfile ||
+          userProfile.role.includes(GroupUserRoleEnum.TRAVELER) ||
+          userProfile.status.includes(GroupUserStatusEnum.DENIED) ||
+          userProfile.status.includes(GroupUserStatusEnum.PENDING))
+      ) {
+        setRedirect(true);
+      } else if (
         !userProfile ||
-        userProfile.role.includes(GroupUserRoleEnum.TRAVELER) ||
         userProfile.status.includes(GroupUserStatusEnum.DENIED) ||
         userProfile.status.includes(GroupUserStatusEnum.PENDING)
       ) {
