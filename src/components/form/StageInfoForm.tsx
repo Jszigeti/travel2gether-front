@@ -42,7 +42,7 @@ export default function StageInfoForm({
 
   // RETRIEVE STAGE INFO DATA
   const {
-    data: stageInfoData,
+    data: stageInfo,
     isLoading: isStageInfoLoading,
     isError: isStageInfoError,
   } = useQuery<StageInterface>({
@@ -54,8 +54,8 @@ export default function StageInfoForm({
     enabled: !stageCreationContext,
   });
 
-  const defaultImage = stageInfoData?.path_picture
-    ? stageInfoData.path_picture
+  const defaultImage = stageInfo?.path_picture
+    ? stageInfo.path_picture
     : "https://media.istockphoto.com/id/489556478/fr/photo/outils-de-voyage.jpg?s=1024x1024&w=is&k=20&c=dqsRCnDCKNcDi8Fnlzs96pAapEbH5PR01VQ6cEtC72U="; // Image par défaut du formulaire
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,15 +139,15 @@ export default function StageInfoForm({
   });
 
   useEffect(() => {
-    if (stageInfoData) {
-      formik.setFieldValue("title", stageInfoData.title);
-      formik.setFieldValue("description", stageInfoData.description);
-      formik.setFieldValue("address", stageInfoData.address);
-      formik.setFieldValue("date_from", stageInfoData.date_from);
-      formik.setFieldValue("date_to", stageInfoData.date_to);
-      formik.setFieldValue("path_picture", stageInfoData.path_picture);
+    if (stageInfo) {
+      formik.setFieldValue("title", stageInfo.title);
+      formik.setFieldValue("description", stageInfo.description);
+      formik.setFieldValue("address", stageInfo.address);
+      formik.setFieldValue("date_from", stageInfo.date_from);
+      formik.setFieldValue("date_to", stageInfo.date_to);
+      formik.setFieldValue("path_picture", stageInfo.path_picture);
     }
-  }, [stageInfoData]);
+  }, [stageInfo]);
 
   const handleDeleteStage = async () => {
     if (stageId) {

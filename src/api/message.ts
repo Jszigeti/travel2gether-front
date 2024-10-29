@@ -64,7 +64,7 @@ export async function getAllMessagesWithUser(
 
 export async function getAllMessagesWithGroup(group_receiver_id: number) {
   try {
-    const { data } = await axios.get(`${uri}/groups/${group_receiver_id}`);
+    const { data } = await axios.get(`${uri}/groups/${group_receiver_id}/messages`);
     return data;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;

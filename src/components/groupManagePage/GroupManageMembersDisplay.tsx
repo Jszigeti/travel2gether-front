@@ -23,13 +23,13 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 interface GroupManageMembersDisplayProps {
   userId: number;
   groupId: number;
-  groupDetailsData: GroupPageInterface;
+  groupDetails: GroupPageInterface;
 }
 
 export default function GroupManageMembersDisplay({
   userId,
   groupId,
-  groupDetailsData,
+  groupDetails,
 }: GroupManageMembersDisplayProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
@@ -38,7 +38,7 @@ export default function GroupManageMembersDisplay({
   const queryClient = useQueryClient();
 
   // RETRIEVE ACCEPTED USERS
-  const acceptedUsers = groupDetailsData.profiles.filter((profile) =>
+  const acceptedUsers = groupDetails.profiles.filter((profile) =>
     profile.status.includes(GroupUserStatusEnum.ACCEPTED)
   );
 

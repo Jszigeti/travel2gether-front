@@ -44,7 +44,7 @@ export function ProfileAccountForm() {
 
   // RETRIEVE PROFIL INFO DATA
   const {
-    data: profileAccountData,
+    data: profileAccount,
     isLoading: isProfileAccountLoading,
     isError: isProfileAccountError,
   } = useQuery<UserInterface & ProfileInterface>({
@@ -92,14 +92,14 @@ export function ProfileAccountForm() {
   });
 
   useEffect(() => {
-    if (profileAccountData) {
+    if (profileAccount) {
       formik.setValues({
-        email: profileAccountData.email || "",
-        firstname: profileAccountData.firstname || "",
-        lastname: profileAccountData.lastname || "",
+        email: profileAccount.email || "",
+        firstname: profileAccount.firstname || "",
+        lastname: profileAccount.lastname || "",
       });
     }
-  }, [profileAccountData]);
+  }, [profileAccount]);
 
   return (
     <Card

@@ -65,7 +65,7 @@ export default function GroupPrefForm({
 
   // RETRIEVE GROUP DATA
   const {
-    data: groupPrefData,
+    data: groupPref,
     isLoading: isGroupPrefLoading,
     isError: isGroupPrefError,
   } = useQuery<GroupInterface>({
@@ -124,17 +124,17 @@ export default function GroupPrefForm({
   });
 
   useEffect(() => {
-    if (groupPrefData) {
+    if (groupPref) {
       formik.setValues({
-        travel_types: groupPrefData.travel_types || [],
-        lodgings: groupPrefData.lodgings || [],
-        gender_type: groupPrefData.gender_type || [],
-        spoken_languages: groupPrefData.spoken_languages || [],
-        budget: groupPrefData.budget || [],
-        age_ranges: groupPrefData.age_ranges || [],
+        travel_types: groupPref.travel_types || [],
+        lodgings: groupPref.lodgings || [],
+        gender_type: groupPref.gender_type || [],
+        spoken_languages: groupPref.spoken_languages || [],
+        budget: groupPref.budget || [],
+        age_ranges: groupPref.age_ranges || [],
       });
     }
-  }, [groupPrefData]);
+  }, [groupPref]);
 
   return (
     <Card

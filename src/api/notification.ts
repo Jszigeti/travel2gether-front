@@ -6,6 +6,7 @@ import axios, { AxiosError } from "axios";
 
 // INTERFACES
 import { NotificationInterface } from "../interfaces/Notification";
+import { notifList } from "../data/notifList";
 
 export async function createNotification(
   user_id: number,
@@ -28,7 +29,8 @@ export async function createNotification(
 
 export async function getNotifications(user_id: number) {
   try {
-    const { data } = await axios.get(`${uri}/users/${user_id}/notifications`);
+    // const { data } = await axios.get(`${uri}/users/${user_id}/notifications`);
+    const data = notifList;
     return data;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
@@ -43,10 +45,11 @@ export async function editNotification(
   notification_id: number
 ) {
   try {
-    const { data } = await axios.put(
-      `${uri}/users/${user_id}/notifications/${notification_id}`
-    );
-    return data;
+    // const { data } = await axios.put(
+    //   `${uri}/users/${user_id}/notifications/${notification_id}`
+    // );
+    // return data;
+    return notification_id;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(

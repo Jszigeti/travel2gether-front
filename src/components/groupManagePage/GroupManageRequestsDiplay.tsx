@@ -25,12 +25,12 @@ import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 // PROPS INTERFACE
 interface GroupManageRequestsDiplayProps {
   groupId: number;
-  groupDetailsData: GroupPageInterface;
+  groupDetails: GroupPageInterface;
 }
 
 export default function GroupManageRequestsDisplay({
   groupId,
-  groupDetailsData,
+  groupDetails,
 }: GroupManageRequestsDiplayProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
@@ -39,7 +39,7 @@ export default function GroupManageRequestsDisplay({
   const queryClient = useQueryClient();
 
   // RETRIEVE PENDING USERS
-  const pendingUsers = groupDetailsData.profiles.filter((profile) =>
+  const pendingUsers = groupDetails.profiles.filter((profile) =>
     profile.status.includes(GroupUserStatusEnum.PENDING)
   );
 

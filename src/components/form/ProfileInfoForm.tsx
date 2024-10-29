@@ -74,7 +74,7 @@ export function ProfileInfoForm({
 
   // RETRIEVE PROFIL INFO DATA
   const {
-    data: profileInfoData,
+    data: profileInfo,
     isLoading: isProfileInfoLoading,
     isError: isProfileInfoError,
   } = useQuery<ProfileInterface>({
@@ -87,8 +87,8 @@ export function ProfileInfoForm({
   });
 
   // DEFAULT AVATAR
-  const defaultImage = profileInfoData?.path_picture
-    ? profileInfoData.path_picture
+  const defaultImage = profileInfo?.path_picture
+    ? profileInfo.path_picture
     : "https://images-ext-1.discordapp.net/external/vj4B_0At5aHV02oJ7BEdIZ2gOKfDu1FphkjY5ojkEko/%3Fs%3D612x612%26w%3D0%26k%3D20%26c%3Dt2RnIzl7hAwIUoupTgTDTYPZ2HCLvw5y-umBEtBsk8g%3D/https/media.istockphoto.com/id/846183008/fr/vectoriel/ic%25C3%25B4ne-de-profil-avatar-par-d%25C3%25A9faut-espace-r%25C3%25A9serv%25C3%25A9-photo-gris.jpg?format=webp";
 
   // IMAGE FUNCTION
@@ -149,16 +149,16 @@ export function ProfileInfoForm({
   });
 
   useEffect(() => {
-    if (profileInfoData) {
+    if (profileInfo) {
       formik.setValues({
-        path_picture: profileInfoData.path_picture || "",
-        gender: profileInfoData.gender || [],
-        description: profileInfoData.description || "",
-        interests: profileInfoData.interests || [],
-        spoken_languages: profileInfoData.spoken_languages || [],
+        path_picture: profileInfo.path_picture || "",
+        gender: profileInfo.gender || [],
+        description: profileInfo.description || "",
+        interests: profileInfo.interests || [],
+        spoken_languages: profileInfo.spoken_languages || [],
       });
     }
-  }, [profileInfoData]);
+  }, [profileInfo]);
 
   return (
     <Card

@@ -70,7 +70,7 @@ export function ProfilePrefForm({
 
   // RETRIEVE PROFIL PREF DATA
   const {
-    data: profilePrefData,
+    data: profilePref,
     isLoading: isProfilePrefLoading,
     isError: isProfilePrefError,
   } = useQuery<ProfileInterface>({
@@ -149,17 +149,17 @@ export function ProfilePrefForm({
   });
 
   useEffect(() => {
-    if (profilePrefData) {
+    if (profilePref) {
       formik.setValues({
-        travel_types: profilePrefData.travel_types || [],
-        budget: profilePrefData.budget || [],
-        lodgings: profilePrefData.lodgings || [],
-        available_from: profilePrefData.available_from || "",
-        available_to: profilePrefData.available_to || "",
-        trip_durations: profilePrefData.trip_durations || [],
+        travel_types: profilePref.travel_types || [],
+        budget: profilePref.budget || [],
+        lodgings: profilePref.lodgings || [],
+        available_from: profilePref.available_from || "",
+        available_to: profilePref.available_to || "",
+        trip_durations: profilePref.trip_durations || [],
       });
     }
-  }, [profilePrefData]);
+  }, [profilePref]);
 
   return (
     <Card

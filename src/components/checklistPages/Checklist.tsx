@@ -71,7 +71,7 @@ export default function Checklist({
 
   // RETRIEVE GROUP DATA
   const {
-    data: groupDetailsData,
+    data: groupDetails,
     isLoading: isGroupDetailsLoading,
     isError: isGroupDetailsError,
   } = useQuery<GroupPageInterface>({
@@ -120,10 +120,10 @@ export default function Checklist({
 
   // RETRIEVE USER ROLE
   useEffect(() => {
-    if (groupDetailsData && userId) {
-      retrieveUserRole(groupDetailsData, userId, setUserRole);
+    if (groupDetails && userId) {
+      retrieveUserRole(groupDetails, userId, setUserRole);
     }
-  }, [userId, groupDetailsData]);
+  }, [userId, groupDetails]);
 
   // STATES FUNCTIONS
   const handleViewForm = () => {
