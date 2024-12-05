@@ -5,7 +5,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import { signup } from "../../api/auth";
+import { useAuthApi } from "../../api/auth";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -26,6 +26,9 @@ interface SignupFormProps {
 export function SignupForm({ onNext }: SignupFormProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
+
+  // Import signup function
+  const { signup } = useAuthApi();
 
   // FORM LOGIC
   const formik = useFormik({
@@ -64,9 +67,9 @@ export function SignupForm({ onNext }: SignupFormProps) {
         if (error instanceof Error) {
           setError(error.message);
         } else {
-          setError("Une erreur inconnue est survenue");
+          setError("Une erreur inconnue est survenue.");
         }
-        console.log(error);
+        console.error("Erreur d'inscription", error);
       }
     },
   });
@@ -245,11 +248,7 @@ export function SignupForm({ onNext }: SignupFormProps) {
         >
           M'inscrire
         </Button>
-        {error && (
-          <div className="text-red-500 text-center ">
-            Erreur lors de la création du compte
-          </div>
-        )}
+        {error && <div className="text-red-500 text-center ">{error}</div>}
         <Typography className="text-center font-normal  mt-6">
           Déjà inscrit ?{" "}
           <NavLink to="/signin" className="text-blue font-bold">

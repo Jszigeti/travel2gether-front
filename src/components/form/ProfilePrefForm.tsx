@@ -102,14 +102,14 @@ export function ProfilePrefForm({
       if (values.availableTo)
         formData.append("availableTo", values.availableTo);
       values.travelTypes?.forEach((travelType) =>
-        formData.append("travelTypes", travelType)
+        formData.append("travelTypes[]", travelType)
       );
-      values.budget?.forEach((budget) => formData.append("budget", budget));
+      values.budget?.forEach((budget) => formData.append("budget[]", budget));
       values.lodgings?.forEach((lodging) =>
-        formData.append("lodgings", lodging)
+        formData.append("lodgings[]", lodging)
       );
       values.tripDurations?.forEach((tripDuration) =>
-        formData.append("tripDurations", tripDuration)
+        formData.append("tripDurations[]", tripDuration)
       );
       // FORM LOGIC IF SIGNUP CONTEXT
       if (signupContext) {

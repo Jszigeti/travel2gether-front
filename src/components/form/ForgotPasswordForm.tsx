@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 // AXIOS FUNCTIONS
-import { forgotPassword } from "../../api/auth";
+import { useAuthApi } from "../../api/auth";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -16,6 +16,9 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 export default function ForgotPasswordForm() {
   // STATES
   const [error, setError] = useState<null | string>(null);
+
+  // Import signup function
+  const { forgotPassword } = useAuthApi();
 
   // FORM LOGIC
   const formik = useFormik({

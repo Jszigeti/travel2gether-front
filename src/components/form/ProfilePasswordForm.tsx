@@ -8,7 +8,7 @@ import UserContext from "../../hooks/context/user.context";
 import { useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import { editPassword } from "../../api/auth";
+import { useAuthApi } from "../../api/auth";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -22,6 +22,9 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 export function ProfilePasswordForm() {
   // STATES
   const [error, setError] = useState<null | string>(null);
+
+  // Import signup function
+  const { editPassword } = useAuthApi();
 
   // RETRIEVE USER ID
   const { userId } = useContext(UserContext) || {};
