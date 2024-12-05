@@ -6,7 +6,6 @@ import { NavLink } from "react-router-dom";
 
 // AXIOS FUNCTIONS
 import { signup } from "../../api/auth";
-import { createProfile } from "../../api/profile";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -23,10 +22,8 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 // PROPS INTERFACE
 interface SignupFormProps {
   onNext: () => void;
-  onUserId: (userId: number) => void;
-  onUserToken: (token: string) => void;
 }
-export function SignupForm({ onNext, onUserId, onUserToken }: SignupFormProps) {
+export function SignupForm({ onNext }: SignupFormProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
 
@@ -59,25 +56,8 @@ export function SignupForm({ onNext, onUserId, onUserToken }: SignupFormProps) {
       };
       try {
         setError(null);
-        const response = await signup({ ...userData, id: 1 });
+        const response = await signup(userData);
         console.log("Inscription réussie", response);
-        const token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxNTEyMzQ1NiwiZXhwIjoxNzE1NzI4MjU2fQ.1JddZnGu8xdMOJJm6xXtNTYDKLU0OGic-wqmqPvyEf4";
-        onUserToken(token);
-        if (response.id) {
-          try {
-            const response2 = await createProfile(response.id);
-            onUserId(response.id);
-            console.log("Création du profil réussie", response2);
-          } catch (error: unknown) {
-            if (error instanceof Error) {
-              setError(error.message);
-            } else {
-              setError("Une erreur inconnue est survenue");
-            }
-            console.log(error);
-          }
-        }
         onNext();
         formik.resetForm();
       } catch (error: unknown) {

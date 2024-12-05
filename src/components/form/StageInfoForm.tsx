@@ -19,6 +19,7 @@ import {
   getStageFromGroup,
 } from "../../api/stage";
 import { useNavigate } from "react-router-dom";
+import { getSuggestions, NominatimSuggestion } from "../../utils/nominatimApi";
 
 interface StageInfoFormProps {
   stageCreationContext?: boolean;
@@ -32,7 +33,7 @@ export default function StageInfoForm({
   stageId,
 }: StageInfoFormProps) {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-
+  const [suggestions, setSuggestions] = useState<NominatimSuggestion[]>([]);
   const [error, setError] = useState<null | string>(null);
 
   const navigate = useNavigate();
@@ -78,6 +79,8 @@ export default function StageInfoForm({
       date_from: "",
       date_to: "",
       path_picture: "",
+      latitude: "",
+      longitude: "",
     },
     validationSchema: Yup.object({
       path_picture: Yup.mixed().required("Une image est requise"),
@@ -166,6 +169,32 @@ export default function StageInfoForm({
         console.log(errors);
       }
     }
+  };
+
+  const handleAddressChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const query = event.target.value;
+    formik.setFieldValue("address", query);
+    if (query.length > 3) {
+      try {
+        const suggestions = await getSuggestions(query);
+        setSuggestions(suggestions);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des suggestions :",
+          error
+        );
+        setSuggestions([]);
+      }
+    }
+  };
+
+  const handleSuggestionSelect = (suggestion: NominatimSuggestion) => {
+    formik.setFieldValue("address", suggestion.display_name);
+    formik.setFieldValue("latitude", suggestion.lat);
+    formik.setFieldValue("longitude", suggestion.lon);
+    setSuggestions([]);
   };
 
   return (
@@ -270,7 +299,7 @@ export default function StageInfoForm({
           ) : null}
         </div>
 
-        <div className="flex flex-col  mb-3 relative">
+        <div className="flex flex-col mb-3 relative">
           <Typography variant="h6">Lieu</Typography>
           <Input
             crossOrigin={undefined}
@@ -285,8 +314,22 @@ export default function StageInfoForm({
                 : null
             }`}
             {...formik.getFieldProps("address")}
+            onChange={handleAddressChange}
           />
-          {formik.touched.address && formik.errors.address ? (
+          {suggestions.length > 0 && (
+            <ul className="bg-white border rounded-md shadow-lg absolute top-[4.25rem] z-10 mt-1 max-h-48 overflow-y-auto">
+              {suggestions.map((suggestion) => (
+                <div
+                  key={suggestion.place_id}
+                  onClick={() => handleSuggestionSelect(suggestion)}
+                  className="p-2 cursor-pointer hover:bg-gray-200"
+                >
+                  {suggestion.display_name}
+                </div>
+              ))}
+            </ul>
+          )}
+          {formik.touched.address && formik.errors.address && (
             <>
               <Typography color="red">{formik.errors.address}</Typography>
               <FontAwesomeIcon
@@ -294,7 +337,7 @@ export default function StageInfoForm({
                 className="absolute right-3 top-10 text-red-500"
               />
             </>
-          ) : null}
+          )}
         </div>
         <div className="flex flex-col  mb-3 relative">
           <Typography variant="h6">Date de début</Typography>

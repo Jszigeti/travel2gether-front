@@ -10,47 +10,48 @@ import {
 } from "./Matching";
 
 export interface ProfileInterface {
-  user_id?: number;
+  userId?: number;
   firstname?: string;
   lastname?: string;
   birthdate?: string;
   gender?: ProfileGenderEnum[];
-  path_picture?: string;
+  file?: Blob;
+  pathPicture?: string;
   description?: string;
   budget?: BudgetEnum[];
-  travel_types?: TravelTypesSet[];
+  travelTypes?: TravelTypesSet[];
   lodgings?: LodgingsSet[];
   interests?: ProfileInterestsSet[];
-  available_from?: string;
-  available_to?: string;
-  spoken_languages?: SpokenLanguagesSet[];
-  trip_durations?: ProfileTripDurationsSet[];
-  created_at?: Date;
-  updated_at?: Date;
+  availableFrom?: string;
+  availableTo?: string;
+  spokenLanguages?: SpokenLanguagesSet[];
+  tripDurations?: ProfileTripDurationsSet[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface ProfilePageInterface {
-  user_id: number;
+  userId: number;
   firstname: string;
   lastname: string;
   birthdate: string;
   average_rating: number;
   ratings: number;
   gender: ProfileGenderEnum[];
-  path_picture: string;
+  pathPicture: string;
   description: string;
   budget: BudgetEnum[];
-  travel_types: TravelTypesSet[];
+  travelTypes: TravelTypesSet[];
   lodgings: LodgingsSet[];
   interests: ProfileInterestsSet[];
-  available_from: string;
-  available_to: string;
-  spoken_languages: SpokenLanguagesSet[];
-  trip_durations: ProfileTripDurationsSet[];
+  availableFrom: string;
+  availableTo: string;
+  spokenLanguages: SpokenLanguagesSet[];
+  tripDurations: ProfileTripDurationsSet[];
   groups: {
     id: number;
     title: string;
-    path_picture: string;
+    pathPicture: string;
     location: string;
     date_from: string;
     date_to: string;
@@ -60,5 +61,5 @@ export interface ProfilePageInterface {
 export interface AvatarCardInterface {
   user_id: number;
   firstname: string;
-  path_picture: string;
+  pathPicture: string;
 }

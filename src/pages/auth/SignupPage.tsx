@@ -4,9 +4,6 @@ import { useState } from "react";
 // ROUTER
 import { NavLink } from "react-router-dom";
 
-// INTERFACES
-import { ProfileInterface } from "../../interfaces/Profile";
-
 // COMPONENTS
 import { SignupForm } from "../../components/form/SignupForm";
 import { ProfileInfoForm } from "../../components/form/ProfileInfoForm";
@@ -17,21 +14,10 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 export default function SignupPage() {
   // STATES
   const [view, setView] = useState(0);
-  const [userId, setUserId] = useState<number>();
-  const [profileData, setProfileData] = useState<ProfileInterface>();
-  const [userToken, setUserToken] = useState<string | undefined>(undefined);
 
   // STATES FUNCTIONS
   const handleNext = () => {
     if (view < 2) setView((v) => v + 1);
-  };
-
-  const handleProfileData = (values: ProfileInterface) => {
-    setProfileData(values);
-  };
-
-  const saveUserToken = (token: string) => {
-    localStorage.setItem("token", token);
   };
 
   return (
@@ -43,25 +29,11 @@ export default function SignupPage() {
         </span>
       </NavLink>
       {view === 0 ? (
-        <SignupForm
-          onNext={handleNext}
-          onUserId={setUserId}
-          onUserToken={setUserToken}
-        />
+        <SignupForm onNext={handleNext} />
       ) : view === 1 ? (
-        <ProfileInfoForm
-          onNext={handleNext}
-          onProfileData={handleProfileData}
-          token={userToken}
-          saveUserToken={saveUserToken}
-        />
+        <ProfileInfoForm onNext={handleNext} />
       ) : (
-        <ProfilePrefForm
-          profileData={profileData}
-          formUserId={userId}
-          token={userToken}
-          saveUserToken={saveUserToken}
-        />
+        <ProfilePrefForm />
       )}
     </main>
   );
