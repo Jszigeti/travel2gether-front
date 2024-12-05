@@ -11,7 +11,7 @@ import UserContext from "../../hooks/context/user.context";
 import { useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import { editUser, getUser } from "../../api/auth";
+import { useAuthApi } from "../../api/auth";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -32,6 +32,9 @@ import { ProfileInterface } from "../../interfaces/Profile";
 export function ProfileAccountForm() {
   // STATES
   const [error, setError] = useState<null | string>(null);
+
+  // Import signup function
+  const { getUser, editUser } = useAuthApi();
 
   // RETRIEVE USER ID
   const { userId } = useContext(UserContext) || {};

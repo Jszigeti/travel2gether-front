@@ -2,11 +2,14 @@ import { Button } from "@material-tailwind/react";
 import { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import UserContext from "../../hooks/context/user.context";
-import { deleteUser } from "../../api/auth";
+import { useAuthApi } from "../../api/auth";
 
 export default function MyProfileEditComponent() {
   // STATES
   const [error, setError] = useState<null | string>(null);
+
+  // Import signup function
+  const { deleteUser } = useAuthApi();
 
   // RETRIEVE USER ID
   const { userId, logout } = useContext(UserContext) || {};

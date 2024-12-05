@@ -15,7 +15,7 @@ import { editProfile, getProfile } from "../../api/profile";
 
 // FORMIK
 import { useFormik } from "formik";
-import { object, array, string } from "yup";
+import { object, array, string, date } from "yup";
 
 // INTERFACES
 import { ProfileInterface } from "../../interfaces/Profile";
@@ -42,6 +42,8 @@ import {
   Input,
   Avatar,
 } from "@material-tailwind/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 // PROPS INTERFACE
 interface ProfileInfoFormProps {
@@ -105,29 +107,33 @@ export function ProfileInfoForm({
       file: undefined,
       gender: [] as ProfileGenderEnum[],
       description: "",
+      birthdate: "",
       interests: [] as ProfileInterestsSet[],
       spokenLanguages: [] as SpokenLanguagesSet[],
     },
     validationSchema: object({
       gender: array(),
       description: string(),
+      birthdate: date(),
       interests: array(),
       spokenLanguages: array(),
     }),
     onSubmit: async (values) => {
+      console.log("🚀 ~ onSubmit: ~ values:", values);
       const formData = new FormData();
       if (values.file) formData.append("file", values.file);
       if (values.description)
         formData.append("description", values.description);
-      values.gender?.forEach((gender) => formData.append("gender", gender));
+      if (values.birthdate) formData.append("birthdate", values.birthdate);
+      values.gender?.forEach((gender) => formData.append("gender[]", gender));
       values.interests?.forEach((interest) =>
-        formData.append("interests", interest)
+        formData.append("interests[]", interest)
       );
       values.spokenLanguages?.forEach((language) =>
-        formData.append("spokenLanguages", language)
+        formData.append("spokenLanguages[]", language)
       );
       if (onNext) {
-        const response = await editProfile(formData); // Assurez-vous que votre API accepte FormData
+        const response = await editProfile(formData);
         console.log("Enregistrement réussi", response);
         onNext();
         formik.resetForm();
@@ -217,6 +223,35 @@ export function ProfileInfoForm({
             label="votre genre"
             multiple={false}
           />
+        </div>
+        <div className="flex flex-col mb-3 relative">
+          <Typography variant="h6">Ma date de naissance</Typography>
+          <Input
+            crossOrigin={undefined}
+            size="lg"
+            type="date"
+            placeholder="Date de naissance"
+            className={`!border-blue mb-3  ${
+              formik.touched.birthdate && formik.errors.birthdate
+                ? "!border-red-500"
+                : null
+            }`}
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+            onChange={formik.handleChange}
+            name="birthdate"
+            value={formik.values.birthdate}
+          />
+          {formik.touched.birthdate && formik.errors.birthdate ? (
+            <FontAwesomeIcon
+              icon={faCircleExclamation}
+              className="absolute right-3 top-[40px] text-red-500"
+            />
+          ) : null}
+          {formik.errors.birthdate && formik.touched.birthdate && (
+            <div>{formik.errors.birthdate}</div>
+          )}
         </div>
         <div className="flex flex-col mb-3 relative">
           <Typography variant="h6">Bio</Typography>
