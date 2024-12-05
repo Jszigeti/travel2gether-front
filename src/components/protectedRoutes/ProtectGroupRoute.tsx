@@ -40,7 +40,7 @@ export default function ProtectGroupRoute({
   const params = useParams();
 
   // RETRIEVE GROUP DATA
-  const { data: groupDetailsData } = useQuery<GroupPageInterface>({
+  const { data: groupDetails } = useQuery<GroupPageInterface>({
     queryKey: ["groupDetails", Number(params.groupId)],
     queryFn: () =>
       params.groupId
@@ -49,8 +49,8 @@ export default function ProtectGroupRoute({
   });
 
   useEffect(() => {
-    if (groupDetailsData) {
-      const userProfile = groupDetailsData.profiles.find(
+    if (groupDetails) {
+      const userProfile = groupDetails.profiles.find(
         (profile) => profile.user_id === userId
       );
       if (
@@ -69,7 +69,7 @@ export default function ProtectGroupRoute({
         setRedirect(true);
       }
     }
-  }, [userId, groupDetailsData]);
+  }, [userId, groupDetails]);
 
   if (redirect) {
     return <Navigate to={`/group/${params.groupId}`} replace />;

@@ -1,13 +1,13 @@
-// API URI
-import { uri } from "./uri";
-
 // AXIOS
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 
 // INTERFACES
 import { ProfileInterface } from "../interfaces/Profile";
 import { profilesList } from "../data/profilesList";
 import { profileDetails } from "../data/profileDetails";
+import { useApi } from "../hooks/useApi/useApi";
+
+const api = useApi();
 
 export async function createProfile(user_id: number) {
   try {
@@ -22,13 +22,10 @@ export async function createProfile(user_id: number) {
   }
 }
 
-export async function editProfile(user_id: number, body: ProfileInterface) {
+export async function editProfile(body: FormData) {
   try {
-    // const { data } = await axios.put(`${uri}/users/${user_id}/profile`, {
-    //   body,
-    // });
-    // return data.body;
-    return body;
+    const { data } = await api.patch("users/profile", body);
+    return data;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
     throw new Error(

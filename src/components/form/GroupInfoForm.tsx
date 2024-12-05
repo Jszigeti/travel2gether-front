@@ -57,7 +57,7 @@ export default function GroupInfoForm({
 
   // RETRIEVE GROUP DATA
   const {
-    data: groupInfoData,
+    data: groupInfo,
     isLoading: isGroupInfoLoading,
     isError: isGroupInfoError,
   } = useQuery<GroupInterface>({
@@ -70,8 +70,8 @@ export default function GroupInfoForm({
   });
 
   // DEFAULT AVATAR
-  const defaultImage = groupInfoData?.path_picture
-    ? groupInfoData.path_picture
+  const defaultImage = groupInfo?.path_picture
+    ? groupInfo.path_picture
     : "https://cdn.pixabay.com/photo/2016/01/19/15/48/luggage-1149289_960_720.jpg";
 
   // IMAGE FUNCTION
@@ -155,17 +155,17 @@ export default function GroupInfoForm({
   });
 
   useEffect(() => {
-    if (groupInfoData) {
+    if (groupInfo) {
       formik.setValues({
-        title: groupInfoData.title || "",
-        description: groupInfoData.description || "",
-        location: groupInfoData.location || "",
-        date_from: groupInfoData.date_from || "",
-        date_to: groupInfoData.date_to || "",
-        path_picture: groupInfoData.path_picture || "",
+        title: groupInfo.title || "",
+        description: groupInfo.description || "",
+        location: groupInfo.location || "",
+        date_from: groupInfo.date_from || "",
+        date_to: groupInfo.date_to || "",
+        path_picture: groupInfo.path_picture || "",
       });
     }
-  }, [groupInfoData]);
+  }, [groupInfo]);
 
   return (
     <Card

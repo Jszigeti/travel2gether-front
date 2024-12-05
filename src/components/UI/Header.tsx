@@ -8,6 +8,7 @@ import UserContext from "../../hooks/context/user.context";
 import { NavLink } from "react-router-dom";
 
 // COMPONENTS
+import SearchMenu from "./SearchMenu";
 import {
   Navbar,
   Collapse,
@@ -21,8 +22,6 @@ import {
   faArrowLeft,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
-import SearchMenu from "./SearchMenu";
-import { notifList } from "../../data/notifList";
 
 // PROPS INTERFACE
 interface HeaderProps {
@@ -30,21 +29,20 @@ interface HeaderProps {
   backLink?: string;
 }
 
-const notReadNotifList = notifList.filter((notif) => !notif.isRead);
-
 export default function Header({ pageTitle, backLink }: HeaderProps) {
   // STATES
   const [openNav, setOpenNav] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
 
   // CONTEXT
-  const { userId, logout } = useContext(UserContext) || {};
+  const { userId, logout, nbNotReadNotifications } =
+    useContext(UserContext) || {};
 
   // NAVLINKS ARRAY
   const navLinks = userId
     ? [
         { path: "/my-profile", name: "Mon profil" },
-        { path: "/my-profile/notifications", name: "Mes notification" },
+        { path: "/my-profile/notifications", name: "Mes notifications" },
         { path: "/my-profile/messages", name: "Mes messages" },
         { path: "/my-profile/groups", name: "Mes groupes" },
         { path: "/my-profile/invitations", name: "Mes invitations" },
@@ -65,9 +63,12 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
             className="mb-3 font-bold"
             onClick={closeNav}
           >
-            {link.name}
-            {link.name === "Mes notification" && (
-              <Badge content={notReadNotifList.length}>s</Badge>
+            {link.name === "Mes notifications" &&
+            nbNotReadNotifications &&
+            nbNotReadNotifications > 0 ? (
+              <Badge content={nbNotReadNotifications}>{link.name}</Badge>
+            ) : (
+              link.name
             )}
           </NavLink>
         ))}

@@ -46,18 +46,12 @@ import {
 // PROPS INTERFACE
 interface ProfileInfoFormProps {
   onNext?: () => void;
-  onProfileData?: (values: ProfileInterface) => void;
   signupContext?: boolean;
-  token?: string;
-  saveUserToken?: (token: string) => void;
 }
 
 export function ProfileInfoForm({
   onNext,
-  onProfileData,
   signupContext = true,
-  token,
-  saveUserToken,
 }: ProfileInfoFormProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
@@ -74,7 +68,7 @@ export function ProfileInfoForm({
 
   // RETRIEVE PROFIL INFO DATA
   const {
-    data: profileInfoData,
+    data: profileInfo,
     isLoading: isProfileInfoLoading,
     isError: isProfileInfoError,
   } = useQuery<ProfileInterface>({
@@ -87,48 +81,60 @@ export function ProfileInfoForm({
   });
 
   // DEFAULT AVATAR
-  const defaultImage = profileInfoData?.path_picture
-    ? profileInfoData.path_picture
+  const defaultImage = profileInfo?.pathPicture
+    ? profileInfo.pathPicture
     : "https://images-ext-1.discordapp.net/external/vj4B_0At5aHV02oJ7BEdIZ2gOKfDu1FphkjY5ojkEko/%3Fs%3D612x612%26w%3D0%26k%3D20%26c%3Dt2RnIzl7hAwIUoupTgTDTYPZ2HCLvw5y-umBEtBsk8g%3D/https/media.istockphoto.com/id/846183008/fr/vectoriel/ic%25C3%25B4ne-de-profil-avatar-par-d%25C3%25A9faut-espace-r%25C3%25A9serv%25C3%25A9-photo-gris.jpg?format=webp";
 
   // IMAGE FUNCTION
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    console.log("🚀 ~ handleImageChange ~ file:", file);
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setPreviewImage(imageUrl);
-      formik.setFieldValue("path_picture", file);
+      formik.setFieldValue("file", file);
     } else {
       setPreviewImage(null);
-      formik.setFieldValue("path_picture", null);
+      formik.setFieldValue("file", null);
     }
   };
 
   // FORM LOGIC
   const formik = useFormik<ProfileInterface>({
     initialValues: {
-      path_picture: "",
+      file: undefined,
       gender: [] as ProfileGenderEnum[],
       description: "",
       interests: [] as ProfileInterestsSet[],
-      spoken_languages: [] as SpokenLanguagesSet[],
+      spokenLanguages: [] as SpokenLanguagesSet[],
     },
     validationSchema: object({
-      path_picture: string(),
       gender: array(),
       description: string(),
       interests: array(),
-      spoken_languages: array(),
+      spokenLanguages: array(),
     }),
     onSubmit: async (values) => {
-      if (onProfileData && onNext) {
-        onProfileData(values);
+      const formData = new FormData();
+      if (values.file) formData.append("file", values.file);
+      if (values.description)
+        formData.append("description", values.description);
+      values.gender?.forEach((gender) => formData.append("gender", gender));
+      values.interests?.forEach((interest) =>
+        formData.append("interests", interest)
+      );
+      values.spokenLanguages?.forEach((language) =>
+        formData.append("spokenLanguages", language)
+      );
+      if (onNext) {
+        const response = await editProfile(formData); // Assurez-vous que votre API accepte FormData
+        console.log("Enregistrement réussi", response);
         onNext();
         formik.resetForm();
       } else if (userId) {
         try {
           setError(null);
-          const response = await editProfile(userId, values);
+          const response = await editProfile(formData);
           console.log("Mise à jour du profil réussie", response);
           queryClient.setQueryData(["profileInfo", userId], values);
           queryClient.invalidateQueries({
@@ -149,16 +155,16 @@ export function ProfileInfoForm({
   });
 
   useEffect(() => {
-    if (profileInfoData) {
+    if (profileInfo) {
       formik.setValues({
-        path_picture: profileInfoData.path_picture || "",
-        gender: profileInfoData.gender || [],
-        description: profileInfoData.description || "",
-        interests: profileInfoData.interests || [],
-        spoken_languages: profileInfoData.spoken_languages || [],
+        pathPicture: profileInfo.pathPicture || "",
+        gender: profileInfo.gender || [],
+        description: profileInfo.description || "",
+        interests: profileInfo.interests || [],
+        spokenLanguages: profileInfo.spokenLanguages || [],
       });
     }
-  }, [profileInfoData]);
+  }, [profileInfo]);
 
   return (
     <Card
@@ -191,7 +197,7 @@ export function ProfileInfoForm({
             type="file"
             placeholder="Your profile pic"
             className={`!border-blue  ${
-              formik.touched.path_picture && formik.errors.path_picture
+              formik.touched.file && formik.errors.file
                 ? "!border-red-500"
                 : null
             }`}
@@ -199,7 +205,7 @@ export function ProfileInfoForm({
               className: "before:content-none after:content-none",
             }}
             onChange={handleImageChange}
-            name="path_picture"
+            name="file"
           />
         </div>
         <div className="flex flex-col mb-3 relative">
@@ -239,7 +245,7 @@ export function ProfileInfoForm({
           <Typography variant="h6">Langues parlées</Typography>
           <Dropdown
             options={spokenLanguagesOptions}
-            field={formik.getFieldProps("spoken_languages")}
+            field={formik.getFieldProps("spokenLanguages")}
             formik={formik}
             label="vos langues parlées"
           />
@@ -268,7 +274,7 @@ export function ProfileInfoForm({
         {signupContext && (
           <Typography
             className="text-center text-blue font-normal mt-6 cursor-pointer"
-            onClick={() => token && saveUserToken?.(token)}
+            onClick={() => navigate(`/signin`)}
           >
             Compléter plus tard
           </Typography>
