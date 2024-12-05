@@ -75,7 +75,7 @@ export default function SearchGroupsForm() {
     }),
     onSubmit: async (values) => {
       try {
-        console.log(values);
+        console.log("valeurs séléctionnées", values);
         const response = await getGroups(values);
         console.log("Recherche des groupes", response);
         navigate(`/results`, { state: { groups: response } });

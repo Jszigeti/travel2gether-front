@@ -31,6 +31,7 @@ import GroupEditPrefPage from "./pages/group/GroupEditPrefPage";
 import StageCreatePage from "./pages/stage/StageCreatePage";
 import StageChecklistPage from "./pages/stage/StageChecklistPage";
 import StageEditPage from "./pages/stage/StageEditPage";
+import StagePage from "./pages/stage/StagePage";
 
 export default function App() {
   return (
@@ -100,6 +101,10 @@ export default function App() {
           <Route
             path="/group/:groupId/stage/:stageId/edit"
             element={<StageEditPage />}
+          />
+          <Route
+            path="/group/:groupId/stage/:stageId"
+            element={<StagePage />}
           />
         </Route>
       </Routes>
