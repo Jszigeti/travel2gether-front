@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   ageRangesOptions,
   budgetOptions,
@@ -24,7 +23,6 @@ import {
 } from "../../interfaces/Matching";
 import { Button, Card, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-
 import { useProfileApi } from "../../api/profile";
 
 export default function SearchUsersForm() {
@@ -44,10 +42,9 @@ export default function SearchUsersForm() {
       trip_durations: [] as ProfileTripDurationsSet[],
       interests: [] as ProfileInterestsSet[],
     },
-    validationSchema: Yup.object({}),
     onSubmit: async (values) => {
       try {
-        // Transformer les valeurs du formulaire en une query string adaptée
+        // Transformer les valeurs du formulaire
         const formattedQuery = {
           travelTypes:
             values.travel_types.length > 0
@@ -75,8 +72,6 @@ export default function SearchUsersForm() {
             values.interests.length > 0
               ? values.interests.join(",")
               : undefined,
-          budget:
-            values.budget.length > 0 ? values.budget.join(",") : undefined,
         };
 
         // Supprimer les clés avec des valeurs `undefined`
@@ -84,14 +79,14 @@ export default function SearchUsersForm() {
           Object.entries(formattedQuery).filter(([, v]) => v !== undefined)
         );
 
-        // Envoyer la requête
-        const response = await getProfiles(cleanQuery);
+        // Envoyer la requête et naviguer vers les résultats
+        const response = await getProfiles({ ...cleanQuery, page: 1 });
         navigate("/results", {
           state: {
             profiles: response.users,
-            currentPage: response.currentPage,
+            currentPage: 1,
             totalPages: response.totalPages,
-            searchCriteria: values, // Critères pour refaire des requêtes sur d'autres pages
+            searchCriteria: cleanQuery,
           },
         });
       } catch (error) {
