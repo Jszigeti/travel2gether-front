@@ -1,3 +1,25 @@
+// AXIOS
+import { useApi } from "../hooks/useApi/useApi";
+
+// UTILS FUNCTIONS
+import { handleError } from "../utils/errorHandler";
+
+export function useGroupApi() {
+  const api = useApi();
+
+  const getLastGroups = async () => {
+    try {
+      const { data } = await api.get("groups");
+      return data;
+    } catch (error: unknown) {
+      throw new Error(error);
+    }
+  };
+  return {
+    getLastGroups,
+  };
+}
+
 // API URI
 import { uri } from "./uri";
 

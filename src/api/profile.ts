@@ -1,4 +1,26 @@
 // AXIOS
+import { useApi } from "../hooks/useApi/useApi";
+
+// UTILS FUNCTIONS
+import { handleError } from "../utils/errorHandler";
+
+export function useProfileApi() {
+  const api = useApi();
+
+  const getLastProfiles = async () => {
+    try {
+      const { data } = await api.get("users/profiles");
+      return data;
+    } catch (error: unknown) {
+      throw new Error(error);
+    }
+  };
+  return {
+    getLastProfiles,
+  };
+}
+
+// AXIOS
 import { AxiosError } from "axios";
 
 // INTERFACES
