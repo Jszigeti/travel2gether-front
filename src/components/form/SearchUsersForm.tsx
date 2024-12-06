@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import {
   ageRangesOptions,
   budgetOptions,
@@ -22,13 +23,15 @@ import {
   ProfileInterestsSet,
 } from "../../interfaces/Matching";
 import { Button, Card, Typography } from "@material-tailwind/react";
-import { getProfiles } from "../../api/profile";
 import { useNavigate } from "react-router-dom";
+
+import { useProfileApi } from "../../api/profile";
 
 export default function SearchUsersForm() {
   const [showMore, setShowMore] = useState(false);
   const [error, setError] = useState<null | string>(null);
   const navigate = useNavigate();
+  const { getProfiles } = useProfileApi();
 
   const formik = useFormik({
     initialValues: {
@@ -41,18 +44,52 @@ export default function SearchUsersForm() {
       trip_durations: [] as ProfileTripDurationsSet[],
       interests: [] as ProfileInterestsSet[],
     },
+    validationSchema: Yup.object({}),
     onSubmit: async (values) => {
       try {
-        const response = await getProfiles(values);
-        console.log("Recherche des utilisateurs", response);
-        navigate(`/results`, { state: { profiles: response } });
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("Une erreur inconnue est survenue");
-        }
-        console.log(error);
+        // Transformer les valeurs du formulaire en une query string adaptée
+        const formattedQuery = {
+          travelTypes:
+            values.travel_types.length > 0
+              ? values.travel_types.join(",")
+              : undefined,
+          lodgings:
+            values.lodgings.length > 0 ? values.lodgings.join(",") : undefined,
+          gender:
+            values.gender_type.length > 0
+              ? values.gender_type.join(",")
+              : undefined,
+          languages:
+            values.spoken_languages.length > 0
+              ? values.spoken_languages.join(",")
+              : undefined,
+          ageRanges:
+            values.age_ranges.length > 0
+              ? values.age_ranges.join(",")
+              : undefined,
+          tripDurations:
+            values.trip_durations.length > 0
+              ? values.trip_durations.join(",")
+              : undefined,
+          interests:
+            values.interests.length > 0
+              ? values.interests.join(",")
+              : undefined,
+          budget:
+            values.budget.length > 0 ? values.budget.join(",") : undefined,
+        };
+
+        // Supprimer les clés avec des valeurs `undefined`
+        const cleanQuery = Object.fromEntries(
+          Object.entries(formattedQuery).filter(([, v]) => v !== undefined)
+        );
+
+        // Envoyer la requête
+        const response = await getProfiles(cleanQuery);
+        navigate(`/results`, { state: { profiles: response.profiles } });
+      } catch (error) {
+        setError("Erreur lors de la recherche des utilisateurs");
+        console.error(error);
       }
     },
   });
@@ -93,7 +130,6 @@ export default function SearchUsersForm() {
             label="vos durées de voyage"
           />
 
-          {/* Hidden fields  */}
           {showMore && (
             <>
               <Typography variant="h6" className="mt-4">

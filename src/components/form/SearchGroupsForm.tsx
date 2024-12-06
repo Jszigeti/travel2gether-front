@@ -21,13 +21,16 @@ import {
 import { Button, Card, Input, Typography } from "@material-tailwind/react";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getGroups } from "../../api/group";
+// import { getGroups } from "../../api/group";
 import { useNavigate } from "react-router-dom";
+
+import { useGroupApi } from "../../api/group";
 
 export default function SearchGroupsForm() {
   const [showMore, setShowMore] = useState(false);
   const [error, setError] = useState<null | string>(null);
   const navigate = useNavigate();
+  const { getGroups } = useGroupApi();
 
   const formik = useFormik({
     initialValues: {
@@ -73,19 +76,59 @@ export default function SearchGroupsForm() {
           }
         ),
     }),
+    // onSubmit: async (values) => {
+    //   try {
+    //     console.log("valeurs séléctionnées", values);
+    //     const response = await getGroups(values);
+    //     console.log("Recherche des groupes", response);
+    //     navigate(`/results`, { state: { groups: response } });
+    //   } catch (error: unknown) {
+    //     if (error instanceof Error) {
+    //       setError(error.message);
+    //     } else {
+    //       setError("Une erreur inconnue est survenue");
+    //     }
+    //     console.log(error);
+    //   }
+    // },
     onSubmit: async (values) => {
       try {
-        console.log("valeurs séléctionnées", values);
-        const response = await getGroups(values);
-        console.log("Recherche des groupes", response);
-        navigate(`/results`, { state: { groups: response } });
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("Une erreur inconnue est survenue");
-        }
-        console.log(error);
+        // Transformer les valeurs du formulaire
+        const formattedQuery = {
+          travelTypes:
+            values.travel_types.length > 0
+              ? values.travel_types.join(",")
+              : undefined,
+          lodgings:
+            values.lodgings.length > 0 ? values.lodgings.join(",") : undefined,
+          gender:
+            values.gender_type.length > 0
+              ? values.gender_type.join(",")
+              : undefined,
+          languages:
+            values.spoken_languages.length > 0
+              ? values.spoken_languages.join(",")
+              : undefined,
+          ageRanges:
+            values.age_ranges.length > 0
+              ? values.age_ranges.join(",")
+              : undefined,
+          location: values.location || undefined,
+          dateFrom: values.date_from || undefined,
+          dateTo: values.date_to || undefined,
+        };
+
+        // Supprimer les clés avec des valeurs `undefined`
+        const cleanQuery = Object.fromEntries(
+          Object.entries(formattedQuery).filter(([, v]) => v !== undefined)
+        );
+
+        // Envoyer la requête
+        const response = await getGroups(cleanQuery);
+        navigate(`/results`, { state: { groups: response.groups } });
+      } catch (error) {
+        setError("Erreur lors de la recherche des groupes");
+        console.error(error);
       }
     },
   });

@@ -15,8 +15,26 @@ export function useProfileApi() {
       throw new Error(error);
     }
   };
+  const getProfiles = async (query: any) => {
+    const params = {
+      ...query,
+      page: query.page || 1,
+      limit: query.limit || 10,
+    };
+
+    try {
+      const { data } = await api.get("users/search", {
+        params,
+      });
+      return data;
+    } catch (error) {
+      console.error("Erreur lors de la recherche des profiles :", error);
+      throw error;
+    }
+  };
   return {
     getLastProfiles,
+    getProfiles,
   };
 }
 
