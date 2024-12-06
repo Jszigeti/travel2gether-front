@@ -76,21 +76,6 @@ export default function SearchGroupsForm() {
           }
         ),
     }),
-    // onSubmit: async (values) => {
-    //   try {
-    //     console.log("valeurs séléctionnées", values);
-    //     const response = await getGroups(values);
-    //     console.log("Recherche des groupes", response);
-    //     navigate(`/results`, { state: { groups: response } });
-    //   } catch (error: unknown) {
-    //     if (error instanceof Error) {
-    //       setError(error.message);
-    //     } else {
-    //       setError("Une erreur inconnue est survenue");
-    //     }
-    //     console.log(error);
-    //   }
-    // },
     onSubmit: async (values) => {
       try {
         // Transformer les valeurs du formulaire
@@ -125,7 +110,14 @@ export default function SearchGroupsForm() {
 
         // Envoyer la requête
         const response = await getGroups(cleanQuery);
-        navigate(`/results`, { state: { groups: response.groups } });
+        navigate("/results", {
+          state: {
+            groups: response.groups, // Résultats des groupes
+            currentPage: response.currentPage, // Page actuelle
+            totalPages: response.totalPages, // Nombre total de pages
+            searchCriteria: cleanQuery, // Critères de recherche pour les requêtes suivantes
+          },
+        });
       } catch (error) {
         setError("Erreur lors de la recherche des groupes");
         console.error(error);

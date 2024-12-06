@@ -14,28 +14,32 @@ export default function ResultPage() {
   const { getProfiles } = useProfileApi();
   const { getGroups } = useGroupApi();
 
-  // Données transmises depuis le formulaire
-  const initialProfiles = location.state?.profiles || [];
-  const initialGroups = location.state?.groups || [];
+  // Données initiales transmises depuis la recherche
+  const initialProfiles: AvatarCardInterface[] = location.state?.profiles || [];
+  const initialGroups: GroupCardInterface[] = location.state?.groups || [];
   const searchCriteria = location.state?.searchCriteria || {};
+  const initialPage = location.state?.currentPage || 1;
+  const initialTotalPages = location.state?.totalPages || 1;
 
-  // États
+  // États pour les résultats et la pagination
   const [profiles, setProfiles] =
     useState<AvatarCardInterface[]>(initialProfiles);
   const [groups, setGroups] = useState<GroupCardInterface[]>(initialGroups);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [totalPages, setTotalPages] = useState(initialTotalPages);
   const [loading, setLoading] = useState(false);
 
-  // Charger les résultats
+  // Fonction pour charger les résultats (profils ou groupes)
   const fetchResults = async (page: number) => {
     setLoading(true);
     try {
       if (profiles.length > 0) {
+        // Requête pour les profils
         const response = await getProfiles({ ...searchCriteria, page });
         setProfiles(response.users);
         setTotalPages(response.totalPages);
       } else if (groups.length > 0) {
+        // Requête pour les groupes
         const response = await getGroups({ ...searchCriteria, page });
         setGroups(response.groups);
         setTotalPages(response.totalPages);
@@ -48,8 +52,8 @@ export default function ResultPage() {
     }
   };
 
-  // Charger les résultats initiaux
   useEffect(() => {
+    // Si aucun résultat initial, charge la première page
     if (!initialProfiles.length && !initialGroups.length) {
       fetchResults(1);
     }
@@ -66,7 +70,7 @@ export default function ResultPage() {
             <h2>Vos recommandations de voyageurs</h2>
             <div className="grid grid-cols-3 lg:grid-cols-4 justify-start gap-x-10 gap-y-3 lg:gap-y-6">
               {profiles.map((profile: AvatarCardInterface) => (
-                <AvatarCard profile={profile} key={profile.user_id} />
+                <AvatarCard key={profile.user_id} profile={profile} />
               ))}
             </div>
           </section>

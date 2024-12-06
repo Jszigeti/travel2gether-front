@@ -86,7 +86,14 @@ export default function SearchUsersForm() {
 
         // Envoyer la requête
         const response = await getProfiles(cleanQuery);
-        navigate(`/results`, { state: { profiles: response.profiles } });
+        navigate("/results", {
+          state: {
+            profiles: response.users,
+            currentPage: response.currentPage,
+            totalPages: response.totalPages,
+            searchCriteria: values, // Critères pour refaire des requêtes sur d'autres pages
+          },
+        });
       } catch (error) {
         setError("Erreur lors de la recherche des utilisateurs");
         console.error(error);
