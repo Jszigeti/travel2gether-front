@@ -1,27 +1,27 @@
 import { Button } from "@material-tailwind/react";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import UserContext from "../../hooks/context/user.context";
 import { useAuthApi } from "../../api/auth";
+import useAuthContext from "../../hooks/context/useAuthContext";
 
 export default function MyProfileEditComponent() {
   // STATES
   const [error, setError] = useState<null | string>(null);
 
-  // Import signup function
+  // Import delete user function
   const { deleteUser } = useAuthApi();
 
-  // RETRIEVE USER ID
-  const { userId, logout } = useContext(UserContext) || {};
+  // RETRIEVE USER AND LOGOUT FUNCTION FROM CONTEXT
+  const { user, logout } = useAuthContext();
 
   // REDIRECTION
   const navigate = useNavigate();
 
   const handleDeleteUser = async () => {
-    if (userId && logout) {
+    if (user) {
       try {
         setError(null);
-        const response = await deleteUser(userId);
+        const response = await deleteUser(user.userId);
         console.log("Compte supprimé", response);
         logout();
         navigate(`/`);

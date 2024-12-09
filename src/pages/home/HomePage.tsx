@@ -15,11 +15,11 @@ import GroupCard from "../../components/UI/GroupCard";
 import AvatarCard from "../../components/UI/AvatarCard";
 import Footer from "../../components/UI/Footer";
 import { useContext } from "react";
-import UserContext from "../../hooks/context/user.context";
+import AuthContext from "../../hooks/context/auth.context";
 
 export default function HomePage() {
   // RETRIEVE USER ID
-  const { userId } = useContext(UserContext) || {};
+  const { isAuthenticated } = useContext(AuthContext);
 
   // RETRIEVE GROUPS DATA
   const {
@@ -51,7 +51,9 @@ export default function HomePage() {
       <main className="flex flex-col px-5 gap-6 py-6 max-w-screen-xl mx-auto lg:gap-12">
         <section className="flex flex-col gap-3 lg:gap-6">
           <h2>
-            {userId ? "Vos recommandations de groupes" : "Les derniers groupes"}
+            {isAuthenticated
+              ? "Vos recommandations de groupes"
+              : "Les derniers groupes"}
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 w-full lg:gap-6">
             {isGroupsLoading && (
@@ -74,7 +76,7 @@ export default function HomePage() {
         </section>
         <section className="flex flex-col gap-3 lg:gap-6">
           <h2>
-            {userId
+            {isAuthenticated
               ? "Vos recommandations de voyageurs"
               : "Les derniers voyageurs"}
           </h2>

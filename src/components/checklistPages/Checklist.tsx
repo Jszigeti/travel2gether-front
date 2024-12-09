@@ -1,11 +1,11 @@
 // REACT HOOKS
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // REACT QUERY
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // CONTEXT
-import UserContext from "../../hooks/context/user.context";
+import useAuthContext from "../../hooks/context/useAuthContext";
 
 // AXIOS FUNCTIONS
 import { getGroup } from "../../api/group";
@@ -63,8 +63,8 @@ export default function Checklist({
     "NOT_MEMBER" | "TRAVELER" | "ORGANIZER" | "AUTHOR"
   >("NOT_MEMBER");
 
-  // RETRIEVE USER ID
-  const { userId } = useContext(UserContext) || {};
+  // RETRIEVE USER FROM CONTEXT
+  const { user } = useAuthContext();
 
   // QUERY CLIENT DECLARATION
   const queryClient = useQueryClient();
@@ -120,10 +120,10 @@ export default function Checklist({
 
   // RETRIEVE USER ROLE
   useEffect(() => {
-    if (groupDetails && userId) {
-      retrieveUserRole(groupDetails, userId, setUserRole);
+    if (groupDetails && user) {
+      retrieveUserRole(groupDetails, user.userId, setUserRole);
     }
-  }, [userId, groupDetails]);
+  }, [user, groupDetails]);
 
   // STATES FUNCTIONS
   const handleViewForm = () => {

@@ -1,11 +1,11 @@
 // REACT HOOKS
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 // REACT QUERY
 import { useQueryClient } from "@tanstack/react-query";
 
 // CONTEXT
-import UserContext from "../../hooks/context/user.context";
+import useAuthContext from "../../hooks/context/useAuthContext";
 
 // AXIOS FUNCTIONS
 import { editNotification } from "../../api/notification";
@@ -22,18 +22,18 @@ function NotificationPage() {
   // STATES
   const [error, setError] = useState<null | string>(null);
 
-  // RETRIEVE USER ID AND NOTIFICATIONS LIST FROM CONTEXT
-  const { userId, notificationsList } = useContext(UserContext) || {};
+  // RETRIEVE USER AND NOTIFICATIONS LIST FROM CONTEXT
+  const { user, notificationsList } = useAuthContext();
 
   // QUERY CLIENT DECLARATION
   const queryClient = useQueryClient();
 
   // SET NOTIFICATION AS READ AND UPDATE NOTIFICATION BADGE FUNCTION
   const handleReadNotification = async (notificationId: number) => {
-    if (userId) {
+    if (user) {
       try {
         setError(null);
-        const response = await editNotification(userId, notificationId);
+        const response = await editNotification(user.userId, notificationId);
         console.log("Notification lue", response);
         queryClient.invalidateQueries({ queryKey: ["notificationsList"] });
       } catch (errors: unknown) {

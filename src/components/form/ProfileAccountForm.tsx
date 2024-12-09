@@ -1,11 +1,11 @@
 // REACT HOOKS
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // REACT QUERY
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // CONTEXT
-import UserContext from "../../hooks/context/user.context";
+import useAuthContext from "../../hooks/context/useAuthContext";
 
 // ROUTER
 import { useNavigate } from "react-router-dom";
@@ -36,8 +36,8 @@ export function ProfileAccountForm() {
   // Import signup function
   const { getUser, editUser } = useAuthApi();
 
-  // RETRIEVE USER ID
-  const { userId } = useContext(UserContext) || {};
+  // RETRIEVE USER FROM CONTEXT
+  const { user } = useAuthContext();
 
   // REDIRECTION
   const navigate = useNavigate();
@@ -51,11 +51,8 @@ export function ProfileAccountForm() {
     isLoading: isProfileAccountLoading,
     isError: isProfileAccountError,
   } = useQuery<UserInterface & ProfileInterface>({
-    queryKey: ["profileAccount", userId],
-    queryFn: () =>
-      userId
-        ? getUser(userId)
-        : Promise.reject(new Error("User ID is required")),
+    queryKey: ["profileAccount", user?.userId],
+    queryFn: () => (user ? getUser(user.userId) : Promise.reject(error)),
   });
 
   // FORM LOGIC
@@ -71,14 +68,14 @@ export function ProfileAccountForm() {
       lastname: string().required("Nom requis"),
     }),
     onSubmit: async (values) => {
-      if (userId) {
+      if (user) {
         try {
           setError(null);
-          const response = await editUser(userId, values);
+          const response = await editUser(user.userId, values);
           console.log("Modification des informations réussie", response);
-          queryClient.setQueryData(["profileAccount", userId], values);
+          queryClient.setQueryData(["profileAccount", user], values);
           queryClient.invalidateQueries({
-            queryKey: ["profileData", userId],
+            queryKey: ["profileData", user],
           });
           navigate("/my-profile/edit");
           formik.resetForm();
@@ -102,6 +99,7 @@ export function ProfileAccountForm() {
         lastname: profileAccount.lastname || "",
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileAccount]);
 
   return (

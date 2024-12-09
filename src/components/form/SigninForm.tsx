@@ -4,6 +4,9 @@ import { useState } from "react";
 // ROUTER
 import { useNavigate } from "react-router-dom";
 
+// CONTEXT
+import useAuthContext from "../../hooks/context/useAuthContext";
+
 // AXIOS FUNCTIONS
 import { useAuthApi } from "../../api/auth";
 
@@ -19,6 +22,9 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 export default function SigninForm() {
   // STATES
   const [error, setError] = useState<null | string>(null);
+
+  // RETRIEVE LOGIN FUNCTION FROM CONTEXT
+  const { login } = useAuthContext();
 
   // Import signup function
   const { signin } = useAuthApi();
@@ -41,6 +47,7 @@ export default function SigninForm() {
         setError(null);
         const response = await signin(values);
         console.log("Connexion réussie", response);
+        login(response.user.id, response.user.pathPicture);
         navigate(`/`);
         formik.resetForm();
       } catch (error: unknown) {

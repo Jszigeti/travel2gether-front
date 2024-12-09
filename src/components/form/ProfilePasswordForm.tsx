@@ -1,8 +1,8 @@
 // REACT HOOKS
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 // CONTEXT
-import UserContext from "../../hooks/context/user.context";
+import useAuthContext from "../../hooks/context/useAuthContext";
 
 // ROUTER
 import { useNavigate } from "react-router-dom";
@@ -26,8 +26,8 @@ export function ProfilePasswordForm() {
   // Import signup function
   const { editPassword } = useAuthApi();
 
-  // RETRIEVE USER ID
-  const { userId } = useContext(UserContext) || {};
+  // RETRIEVE USER FROM CONTEXT
+  const { user } = useAuthContext();
 
   // REDIRECTION
   const navigate = useNavigate();
@@ -51,10 +51,10 @@ export function ProfilePasswordForm() {
         .required("Confirmation du mot de passe requise"),
     }),
     onSubmit: async (values) => {
-      if (userId) {
+      if (user) {
         try {
           setError(null);
-          const response = await editPassword(userId, values);
+          const response = await editPassword(user.userId, values);
           console.log("Modification du mot de passe réussie", response);
           navigate("/my-profile/edit/account");
           formik.resetForm();

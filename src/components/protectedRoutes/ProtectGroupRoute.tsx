@@ -1,5 +1,5 @@
 // REACT HOOKS
-import { ReactNode, useContext, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 // ROUTER
 import { Navigate, useParams } from "react-router-dom";
@@ -8,7 +8,7 @@ import { Navigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 // CONTEXT
-import UserContext from "../../hooks/context/user.context";
+import useAuthContext from "../../hooks/context/useAuthContext";
 
 // AXIOS FUNCTION
 import { getGroup } from "../../api/group";
@@ -33,8 +33,8 @@ export default function ProtectGroupRoute({
   // STATES
   const [redirect, setRedirect] = useState(false);
 
-  // RETRIEVE USER ID
-  const { userId } = useContext(UserContext) || {};
+  // RETRIEVE USER FROM CONTEXT
+  const { user } = useAuthContext();
 
   // USEPARAMS HOOK
   const params = useParams();
@@ -51,7 +51,7 @@ export default function ProtectGroupRoute({
   useEffect(() => {
     if (groupDetails) {
       const userProfile = groupDetails.profiles.find(
-        (profile) => profile.user_id === userId
+        (profile) => profile.user_id === user?.userId
       );
       if (
         editPage &&
@@ -69,7 +69,8 @@ export default function ProtectGroupRoute({
         setRedirect(true);
       }
     }
-  }, [userId, groupDetails]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, groupDetails]);
 
   if (redirect) {
     return <Navigate to={`/group/${params.groupId}`} replace />;

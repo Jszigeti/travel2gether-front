@@ -1,8 +1,8 @@
 // REACT HOOKS
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // CONTEXT
-import UserContext from "../../hooks/context/user.context";
+import useAuthContext from "../../hooks/context/useAuthContext";
 
 // REACT QUERY
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -54,8 +54,8 @@ export function ProfilePrefForm({
   // REDIRECTION
   const navigate = useNavigate();
 
-  // RETRIEVE USER ID
-  const { userId } = useContext(UserContext) || {};
+  // RETRIEVE USER FROM CONTEXT
+  const { user } = useAuthContext();
 
   // QUERY CLIENT DECLARATION
   const queryClient = useQueryClient();
@@ -66,10 +66,10 @@ export function ProfilePrefForm({
     isLoading: isProfilePrefLoading,
     isError: isProfilePrefError,
   } = useQuery<ProfileInterface>({
-    queryKey: ["profilePref", userId],
+    queryKey: ["profilePref", user?.userId],
     queryFn: () =>
-      userId
-        ? getProfile(userId)
+      user
+        ? getProfile(user.userId)
         : Promise.reject(new Error("User ID is required")),
     enabled: !signupContext,
   });
@@ -136,9 +136,9 @@ export function ProfilePrefForm({
           setError(null);
           const response = await editProfile(formData);
           console.log("Modification du profil réussie", response);
-          queryClient.setQueryData(["profilePref", userId], values);
+          queryClient.setQueryData(["profilePref", user?.userId], values);
           queryClient.invalidateQueries({
-            queryKey: ["profileData", userId],
+            queryKey: ["profileData", user?.userId],
           });
           formik.resetForm();
           navigate(`/my-profile/edit`);
@@ -165,6 +165,7 @@ export function ProfilePrefForm({
         tripDurations: profilePref.tripDurations || [],
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profilePref]);
 
   return (

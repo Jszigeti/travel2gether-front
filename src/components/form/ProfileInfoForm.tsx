@@ -1,8 +1,8 @@
 // REACT HOOKS
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // CONTEXT
-import UserContext from "../../hooks/context/user.context";
+import useAuthContext from "../../hooks/context/useAuthContext";
 
 // REACT QUERY
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -59,8 +59,8 @@ export function ProfileInfoForm({
   const [error, setError] = useState<null | string>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  // RETRIEVE USER ID
-  const { userId } = useContext(UserContext) || {};
+  // RETRIEVE USER FROM CONTEXT
+  const { user } = useAuthContext();
 
   // REDIRECTION
   const navigate = useNavigate();
@@ -74,10 +74,10 @@ export function ProfileInfoForm({
     isLoading: isProfileInfoLoading,
     isError: isProfileInfoError,
   } = useQuery<ProfileInterface>({
-    queryKey: ["profileInfo", userId],
+    queryKey: ["profileInfo", user?.userId],
     queryFn: () =>
-      userId
-        ? getProfile(userId)
+      user
+        ? getProfile(user.userId)
         : Promise.reject(new Error("User ID is required")),
     enabled: !signupContext,
   });
@@ -137,14 +137,14 @@ export function ProfileInfoForm({
         console.log("Enregistrement réussi", response);
         onNext();
         formik.resetForm();
-      } else if (userId) {
+      } else if (user) {
         try {
           setError(null);
           const response = await editProfile(formData);
           console.log("Mise à jour du profil réussie", response);
-          queryClient.setQueryData(["profileInfo", userId], values);
+          queryClient.setQueryData(["profileInfo", user.userId], values);
           queryClient.invalidateQueries({
-            queryKey: ["profileData", userId],
+            queryKey: ["profileData", user.userId],
           });
           navigate(`/my-profile/edit`);
           formik.resetForm();
@@ -170,6 +170,7 @@ export function ProfileInfoForm({
         spokenLanguages: profileInfo.spokenLanguages || [],
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileInfo]);
 
   return (
