@@ -1,6 +1,3 @@
-// API URI
-import { uri } from "./uri";
-
 // AXIOS
 import axios, { AxiosError } from "axios";
 
@@ -14,7 +11,7 @@ export async function sendMessageToUser(
 ) {
   try {
     const { data } = await axios.post(
-      `${uri}/users/${user_receiver_id}/messages/${sender_id}`,
+      `/users/${user_receiver_id}/messages/${sender_id}`,
       { body }
     );
     return data.body;
@@ -33,7 +30,7 @@ export async function sendMessageToGroup(
 ) {
   try {
     const { data } = await axios.post(
-      `${uri}/groups/${group_receiver_id}/messages/${sender_id}`,
+      `/groups/${group_receiver_id}/messages/${sender_id}`,
       { body }
     );
     return data.body;
@@ -51,7 +48,7 @@ export async function getAllMessagesWithUser(
 ) {
   try {
     const { data } = await axios.get(
-      `${uri}/users/${user_receiver_id}/messages/${sender_id}`
+      `/users/${user_receiver_id}/messages/${sender_id}`
     );
     return data.body;
   } catch (error: unknown) {
@@ -64,7 +61,7 @@ export async function getAllMessagesWithUser(
 
 export async function getAllMessagesWithGroup(group_receiver_id: number) {
   try {
-    const { data } = await axios.get(`${uri}/groups/${group_receiver_id}/messages`);
+    const { data } = await axios.get(`/groups/${group_receiver_id}/messages`);
     return data;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;

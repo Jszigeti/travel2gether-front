@@ -1,6 +1,3 @@
-// API URI
-import { uri } from "./uri";
-
 // AXIOS
 import axios, { AxiosError } from "axios";
 
@@ -13,12 +10,9 @@ export async function createMedia(
   body: MediaInterface
 ) {
   try {
-    const { data } = await axios.post(
-      `${uri}/groups/${group_id}/media/${user_id}`,
-      {
-        body,
-      }
-    );
+    const { data } = await axios.post(`/groups/${group_id}/media/${user_id}`, {
+      body,
+    });
     return data.body;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
@@ -30,7 +24,7 @@ export async function createMedia(
 
 export async function getMediasFromGroup(group_id: number) {
   try {
-    const { data } = await axios.get(`${uri}/groups/${group_id}/media`);
+    const { data } = await axios.get(`/groups/${group_id}/media`);
     return data;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
@@ -43,7 +37,7 @@ export async function getMediasFromGroup(group_id: number) {
 export async function deleteMedia(group_id: number, media_id: number) {
   try {
     const { data } = await axios.delete(
-      `${uri}/groups/${group_id}/media/${media_id}`
+      `/groups/${group_id}/media/${media_id}`
     );
     return data;
   } catch (error: unknown) {
