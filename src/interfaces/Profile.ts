@@ -59,7 +59,7 @@ export interface ProfilePageInterface {
 }
 
 export interface AvatarCardInterface {
-  user_id: number;
+  userId: number;
   firstname: string;
   lastname: string;
   pathPicture: string;

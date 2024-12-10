@@ -2,7 +2,7 @@
 import { useApi } from "../hooks/useApi/useApi";
 
 // UTILS FUNCTIONS
-import { handleError } from "../utils/errorHandler";
+import { customHandleError } from "../utils/customHandleError";
 
 export function useMatchingApi() {
   const api = useApi();
@@ -12,10 +12,10 @@ export function useMatchingApi() {
       const { data } = await api.get("match/users");
       return data;
     } catch (error: unknown) {
-      const errorMessage = handleError(
+      const errorMessage = customHandleError(
         error,
-        404,
-        "Impossible de récupérer vos préférences"
+        "Impossible de récupérer vos préférences",
+        404
       );
       throw new Error(errorMessage);
     }
@@ -25,10 +25,10 @@ export function useMatchingApi() {
       const { data } = await api.get("match/groups");
       return data;
     } catch (error: unknown) {
-      const errorMessage = handleError(
+      const errorMessage = customHandleError(
         error,
-        404,
-        "Impossible de récupérer vos préférences"
+        "Impossible de récupérer vos préférences",
+        404
       );
       throw new Error(errorMessage);
     }

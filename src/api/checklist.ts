@@ -2,10 +2,11 @@
 import { useApi } from "../hooks/useApi/useApi";
 
 // AXIOS
-import { handleError } from "../utils/errorHandler";
+import { customHandleError } from "../utils/customHandleError";
 
 // INTERFACES
 import { ChecklistInterface } from "../interfaces/Checklist";
+
 export function useChecklistApi() {
   const api = useApi();
 
@@ -20,7 +21,7 @@ export function useChecklistApi() {
       return data.body;
       //return body;
     } catch (error: unknown) {
-      const errorMessage = handleError(error, [403, 404], {
+      const errorMessage = customHandleError(error, {
         403: "Droits requis",
         404: "Aucun groupe associé",
       });
@@ -40,7 +41,7 @@ export function useChecklistApi() {
       );
       return data.body;
     } catch (error: unknown) {
-      const errorMessage = handleError(error, [403, 404], {
+      const errorMessage = customHandleError(error, {
         403: "Droits requis",
         404: "Aucun groupe ou étape associé",
       });
@@ -53,7 +54,7 @@ export function useChecklistApi() {
       const { data } = await api.get(`checklist/groups/${group_id}`);
       return data;
     } catch (error: unknown) {
-      const errorMessage = handleError(error, [403, 404], {
+      const errorMessage = customHandleError(error, {
         403: "Membres de groupe seulement",
         404: "Ce groupe n'existe pas",
       });
@@ -68,7 +69,7 @@ export function useChecklistApi() {
       );
       return data;
     } catch (error: unknown) {
-      const errorMessage = handleError(error, [403, 404], {
+      const errorMessage = customHandleError(error, {
         403: "Membres de groupe seulement",
         404: "Ce groupe ou cette étape n'existe pas",
       });
@@ -81,7 +82,7 @@ export function useChecklistApi() {
       const { data } = await api.delete(`checklist/${checklist_id}`);
       return data;
     } catch (error: unknown) {
-      const errorMessage = handleError(error, [403, 404], {
+      const errorMessage = customHandleError(error, {
         403: "Droits requis",
         404: "Item non trouvé",
       });

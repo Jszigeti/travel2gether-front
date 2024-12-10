@@ -1,5 +1,5 @@
 // REACT QUERY
-// import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 // AXIOS FUNCTIONS
 import { useMatchingApi } from "../../api/matching";
@@ -7,13 +7,13 @@ import { useGroupApi } from "../../api/group";
 import { useProfileApi } from "../../api/profile";
 
 // INTERFACES
-// import { GroupCardInterface } from "../../interfaces/Group";
-// import { AvatarCardInterface } from "../../interfaces/Profile";
+import { GroupCardInterface } from "../../interfaces/Group";
+import { AvatarCardInterface } from "../../interfaces/Profile";
 
 // COMPONENTS
 import Header from "../../components/UI/Header";
-// import GroupCard from "../../components/UI/GroupCard";
-// import AvatarCard from "../../components/UI/AvatarCard";
+import GroupCard from "../../components/UI/GroupCard";
+import AvatarCard from "../../components/UI/AvatarCard";
 import Footer from "../../components/UI/Footer";
 import { useContext } from "react";
 import AuthContext from "../../hooks/context/auth.context";
@@ -34,7 +34,7 @@ export default function HomePage() {
     isError: isGroupsError,
   } = useQuery<GroupCardInterface[]>({
     queryKey: ["groups"],
-    queryFn: userId ? () => matchingGroups() : () => getLastGroups(),
+    queryFn: isAuthenticated ? () => matchingGroups() : () => getLastGroups(),
   });
 
   // RETRIEVE PROFILES DATA
@@ -44,7 +44,7 @@ export default function HomePage() {
     isError: isProfilesError,
   } = useQuery<AvatarCardInterface[]>({
     queryKey: ["profiles"],
-    queryFn: userId ? () => matchingUsers() : () => getLastProfiles(),
+    queryFn: isAuthenticated ? () => matchingUsers() : () => getLastProfiles(),
   });
 
   return (
@@ -62,7 +62,7 @@ export default function HomePage() {
               : "Les derniers groupes"}
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 w-full lg:gap-6">
-            {/* {isGroupsLoading && (
+            {isGroupsLoading && (
               <div className="text-blue text-center">
                 Chargement des données...
               </div>
@@ -85,7 +85,7 @@ export default function HomePage() {
               : "Les derniers voyageurs"}
           </h2>
           <div className="grid grid-cols-3 lg:grid-cols-4 justify-start gap-x-10 gap-y-3 lg:gap-y-6">
-            {/* {isProfilesLoading && (
+            {isProfilesLoading && (
               <div className="text-blue text-center">
                 Chargement des données...
               </div>
@@ -97,7 +97,7 @@ export default function HomePage() {
             )}
             {profilesList &&
               profilesList.map((profile: AvatarCardInterface) => (
-                <AvatarCard profile={profile} key={profile.user_id} />
+                <AvatarCard profile={profile} key={profile.userId} />
               ))}
           </div>
         </section>
