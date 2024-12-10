@@ -9,14 +9,7 @@ import UserContext from "../../hooks/context/user.context";
 
 // AXIOS FUNCTIONS
 import { getGroup } from "../../api/group";
-import {
-  createGroupChecklistItem,
-  createStageChecklistItem,
-  deleteGroupChecklistItem,
-  deleteStageChecklistItem,
-  getGroupChecklist,
-  getStageChecklist,
-} from "../../api/checklist";
+import { useChecklistApi } from "../../api/checklist";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -62,6 +55,13 @@ export default function Checklist({
   const [userRole, setUserRole] = useState<
     "NOT_MEMBER" | "TRAVELER" | "ORGANIZER" | "AUTHOR"
   >("NOT_MEMBER");
+  const {
+    getGroupChecklist,
+    createGroupChecklistItem,
+    createStageChecklistItem,
+    getStageChecklist,
+    deleteChecklistItem,
+  } = useChecklistApi();
 
   // RETRIEVE USER ID
   const { userId } = useContext(UserContext) || {};
@@ -176,26 +176,14 @@ export default function Checklist({
   // DELETE ITEM FUNCTION
   const handleDeleteItem = async (itemId: number) => {
     try {
-      let response;
-      if (stageCheckList && stageId) {
-        response = await deleteStageChecklistItem(groupId, stageId, itemId);
-        console.log(
-          "Suppression de l'item dans la checklist d'étape réussie",
-          response
-        );
-        queryClient.invalidateQueries({
-          queryKey: ["stageChecklist", groupId],
-        });
-      } else {
-        response = await deleteGroupChecklistItem(groupId, itemId);
-        console.log(
-          "Suppression de l'item dans la checklist de groupe réussie",
-          response
-        );
-        queryClient.invalidateQueries({
-          queryKey: ["groupChecklist", groupId],
-        });
-      }
+      const response = await deleteChecklistItem(itemId);
+      console.log(
+        "Suppression de l'item dans la checklist de groupe réussie",
+        response
+      );
+      queryClient.invalidateQueries({
+        queryKey: ["groupChecklist", groupId],
+      });
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);

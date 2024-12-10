@@ -1,114 +1,99 @@
 // API URI
-import { uri } from "./uri";
+import { useApi } from "../hooks/useApi/useApi";
 
 // AXIOS
-import axios, { AxiosError } from "axios";
+import { handleError } from "../utils/errorHandler";
 
 // INTERFACES
 import { ChecklistInterface } from "../interfaces/Checklist";
-import { checklistItems } from "../data/checklistItems";
+export function useChecklistApi() {
+  const api = useApi();
 
-export async function createGroupChecklistItem(
-  group_id: number,
-  body: ChecklistInterface
-) {
-  try {
-    //   const { data } = await axios.post(`${uri}/groups/${group_id}/checklist`, {
-    //     body,
-    //   });
-    //   return data.body;
-    return body;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
+  const createGroupChecklistItem = async (
+    group_id: number,
+    body: ChecklistInterface
+  ) => {
+    try {
+      const { data } = await api.post(`checklist/groups/${group_id}`, {
+        body,
+      });
+      return data.body;
+      //return body;
+    } catch (error: unknown) {
+      const errorMessage = handleError(error, [403, 404], {
+        403: "Droits requis",
+        404: "Aucun groupe associé",
+      });
+      throw new Error(errorMessage);
+    }
+  };
 
-export async function createStageChecklistItem(
-  group_id: number,
-  stage_id: number,
-  body: ChecklistInterface
-) {
-  try {
-    // const { data } = await axios.post(
-    //   `${uri}/groups/${group_id}/stages/${stage_id}/checklist`,
-    //   {
-    //     body,
-    //   }
-    // );
-    // return data.body;
-    return body;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
+  const createStageChecklistItem = async (
+    group_id: number,
+    stage_id: number,
+    body: ChecklistInterface
+  ) => {
+    try {
+      const { data } = await api.post(
+        `checklist/groups/${group_id}/stages/${stage_id}`,
+        { body }
+      );
+      return data.body;
+    } catch (error: unknown) {
+      const errorMessage = handleError(error, [403, 404], {
+        403: "Droits requis",
+        404: "Aucun groupe ou étape associé",
+      });
+      throw new Error(errorMessage);
+    }
+  };
 
-export async function getGroupChecklist(group_id: number) {
-  try {
-    // const { data } = await axios.get(`${uri}/groups/${group_id}/checklist`);
-    const data = checklistItems;
-    return data;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
+  const getGroupChecklist = async (group_id: number) => {
+    try {
+      const { data } = await api.get(`checklist/groups/${group_id}`);
+      return data;
+    } catch (error: unknown) {
+      const errorMessage = handleError(error, [403, 404], {
+        403: "Membres de groupe seulement",
+        404: "Ce groupe n'existe pas",
+      });
+      throw new Error(errorMessage);
+    }
+  };
 
-export async function getStageChecklist(group_id: number, stage_id: number) {
-  try {
-    // const { data } = await axios.get(
-    //   `${uri}/groups/${group_id}/stages/${stage_id}/checklist`
-    // );
-    const data = checklistItems;
-    return data;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
+  const getStageChecklist = async (group_id: number, stage_id: number) => {
+    try {
+      const { data } = await api.get(
+        `checklist/groups/${group_id}/stages/${stage_id}`
+      );
+      return data;
+    } catch (error: unknown) {
+      const errorMessage = handleError(error, [403, 404], {
+        403: "Membres de groupe seulement",
+        404: "Ce groupe ou cette étape n'existe pas",
+      });
+      throw new Error(errorMessage);
+    }
+  };
 
-export async function deleteGroupChecklistItem(
-  group_id: number,
-  checklist_id: number
-) {
-  try {
-    // const { data } = await axios.delete(
-    //   `${uri}/groups/${group_id}/checklist/${checklist_id}`
-    // );
-    // return data;
-    return checklist_id;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
+  const deleteChecklistItem = async (checklist_id: number) => {
+    try {
+      const { data } = await api.delete(`checklist/${checklist_id}`);
+      return data;
+    } catch (error: unknown) {
+      const errorMessage = handleError(error, [403, 404], {
+        403: "Droits requis",
+        404: "Item non trouvé",
+      });
+      throw new Error(errorMessage);
+    }
+  };
 
-export async function deleteStageChecklistItem(
-  group_id: number,
-  stage_id: number,
-  checklist_id: number
-) {
-  try {
-    // const { data } = await axios.delete(
-    //   `${uri}/groups/${group_id}/stages/${stage_id}/checklist/${checklist_id}`
-    // );
-    // return data;
-    return checklist_id;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
+  return {
+    createGroupChecklistItem,
+    createStageChecklistItem,
+    getGroupChecklist,
+    getStageChecklist,
+    deleteChecklistItem,
+  };
 }
