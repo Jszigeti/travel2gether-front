@@ -55,8 +55,8 @@ export default function StageInfoForm({
     enabled: !stageCreationContext,
   });
 
-  const defaultImage = stageInfo?.path_picture
-    ? stageInfo.path_picture
+  const defaultImage = stageInfo?.pathPicture
+    ? stageInfo.pathPicture
     : "https://media.istockphoto.com/id/489556478/fr/photo/outils-de-voyage.jpg?s=1024x1024&w=is&k=20&c=dqsRCnDCKNcDi8Fnlzs96pAapEbH5PR01VQ6cEtC72U="; // Image par défaut du formulaire
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,10 +64,10 @@ export default function StageInfoForm({
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setPreviewImage(imageUrl);
-      formik.setFieldValue("path_picture", file); // Set the image in Formik
+      formik.setFieldValue("pathPicture", file); // Set the image in Formik
     } else {
       setPreviewImage(null);
-      formik.setFieldValue("path_picture", null); // Clear image field in Formik if no image is selected
+      formik.setFieldValue("pathPicture", null); // Clear image field in Formik if no image is selected
     }
   };
 
@@ -76,29 +76,29 @@ export default function StageInfoForm({
       title: "",
       description: "",
       address: "",
-      date_from: "",
-      date_to: "",
-      path_picture: "",
+      dateFrom: "",
+      dateTo: "",
+      pathPicture: "",
       latitude: "",
       longitude: "",
     },
     validationSchema: Yup.object({
-      path_picture: Yup.mixed().required("Une image est requise"),
+      pathPicture: Yup.mixed().required("Une image est requise"),
       title: Yup.string().required("Le nom du groupe est requis"),
       description: Yup.string().required("La description est requise"),
       address: Yup.string().required("Le lieu est requis"),
-      date_from: Yup.date().required("La date de début est requise"),
-      date_to: Yup.date()
+      dateFrom: Yup.date().required("La date de début est requise"),
+      dateTo: Yup.date()
         .required("La date de fin est requise")
         .min(
-          Yup.ref("date_from"),
+          Yup.ref("dateFrom"),
           "La date de fin doit être après la date de début"
         ),
     }),
     onSubmit: async (values) => {
       const formData = {
         ...values,
-        path_picture: values.path_picture ? values.path_picture : defaultImage, // Utilise l'image par défaut si aucune image n'est sélectionnée
+        pathPicture: values.pathPicture ? values.pathPicture : defaultImage, // Utilise l'image par défaut si aucune image n'est sélectionnée
       };
 
       if (stageCreationContext) {
@@ -146,9 +146,9 @@ export default function StageInfoForm({
       formik.setFieldValue("title", stageInfo.title);
       formik.setFieldValue("description", stageInfo.description);
       formik.setFieldValue("address", stageInfo.address);
-      formik.setFieldValue("date_from", stageInfo.date_from);
-      formik.setFieldValue("date_to", stageInfo.date_to);
-      formik.setFieldValue("path_picture", stageInfo.path_picture);
+      formik.setFieldValue("dateFrom", stageInfo.dateFrom);
+      formik.setFieldValue("dateTo", stageInfo.dateTo);
+      formik.setFieldValue("pathPicture", stageInfo.pathPicture);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stageInfo]);
@@ -226,20 +226,20 @@ export default function StageInfoForm({
           )}
           <Input
             type="file"
-            // value={formik.values.path_picture}
+            // value={formik.values.pathPicture}
             size="lg"
             placeholder="Choisissez une image"
             className={`!border-blue ${
-              formik.touched.path_picture && formik.errors.path_picture
+              formik.touched.pathPicture && formik.errors.pathPicture
                 ? "!border-red-500"
                 : null
             }`}
             onChange={handleImageChange}
             crossOrigin={undefined}
           />
-          {formik.touched.path_picture && formik.errors.path_picture ? (
+          {formik.touched.pathPicture && formik.errors.pathPicture ? (
             <>
-              <Typography color="red">{formik.errors.path_picture}</Typography>
+              <Typography color="red">{formik.errors.pathPicture}</Typography>
               <FontAwesomeIcon
                 icon={faCircleExclamation}
                 className="absolute right-3 bottom-10 text-red-500"
@@ -351,15 +351,15 @@ export default function StageInfoForm({
             size="lg"
             placeholder="Date de début du groupe de voyage"
             className={`!border-blue ${
-              formik.touched.date_from && formik.errors.date_from
+              formik.touched.dateFrom && formik.errors.dateFrom
                 ? "!border-red-500"
                 : null
             }`}
-            {...formik.getFieldProps("date_from")}
+            {...formik.getFieldProps("dateFrom")}
           />
-          {formik.touched.date_from && formik.errors.date_from ? (
+          {formik.touched.dateFrom && formik.errors.dateFrom ? (
             <>
-              <Typography color="red">{formik.errors.date_from}</Typography>
+              <Typography color="red">{formik.errors.dateFrom}</Typography>
               <FontAwesomeIcon
                 icon={faCircleExclamation}
                 className="absolute right-10 top-10 text-red-500"
@@ -378,15 +378,15 @@ export default function StageInfoForm({
             size="lg"
             placeholder="Date de fin du groupe de voyage"
             className={`!border-blue ${
-              formik.touched.date_to && formik.errors.date_to
+              formik.touched.dateTo && formik.errors.dateTo
                 ? "!border-red-500"
                 : null
             }`}
-            {...formik.getFieldProps("date_to")}
+            {...formik.getFieldProps("dateTo")}
           />
-          {formik.touched.date_to && formik.errors.date_to ? (
+          {formik.touched.dateTo && formik.errors.dateTo ? (
             <>
-              <Typography color="red">{formik.errors.date_to}</Typography>
+              <Typography color="red">{formik.errors.dateTo}</Typography>
               <FontAwesomeIcon
                 icon={faCircleExclamation}
                 className="absolute right-10 top-10 text-red-500"

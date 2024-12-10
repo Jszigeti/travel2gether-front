@@ -1,98 +1,98 @@
 export interface ConversationInterface {
-  user_receiver_id?: number;
+  userReceiverId?: number;
   firstname?: string;
-  group_receiver_id?: number;
+  groupReceiverId?: number;
   title?: string;
-  path_picture: string;
-  last_message: string;
-  last_message_date: string;
+  pathPicture: string;
+  lastMessage: string;
+  lastMessageDate: string;
 }
 
 export const conversationsList: ConversationInterface[] = [
   {
-    user_receiver_id: 1,
+    userReceiverId: 1,
     firstname: "Marie",
-    path_picture: "lien vers la photo de profil",
-    last_message: "Contenu du dernier message",
-    last_message_date: "2024-10-28",
+    pathPicture: "lien vers la photo de profil",
+    lastMessage: "Contenu du dernier message",
+    lastMessageDate: "2024-10-28",
   },
   {
-    user_receiver_id: 2,
+    userReceiverId: 2,
     firstname: "Marie",
-    path_picture: "lien vers la photo de profil",
-    last_message: "Contenu du dernier message",
-    last_message_date: "2024-10-28",
+    pathPicture: "lien vers la photo de profil",
+    lastMessage: "Contenu du dernier message",
+    lastMessageDate: "2024-10-28",
   },
   {
-    group_receiver_id: 1,
+    groupReceiverId: 1,
     title: "Voyage à Bordeaux",
-    path_picture: "lien vers la photo du groupe",
-    last_message: "Contenu du dernier message",
-    last_message_date: "2024-10-28",
+    pathPicture: "lien vers la photo du groupe",
+    lastMessage: "Contenu du dernier message",
+    lastMessageDate: "2024-10-28",
   },
   {
-    group_receiver_id: 2,
+    groupReceiverId: 2,
     title: "Voyage en Normandie",
-    path_picture: "lien vers la photo du groupe",
-    last_message: "Contenu du dernier message",
-    last_message_date: "2024-10-28",
+    pathPicture: "lien vers la photo du groupe",
+    lastMessage: "Contenu du dernier message",
+    lastMessageDate: "2024-10-28",
   },
 ];
 
 export interface ChatInterface {
   user?: {
-    user_id: number;
+    userId: number;
     firstname: string;
-    path_picture: string;
+    pathPicture: string;
   };
   group?: {
-    group_id: number;
+    groupId: number;
     title: string;
-    path_picture: string;
+    pathPicture: string;
   };
   messages: {
     id: number;
     content: string;
-    created_at: string;
+    createdAt: string;
     sender: boolean;
   }[];
 }
 
 export const chatList: ChatInterface = {
   user: {
-    user_id: 1,
+    userId: 1,
     firstname: "Marie",
-    path_picture: "Lien vers la photo de profil",
+    pathPicture: "Lien vers la photo de profil",
   },
   messages: [
     {
       id: 1,
       content: "Contenu de mon message",
-      created_at: "2024-10-29",
+      createdAt: "2024-10-29",
       sender: true,
     },
     {
       id: 2,
       content: "Contenu de mon message",
-      created_at: "2024-10-29",
+      createdAt: "2024-10-29",
       sender: false,
     },
     {
       id: 3,
       content: "Contenu de mon message",
-      created_at: "2024-10-29",
+      createdAt: "2024-10-29",
       sender: true,
     },
     {
       id: 4,
       content: "Contenu de mon message",
-      created_at: "2024-10-29",
+      createdAt: "2024-10-29",
       sender: false,
     },
     {
       id: 5,
       content: "Contenu de mon message",
-      created_at: "2024-10-29",
+      createdAt: "2024-10-29",
       sender: true,
     },
   ],

@@ -11,7 +11,7 @@ export default function StageCoverDisplay({
   return (
     <div className="stage-cover">
       <img
-        src={stageDetails.path_picture}
+        src={stageDetails.pathPicture}
         alt="Image de couverture du stage"
         className="w-full xl:max-w-screen-xl xl:mx-auto max-h-[40rem] object-cover"
       />

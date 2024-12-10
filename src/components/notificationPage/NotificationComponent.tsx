@@ -19,13 +19,13 @@ function NotificationComponent({ notification }: NotificationComponentProps) {
   return (
     <NavLink
       to={
-        notification.reference_type?.includes(NotificationEnum.GROUP_MESSAGE)
-          ? `/group/${notification.reference_id}/messages`
-          : notification.reference_type?.includes(
+        notification.referenceType?.includes(NotificationEnum.GROUP_MESSAGE)
+          ? `/group/${notification.referenceId}/messages`
+          : notification.referenceType?.includes(
               NotificationEnum.PRIVATE_MESSAGE
             )
-          ? `/my-profile/messages/${notification.reference_id}`
-          : `/group/${notification.reference_id}`
+          ? `/my-profile/messages/${notification.referenceId}`
+          : `/group/${notification.referenceId}`
       }
     >
       <Alert
@@ -35,7 +35,7 @@ function NotificationComponent({ notification }: NotificationComponentProps) {
             : "bg-blue"
         }
       >
-        <h3 className="font-bold">{notification.reference_type}</h3>
+        <h3 className="font-bold">{notification.referenceType}</h3>
         {notification.details}
       </Alert>
     </NavLink>

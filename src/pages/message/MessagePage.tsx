@@ -13,9 +13,7 @@ function MessagePage() {
         {conversationList.map((chat) => (
           <ChatComponent
             key={
-              chat.user_receiver_id
-                ? chat.user_receiver_id
-                : chat.group_receiver_id
+              chat.userReceiverId ? chat.userReceiverId : chat.groupReceiverId
             }
             chat={chat}
           />
