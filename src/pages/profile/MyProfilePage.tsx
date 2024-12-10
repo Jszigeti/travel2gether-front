@@ -2,13 +2,13 @@ import ProfileComponent from "../../components/profilePages/ProfileComponent";
 import Header from "../../components/UI/Header";
 import Footer from "../../components/UI/Footer";
 import { useContext } from "react";
-import UserContext from "../../hooks/context/user.context";
+import AuthContext from "../../hooks/context/auth.context";
 
 export default function MyProfilePage() {
   // RETRIEVE USER ID
-  const { userId } = useContext(UserContext) || {};
+  const { user } = useContext(AuthContext);
 
-  if (!userId)
+  if (!user)
     return (
       <>
         <Header pageTitle="Erreur" backLink="/" />
@@ -23,7 +23,7 @@ export default function MyProfilePage() {
     <>
       <Header pageTitle="Mon profil" backLink="/" />
       <main className="flex flex-col px-5 xl:px-0 gap-6 py-6 max-w-screen-xl mx-auto lg:gap-12">
-        <ProfileComponent myProfileContext={true} userId={userId} />
+        <ProfileComponent myProfileContext={true} userId={user.id} />
       </main>
       <Footer />
     </>

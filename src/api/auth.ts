@@ -2,7 +2,7 @@
 import { useApi } from "../hooks/useApi/useApi";
 
 // UTILS FUNCTIONS
-import { handleError } from "../utils/errorHandler";
+import { customHandleError } from "../utils/customHandleError";
 
 // INTERFACES
 import { UserInterface } from "../interfaces/User";
@@ -16,12 +16,9 @@ export function useAuthApi() {
       const { data } = await api.post("signup", body);
       return data;
     } catch (error: unknown) {
-      const errorMessage = handleError(
-        error,
-        403,
-        "L'adresse email est déjà utilisée"
+      throw new Error(
+        customHandleError(error, "L'adresse email est déjà utilisée", 403)
       );
-      throw new Error(errorMessage);
     }
   };
 
@@ -30,12 +27,43 @@ export function useAuthApi() {
       const { data } = await api.post("signin", body);
       return data;
     } catch (error: unknown) {
-      const errorMessage = handleError(error, [400, 403, 404], {
-        400: "Votre compte n'est pas vérifié, un nouveau mail vient de vous être envoyé",
-        403: "Votre compte a été désactivé",
-        404: "L'adresse email ou le mot de passe est incorrect",
-      });
-      throw new Error(errorMessage);
+      throw new Error(
+        customHandleError(error, {
+          400: "Votre compte n'est pas vérifié, un nouveau mail vient de vous être envoyé",
+          403: "Votre compte a été désactivé",
+          404: "L'adresse email ou le mot de passe est incorrect",
+        })
+      );
+    }
+  };
+
+  const me = async () => {
+    try {
+      const { data } = await api.post("me");
+      return data;
+    } catch (error: unknown) {
+      throw new Error(
+        customHandleError(
+          error,
+          "Session expirée, veuillez vous reconnecter",
+          401
+        )
+      );
+    }
+  };
+
+  const signout = async () => {
+    try {
+      const { data } = await api.post("logout");
+      return data;
+    } catch (error: unknown) {
+      throw new Error(
+        customHandleError(
+          error,
+          "Session expirée, veuillez vous reconnecter",
+          401
+        )
+      );
     }
   };
 
@@ -49,10 +77,10 @@ export function useAuthApi() {
       );
       return data;
     } catch (error: unknown) {
-      const errorMessage = handleError(
+      const errorMessage = customHandleError(
         error,
-        403,
-        "L'adresse email ou le mot de passe est incorrect"
+        "L'adresse email ou le mot de passe est incorrect",
+        403
       );
       throw new Error(errorMessage);
     }
@@ -64,10 +92,10 @@ export function useAuthApi() {
       // return data.body;
       return body;
     } catch (error: unknown) {
-      const errorMessage = handleError(
+      const errorMessage = customHandleError(
         error,
-        403,
-        "L'adresse email est déjà utilisée"
+        "L'adresse email est déjà utilisée",
+        403
       );
       throw new Error(errorMessage);
     }
@@ -79,10 +107,10 @@ export function useAuthApi() {
       // return data.body;
       return body;
     } catch (error: unknown) {
-      const errorMessage = handleError(
+      const errorMessage = customHandleError(
         error,
-        403,
-        "L'adresse email est déjà utilisée"
+        "L'adresse email est déjà utilisée",
+        403
       );
       throw new Error(errorMessage);
     }
@@ -95,10 +123,10 @@ export function useAuthApi() {
       const data = userDetails;
       return data;
     } catch (error: unknown) {
-      const errorMessage = handleError(
+      const errorMessage = customHandleError(
         error,
-        403,
-        "L'adresse email est déjà utilisée"
+        "L'adresse email est déjà utilisée",
+        403
       );
       throw new Error(errorMessage);
     }
@@ -110,10 +138,10 @@ export function useAuthApi() {
       // return data.body;
       return body;
     } catch (error: unknown) {
-      const errorMessage = handleError(
+      const errorMessage = customHandleError(
         error,
-        403,
-        "L'adresse email est déjà utilisée"
+        "L'adresse email est déjà utilisée",
+        403
       );
       throw new Error(errorMessage);
     }
@@ -125,18 +153,17 @@ export function useAuthApi() {
       // return data;
       return id;
     } catch (error: unknown) {
-      const errorMessage = handleError(
-        error,
-        403,
-        "L'adresse email est déjà utilisée"
+      throw new Error(
+        customHandleError(error, "L'adresse email est déjà utilisée", 403)
       );
-      throw new Error(errorMessage);
     }
   };
 
   return {
     signup,
     signin,
+    me,
+    signout,
     accountVerification,
     forgotPassword,
     editPassword,

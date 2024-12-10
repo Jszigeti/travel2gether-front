@@ -1,11 +1,11 @@
 // REACT HOOKS
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // REACT QUERY
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // CONTEXT
-import UserContext from "../../hooks/context/user.context";
+import useAuthContext from "../../hooks/context/useAuthContext";
 
 // AXIOS FUNCTIONS
 import { addUserToGroup, deleteUserFromGroup, getGroup } from "../../api/group";
@@ -43,8 +43,8 @@ export default function GroupPage() {
   >("NOT_MEMBER");
   const [error, setError] = useState<null | string>(null);
 
-  // RETRIEVE USER ID
-  const { userId } = useContext(UserContext) || {};
+  // RETRIEVE USER FROM CONTEXT
+  const { user } = useAuthContext();
 
   // USEPARAMS HOOK
   const params = useParams();
@@ -70,20 +70,20 @@ export default function GroupPage() {
 
   // RETRIEVE USER ROLE AND STATUS
   useEffect(() => {
-    if (groupDetails && userId) {
-      retrieveUserRole(groupDetails, userId, setUserRole);
-      retrieveUserStatus(groupDetails, userId, setUserStatus);
+    if (groupDetails && user) {
+      retrieveUserRole(groupDetails, user.userId, setUserRole);
+      retrieveUserStatus(groupDetails, user.userId, setUserStatus);
     }
-  }, [userId, groupDetails]);
+  }, [user, groupDetails]);
 
   // LEAVING GROUP FUNCTION
   const handleLeavingGroup = async () => {
-    if (userId) {
+    if (user) {
       try {
         setError(null);
         const response = await deleteUserFromGroup(
           Number(params.groupId),
-          userId
+          user.userId
         );
         console.log("Groupe quitté", response);
         queryClient.invalidateQueries({
@@ -103,9 +103,12 @@ export default function GroupPage() {
 
   // JOIN GROUP REQUEST FUNCTION
   const handleRequestGroup = async () => {
-    if (userId) {
+    if (user) {
       try {
-        const response = await addUserToGroup(Number(params.groupId), userId);
+        const response = await addUserToGroup(
+          Number(params.groupId),
+          user.userId
+        );
         console.log("Demande envoyée", response);
         setUserStatus("PENDING");
       } catch (error: unknown) {

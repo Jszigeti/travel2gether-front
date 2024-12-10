@@ -1,8 +1,8 @@
 // REACT HOOKS
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 
 // CONTEXT
-import UserContext from "../../hooks/context/user.context";
+import useAuthContext from "../../hooks/context/useAuthContext";
 
 // ROUTER
 import { NavLink } from "react-router-dom";
@@ -34,12 +34,12 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
   const [openNav, setOpenNav] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
 
-  // CONTEXT
-  const { userId, logout, nbNotReadNotifications } =
-    useContext(UserContext) || {};
+  // RETRIEVE IS AUTHENTICATED STATE, USER, LOGOUT FUNCTION AND HOW MANY NOT READ NOTIFICATIONS FROM CONTEXT
+  const { isAuthenticated, user, logout, nbNotReadNotifications } =
+    useAuthContext();
 
   // NAVLINKS ARRAY
-  const navLinks = userId
+  const navLinks = isAuthenticated
     ? [
         { path: "/my-profile", name: "Mon profil" },
         { path: "/my-profile/notifications", name: "Mes notifications" },
@@ -72,7 +72,7 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
             )}
           </NavLink>
         ))}
-        {userId && (
+        {isAuthenticated && (
           <NavLink
             to="/"
             onClick={closeNav}
@@ -107,9 +107,9 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
             <NavList />
           </div>
           <div className="flex items-center gap-6">
-            {userId && (
+            {isAuthenticated && (
               <Avatar
-                src="https://docs.material-tailwind.com/img/face-2.jpg"
+                src={`${import.meta.env.VITE_API_BASE_URL}${user?.pathPicture}`}
                 alt="avatar"
                 size="md"
               />

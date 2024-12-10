@@ -2,8 +2,7 @@
 import { Outlet, Navigate } from "react-router-dom";
 
 // CONTEXT
-import { useContext } from "react";
-import UserContext from "../../hooks/context/user.context";
+import useAuthContext from "../../hooks/context/useAuthContext";
 
 // PROPS INTERFACE
 interface ProtectedRouteProps {
@@ -13,12 +12,12 @@ interface ProtectedRouteProps {
 export default function ProtectRoute({
   isLoggedIn = false,
 }: ProtectedRouteProps) {
-  // RETRIEVE USER ID
-  const { userId } = useContext(UserContext) || {};
+  // RETRIEVE IS AUTHENTICATED STATE FROM CONTEXT
+  const { isAuthenticated } = useAuthContext();
 
-  if (isLoggedIn && userId) {
+  if (isLoggedIn && isAuthenticated) {
     return <Navigate to="/" replace />;
-  } else if (!isLoggedIn && !userId) {
+  } else if (!isLoggedIn && !isAuthenticated) {
     return <Navigate to="/signin" replace />;
   }
 

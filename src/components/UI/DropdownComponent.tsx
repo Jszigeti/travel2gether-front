@@ -17,6 +17,7 @@ interface Option {
 interface DropdownProps {
   options: Array<Option>;
   field: FieldInputProps<string[]>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formik?: FormikProps<any>;
   label?: string;
   multiple?: boolean;

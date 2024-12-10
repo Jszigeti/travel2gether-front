@@ -1,11 +1,11 @@
 // REACT HOOKS
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // REACT QUERY
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // CONTEXT
-import UserContext from "../../hooks/context/user.context";
+import useAuthContext from "../../hooks/context/useAuthContext";
 
 // ROUTER
 import { useNavigate, useParams } from "react-router-dom";
@@ -35,8 +35,8 @@ export default function GroupManagePage() {
   >("NOT_MEMBER");
   const [error, setError] = useState<null | string>(null);
 
-  // RETRIEVE USER ID
-  const { userId } = useContext(UserContext) || {};
+  // RETRIEVE USER FROM CONTEXT
+  const { user } = useAuthContext();
 
   // USEPARAMS HOOK
   const params = useParams();
@@ -62,9 +62,9 @@ export default function GroupManagePage() {
 
   // RETRIEVE USER ROLE
   useEffect(() => {
-    if (groupDetails && userId)
-      retrieveUserRole(groupDetails, userId, setUserRole);
-  }, [userId, groupDetails]);
+    if (groupDetails && user)
+      retrieveUserRole(groupDetails, user.userId, setUserRole);
+  }, [user, groupDetails]);
 
   const handleDeleteGroup = async () => {
     try {
@@ -96,7 +96,7 @@ export default function GroupManagePage() {
       </>
     );
 
-  if (isGroupDetailsLoading || !groupDetails || !userId)
+  if (isGroupDetailsLoading || !groupDetails || !user)
     return (
       <>
         <Header pageTitle="Chargement" backLink="/" />
@@ -115,7 +115,7 @@ export default function GroupManagePage() {
             groupDetails={groupDetails}
           />
           <GroupManageMembersDisplay
-            userId={userId}
+            userId={user.userId}
             groupId={Number(params.groupId)}
             groupDetails={groupDetails}
           />
