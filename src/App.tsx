@@ -37,6 +37,7 @@ import GroupEditPrefPage from "./pages/group/GroupEditPrefPage";
 import StageCreatePage from "./pages/stage/StageCreatePage";
 import StageChecklistPage from "./pages/stage/StageChecklistPage";
 import StageEditPage from "./pages/stage/StageEditPage";
+import MessagePage from "./pages/message/MessagePage";
 import StagePage from "./pages/stage/StagePage";
 import useAuthContext from "./hooks/context/useAuthContext";
 
@@ -94,6 +95,7 @@ export default function App() {
             path="/my-profile/edit/pref"
             element={<MyProfileEditPrefPage />}
           />
+          <Route path="/my-profile/messages/" element={<MessagePage />} />
           <Route path="/group/create" element={<GroupCreatePage />} />
           <Route
             path="/group/:groupId/checklist"

@@ -2,8 +2,9 @@
 // import { useQuery } from "@tanstack/react-query";
 
 // AXIOS FUNCTIONS
-// import { getGroups } from "../../api/group";
-// import { getProfiles } from "../../api/profile";
+import { useMatchingApi } from "../../api/matching";
+import { useGroupApi } from "../../api/group";
+import { useProfileApi } from "../../api/profile";
 
 // INTERFACES
 // import { GroupCardInterface } from "../../interfaces/Group";
@@ -21,25 +22,30 @@ export default function HomePage() {
   // RETRIEVE USER ID
   const { isAuthenticated } = useContext(AuthContext);
 
-  // RETRIEVE GROUPS DATA
-  // const {
-  //   data: groupsList,
-  //   isLoading: isGroupsLoading,
-  //   isError: isGroupsError,
-  // } = useQuery<GroupCardInterface[]>({
-  //   queryKey: ["groups"],
-  //   queryFn: () => getGroups(),
-  // });
+  // RETRIEVE MATCHING DATA
+  const { matchingUsers, matchingGroups } = useMatchingApi();
+  const { getLastGroups } = useGroupApi();
+  const { getLastProfiles } = useProfileApi();
 
-  // // RETRIEVE PROFILES DATA
-  // const {
-  //   data: profilesList,
-  //   isLoading: isProfilesLoading,
-  //   isError: isProfilesError,
-  // } = useQuery<AvatarCardInterface[]>({
-  //   queryKey: ["profiles"],
-  //   queryFn: () => getProfiles(),
-  // });
+  // RETRIEVE GROUPS DATA
+  const {
+    data: groupsList,
+    isLoading: isGroupsLoading,
+    isError: isGroupsError,
+  } = useQuery<GroupCardInterface[]>({
+    queryKey: ["groups"],
+    queryFn: userId ? () => matchingGroups() : () => getLastGroups(),
+  });
+
+  // RETRIEVE PROFILES DATA
+  const {
+    data: profilesList,
+    isLoading: isProfilesLoading,
+    isError: isProfilesError,
+  } = useQuery<AvatarCardInterface[]>({
+    queryKey: ["profiles"],
+    queryFn: userId ? () => matchingUsers() : () => getLastProfiles(),
+  });
 
   return (
     <>
@@ -67,11 +73,9 @@ export default function HomePage() {
               </div>
             )}
             {groupsList &&
-              groupsList
-                .slice(0, 4)
-                .map((group: GroupCardInterface) => (
-                  <GroupCard key={group.id} group={group} />
-                ))} */}
+              groupsList.map((group: GroupCardInterface) => (
+                <GroupCard key={group.id} group={group} />
+              ))}
           </div>
         </section>
         <section className="flex flex-col gap-3 lg:gap-6">
@@ -92,11 +96,9 @@ export default function HomePage() {
               </div>
             )}
             {profilesList &&
-              profilesList
-                .slice(0, 9)
-                .map((profile: AvatarCardInterface) => (
-                  <AvatarCard profile={profile} key={profile.user_id} />
-                ))} */}
+              profilesList.map((profile: AvatarCardInterface) => (
+                <AvatarCard profile={profile} key={profile.user_id} />
+              ))}
           </div>
         </section>
       </main>

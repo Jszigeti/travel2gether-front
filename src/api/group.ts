@@ -1,3 +1,44 @@
+// AXIOS
+import { useApi } from "../hooks/useApi/useApi";
+
+// UTILS FUNCTIONS
+import { handleError } from "../utils/errorHandler";
+
+export function useGroupApi() {
+  const api = useApi();
+
+  const getLastGroups = async () => {
+    try {
+      const { data } = await api.get("groups");
+      return data;
+    } catch (error: unknown) {
+      throw new Error(error);
+    }
+  };
+
+  const getGroups = async (query: any) => {
+    const params = {
+      ...query,
+      page: query.page || 1,
+      limit: query.limit || 10,
+    };
+
+    try {
+      const { data } = await api.get("groups/search", {
+        params,
+      });
+      return data;
+    } catch (error) {
+      console.error("Erreur lors de la recherche des groupes :", error);
+      throw error;
+    }
+  };
+  return {
+    getLastGroups,
+    getGroups,
+  };
+}
+
 // API URI
 import { uri } from "./uri";
 

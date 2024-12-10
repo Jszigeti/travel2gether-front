@@ -22,13 +22,14 @@ import {
   ProfileInterestsSet,
 } from "../../interfaces/Matching";
 import { Button, Card, Typography } from "@material-tailwind/react";
-// import { getProfiles } from "../../api/profile";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useProfileApi } from "../../api/profile";
 
 export default function SearchUsersForm() {
   const [showMore, setShowMore] = useState(false);
-  // const [error, setError] = useState<null | string>(null);
-  // const navigate = useNavigate();
+  const [error, setError] = useState<null | string>(null);
+  const navigate = useNavigate();
+  const { getProfiles } = useProfileApi();
 
   const formik = useFormik({
     initialValues: {
@@ -42,19 +43,56 @@ export default function SearchUsersForm() {
       interests: [] as ProfileInterestsSet[],
     },
     onSubmit: async (values) => {
-      console.log("🚀 ~ onSubmit: ~ values:", values);
-      // try {
-      //   const response = await getProfiles(values);
-      //   console.log("Recherche des utilisateurs", response);
-      //   navigate(`/results`, { state: { profiles: response } });
-      // } catch (error: unknown) {
-      //   if (error instanceof Error) {
-      //     setError(error.message);
-      //   } else {
-      //     setError("Une erreur inconnue est survenue");
-      //   }
-      //   console.log(error);
-      // }
+      try {
+        // Transformer les valeurs du formulaire
+        const formattedQuery = {
+          travelTypes:
+            values.travel_types.length > 0
+              ? values.travel_types.join(",")
+              : undefined,
+          lodgings:
+            values.lodgings.length > 0 ? values.lodgings.join(",") : undefined,
+          gender:
+            values.gender_type.length > 0
+              ? values.gender_type.join(",")
+              : undefined,
+          languages:
+            values.spoken_languages.length > 0
+              ? values.spoken_languages.join(",")
+              : undefined,
+          ageRanges:
+            values.age_ranges.length > 0
+              ? values.age_ranges.join(",")
+              : undefined,
+          tripDurations:
+            values.trip_durations.length > 0
+              ? values.trip_durations.join(",")
+              : undefined,
+          interests:
+            values.interests.length > 0
+              ? values.interests.join(",")
+              : undefined,
+        };
+
+        // Supprimer les clés avec des valeurs `undefined`
+        const cleanQuery = Object.fromEntries(
+          Object.entries(formattedQuery).filter(([, v]) => v !== undefined)
+        );
+
+        // Envoyer la requête et naviguer vers les résultats
+        const response = await getProfiles({ ...cleanQuery, page: 1 });
+        navigate("/results", {
+          state: {
+            profiles: response.users,
+            currentPage: 1,
+            totalPages: response.totalPages,
+            searchCriteria: cleanQuery,
+          },
+        });
+      } catch (error) {
+        setError("Erreur lors de la recherche des utilisateurs");
+        console.error(error);
+      }
     },
   });
 
@@ -94,7 +132,6 @@ export default function SearchUsersForm() {
             label="vos durées de voyage"
           />
 
-          {/* Hidden fields  */}
           {showMore && (
             <>
               <Typography variant="h6" className="mt-4">

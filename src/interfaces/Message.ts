@@ -7,6 +7,22 @@ export interface MessageInterface {
   created_at?: Date;
 }
 
+export interface UserConversationInterface {
+  user_receiver_id: number;
+  firstname: string;
+  path_picture: string;
+  last_message: string;
+  last_message_date: Date;
+}
+
+export interface GroupConversationInterface {
+  group_receiver_id: number;
+  title: string;
+  path_picture: string;
+  last_message: string;
+  last_message_date: Date;
+}
+
 export interface ConversationInterface {
   user_receiver_id?: number;
   firstname?: string;
@@ -23,7 +39,15 @@ export interface ChatInterface {
     firstname: string;
     path_picture: string;
   };
-  group?: {
+  messages: {
+    id: number;
+    content: string;
+    created_at: Date;
+  }[];
+}
+
+export interface GroupChatInterface {
+  group: {
     group_id: number;
     title: string;
     path_picture: string;
@@ -31,6 +55,6 @@ export interface ChatInterface {
   messages: {
     id: number;
     content: string;
-    created_at: string;
+    created_at: Date;
   }[];
 }
