@@ -71,8 +71,8 @@ export default function GroupPage() {
   // RETRIEVE USER ROLE AND STATUS
   useEffect(() => {
     if (groupDetails && user) {
-      retrieveUserRole(groupDetails, user.userId, setUserRole);
-      retrieveUserStatus(groupDetails, user.userId, setUserStatus);
+      retrieveUserRole(groupDetails, user.id, setUserRole);
+      retrieveUserStatus(groupDetails, user.id, setUserStatus);
     }
   }, [user, groupDetails]);
 
@@ -83,7 +83,7 @@ export default function GroupPage() {
         setError(null);
         const response = await deleteUserFromGroup(
           Number(params.groupId),
-          user.userId
+          user.id
         );
         console.log("Groupe quitté", response);
         queryClient.invalidateQueries({
@@ -105,10 +105,7 @@ export default function GroupPage() {
   const handleRequestGroup = async () => {
     if (user) {
       try {
-        const response = await addUserToGroup(
-          Number(params.groupId),
-          user.userId
-        );
+        const response = await addUserToGroup(Number(params.groupId), user.id);
         console.log("Demande envoyée", response);
         setUserStatus("PENDING");
       } catch (error: unknown) {

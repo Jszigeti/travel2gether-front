@@ -55,9 +55,9 @@ export default function GroupMembersDisplay({
           <div className="flex justify-between">
             <div className="grid grid-cols-4 w-full gap-6">
               {groupDetails.profiles.slice(0, 4).map((profil) => (
-                <NavLink to={`/profile/${profil.user_id}`} key={profil.user_id}>
+                <NavLink to={`/profile/${profil.userId}`} key={profil.userId}>
                   <Avatar
-                    src={profil.path_picture}
+                    src={profil.pathPicture}
                     alt="Avatar"
                     className={`${
                       profil.role.includes(GroupUserRoleEnum.ORGANIZER) ||
@@ -73,9 +73,9 @@ export default function GroupMembersDisplay({
           {groupDetails.profiles.length > 4 && (
             <AccordionBody className="grid grid-cols-4 w-full gap-6">
               {groupDetails.profiles.slice(4).map((profil) => (
-                <NavLink to={`/profile/${profil.user_id}`} key={profil.user_id}>
+                <NavLink to={`/profile/${profil.userId}`} key={profil.userId}>
                   <Avatar
-                    src={profil.path_picture}
+                    src={profil.pathPicture}
                     alt="Avatar"
                     className={`${
                       profil.role.includes(GroupUserRoleEnum.ORGANIZER) ||

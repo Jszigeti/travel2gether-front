@@ -150,6 +150,7 @@ export default function StageInfoForm({
       formik.setFieldValue("date_to", stageInfo.date_to);
       formik.setFieldValue("path_picture", stageInfo.path_picture);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stageInfo]);
 
   const handleDeleteStage = async () => {

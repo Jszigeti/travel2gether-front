@@ -24,7 +24,7 @@ export default function GroupCoverDisplay({
   return (
     <>
       <img
-        src={groupDetails.path_picture}
+        src={groupDetails.pathPicture}
         alt="Photo du groupe"
         className="w-full xl:max-w-screen-xl xl:mx-auto max-h-[40rem] object-cover"
       />

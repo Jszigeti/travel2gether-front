@@ -80,20 +80,20 @@ export default function GroupPrefForm({
   // FORM LOGIC
   const formik = useFormik({
     initialValues: {
-      travel_types: [] as TravelTypesSet[],
+      travelTypes: [] as TravelTypesSet[],
       lodgings: [] as LodgingsSet[],
-      gender_type: [] as GroupGenderEnum[],
-      spoken_languages: [] as SpokenLanguagesSet[],
+      gender: [] as GroupGenderEnum[],
+      spokenLanguages: [] as SpokenLanguagesSet[],
       budget: [] as BudgetEnum[],
-      age_ranges: [] as GroupAgeRangesSet[],
+      ageRanges: [] as GroupAgeRangesSet[],
     },
     validationSchema: Yup.object({
-      travel_types: Yup.array(),
+      travelTypes: Yup.array(),
       lodgings: Yup.array(),
-      gender_type: Yup.array(),
-      spoken_languages: Yup.array(),
+      gender: Yup.array(),
+      spokenLanguages: Yup.array(),
       budget: Yup.array(),
-      age_ranges: Yup.array(),
+      ageRanges: Yup.array(),
     }),
     onSubmit: async (values) => {
       if (groupId) {
@@ -126,14 +126,15 @@ export default function GroupPrefForm({
   useEffect(() => {
     if (groupPref) {
       formik.setValues({
-        travel_types: groupPref.travel_types || [],
+        travelTypes: groupPref.travelTypes || [],
         lodgings: groupPref.lodgings || [],
-        gender_type: groupPref.gender_type || [],
-        spoken_languages: groupPref.spoken_languages || [],
+        gender: groupPref.gender || [],
+        spokenLanguages: groupPref.spokenLanguages || [],
         budget: groupPref.budget || [],
-        age_ranges: groupPref.age_ranges || [],
+        ageRanges: groupPref.ageRanges || [],
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupPref]);
 
   return (
@@ -152,11 +153,11 @@ export default function GroupPrefForm({
           <Dropdown
             label="un type de voyage"
             options={travelTypesOptions}
-            field={formik.getFieldProps("travel_types")}
+            field={formik.getFieldProps("travelTypes")}
             formik={formik}
           />
-          {formik.touched.travel_types && formik.errors.travel_types ? (
-            <Typography color="red">{formik.errors.travel_types}</Typography>
+          {formik.touched.travelTypes && formik.errors.travelTypes ? (
+            <Typography color="red">{formik.errors.travelTypes}</Typography>
           ) : null}
 
           <Typography variant="h6" className=" mt-4">
@@ -179,11 +180,11 @@ export default function GroupPrefForm({
             multiple={false}
             label="un genre"
             options={groupGenderOptions}
-            field={formik.getFieldProps("gender_type")}
+            field={formik.getFieldProps("gender")}
             formik={formik}
           />
-          {formik.touched.gender_type && formik.errors.gender_type ? (
-            <Typography color="red">{formik.errors.gender_type}</Typography>
+          {formik.touched.gender && formik.errors.gender ? (
+            <Typography color="red">{formik.errors.gender}</Typography>
           ) : null}
 
           <Typography variant="h6" className=" mt-4">
@@ -192,13 +193,11 @@ export default function GroupPrefForm({
           <Dropdown
             label="une langue"
             options={spokenLanguagesOptions}
-            field={formik.getFieldProps("spoken_languages")}
+            field={formik.getFieldProps("spokenLanguages")}
             formik={formik}
           />
-          {formik.touched.spoken_languages && formik.errors.spoken_languages ? (
-            <Typography color="red">
-              {formik.errors.spoken_languages}
-            </Typography>
+          {formik.touched.spokenLanguages && formik.errors.spokenLanguages ? (
+            <Typography color="red">{formik.errors.spokenLanguages}</Typography>
           ) : null}
 
           <Typography variant="h6" className=" mt-4">
@@ -221,11 +220,11 @@ export default function GroupPrefForm({
           <Dropdown
             label="une tranche d'âge"
             options={ageRangesOptions}
-            field={formik.getFieldProps("age_ranges")}
+            field={formik.getFieldProps("ageRanges")}
             formik={formik}
           />
-          {formik.touched.age_ranges && formik.errors.age_ranges ? (
-            <Typography color="red">{formik.errors.age_ranges}</Typography>
+          {formik.touched.ageRanges && formik.errors.ageRanges ? (
+            <Typography color="red">{formik.errors.ageRanges}</Typography>
           ) : null}
         </div>
 

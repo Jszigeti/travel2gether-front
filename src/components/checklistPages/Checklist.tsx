@@ -8,7 +8,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useAuthContext from "../../hooks/context/useAuthContext";
 
 // AXIOS FUNCTIONS
-import { getGroup } from "../../api/group";
 import { useChecklistApi } from "../../api/checklist";
 
 // FORMIK + YUP
@@ -36,6 +35,7 @@ import {
   faPlus,
   faX,
 } from "@fortawesome/free-solid-svg-icons";
+import { useGroupApi } from "../../api/group";
 
 // PROPS INTERFACE
 interface ChecklistProps {
@@ -62,6 +62,7 @@ export default function Checklist({
     getStageChecklist,
     deleteChecklistItem,
   } = useChecklistApi();
+  const { getGroup } = useGroupApi();
 
   // RETRIEVE USER FROM CONTEXT
   const { user } = useAuthContext();
@@ -121,7 +122,7 @@ export default function Checklist({
   // RETRIEVE USER ROLE
   useEffect(() => {
     if (groupDetails && user) {
-      retrieveUserRole(groupDetails, user.userId, setUserRole);
+      retrieveUserRole(groupDetails, user.id, setUserRole);
     }
   }, [user, groupDetails]);
 

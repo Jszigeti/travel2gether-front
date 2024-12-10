@@ -61,6 +61,7 @@ export default function ResultPage() {
     if (!initialProfiles.length && !initialGroups.length) {
       fetchResults(1);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -68,6 +69,7 @@ export default function ResultPage() {
     if (inView && currentPage < totalPages) {
       fetchResults(currentPage + 1);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
   return (
@@ -79,7 +81,7 @@ export default function ResultPage() {
             <h2>Vos recommandations de voyageurs</h2>
             <div className="grid grid-cols-3 lg:grid-cols-4 justify-start gap-x-10 gap-y-3 lg:gap-y-6">
               {profiles.map((profile: AvatarCardInterface) => (
-                <AvatarCard key={profile.user_id} profile={profile} />
+                <AvatarCard key={profile.userId} profile={profile} />
               ))}
             </div>
           </section>

@@ -86,14 +86,14 @@ export default function GroupManageRequestsDisplay({
         {pendingUsers.map((pendingUser) => (
           <div
             className="flex items-center justify-between gap-3"
-            key={pendingUser.user_id}
+            key={pendingUser.userId}
           >
             <NavLink
-              to={`/profile/${pendingUser.user_id}`}
+              to={`/profile/${pendingUser.userId}`}
               className="flex items-center gap-3"
             >
               <Avatar
-                src={pendingUser.path_picture}
+                src={pendingUser.pathPicture}
                 alt="Avatar du membre"
                 size="sm"
               />
@@ -103,12 +103,12 @@ export default function GroupManageRequestsDisplay({
               <FontAwesomeIcon
                 className="cursor-pointer"
                 icon={faCheck}
-                onClick={() => handleAcceptedRequest(pendingUser.user_id)}
+                onClick={() => handleAcceptedRequest(pendingUser.userId)}
               />
               <FontAwesomeIcon
                 className="cursor-pointer"
                 icon={faX}
-                onClick={() => handleDeniedRequest(pendingUser.user_id)}
+                onClick={() => handleDeniedRequest(pendingUser.userId)}
               />
             </div>
           </div>

@@ -1,8 +1,8 @@
 export interface ModeratingInterface {
-  moderater_id?: number;
-  moderated_id?: number;
+  moderaterId?: number;
+  moderatedId?: number;
   type?: ModeratingEnum[];
-  created_at?: Date;
+  createdAt?: Date;
 }
 
 export enum ModeratingEnum {

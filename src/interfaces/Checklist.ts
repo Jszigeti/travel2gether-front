@@ -1,8 +1,8 @@
 export interface ChecklistInterface {
   id?: number;
-  group_id?: number;
-  stage_id?: number;
+  groupId?: number;
+  stageId?: number;
   item: string;
-  created_at?: Date;
-  updated_at?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

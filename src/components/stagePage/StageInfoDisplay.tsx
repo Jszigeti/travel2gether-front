@@ -21,8 +21,8 @@ export default function StageInfoDisplay({
         <div className="flex items-center gap-2">
           <FontAwesomeIcon icon={faCalendar} />
           <p className="font-bold">
-            du {formatDate(stageDetails.date_from)} au{" "}
-            {formatDate(stageDetails.date_to)}
+            du {formatDate(stageDetails.dateFrom)} au{" "}
+            {formatDate(stageDetails.dateTo)}
           </p>
         </div>
       </div>

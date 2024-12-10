@@ -63,7 +63,7 @@ export default function GroupManagePage() {
   // RETRIEVE USER ROLE
   useEffect(() => {
     if (groupDetails && user)
-      retrieveUserRole(groupDetails, user.userId, setUserRole);
+      retrieveUserRole(groupDetails, user.id, setUserRole);
   }, [user, groupDetails]);
 
   const handleDeleteGroup = async () => {
@@ -115,7 +115,7 @@ export default function GroupManagePage() {
             groupDetails={groupDetails}
           />
           <GroupManageMembersDisplay
-            userId={user.userId}
+            userId={user.id}
             groupId={Number(params.groupId)}
             groupDetails={groupDetails}
           />

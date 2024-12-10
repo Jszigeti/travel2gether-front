@@ -5,7 +5,6 @@ import ProtectRoute from "./components/protectedRoutes/ProtectRoute";
 // COMPONENTS
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Spinner } from "@material-tailwind/react";
 import FadeLoadingScreen from "./components/FadeLoadingScreen";
 
 // PAGES ACCESS. TO EVERYONE
@@ -47,7 +46,6 @@ export default function App() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        {/* <Spinner className="text-blue h-20 w-20" /> */}
         <img src="/src/assets/logo/logo.svg" />
       </div>
     );

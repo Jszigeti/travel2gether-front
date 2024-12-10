@@ -26,8 +26,8 @@ export default function GroupInfoDisplay({
         <div className="flex items-center gap-2">
           <FontAwesomeIcon icon={faCalendar} />
           <p className="font-bold">
-            du {formatDate(groupDetails.date_from)} au{" "}
-            {formatDate(groupDetails.date_to)}
+            du {formatDate(groupDetails.dateFrom)} au{" "}
+            {formatDate(groupDetails.dateTo)}
           </p>
         </div>
       </div>

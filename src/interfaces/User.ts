@@ -3,8 +3,8 @@ export interface UserInterface {
   email?: string;
   password?: string;
   status?: UserStatusEnum[];
-  created_at?: Date;
-  updated_at?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export enum UserStatusEnum {

@@ -51,7 +51,7 @@ export default function ProtectGroupRoute({
   useEffect(() => {
     if (groupDetails) {
       const userProfile = groupDetails.profiles.find(
-        (profile) => profile.user_id === user?.userId
+        (profile) => profile.userId === user?.id
       );
       if (
         editPage &&

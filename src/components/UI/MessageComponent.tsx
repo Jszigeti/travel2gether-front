@@ -19,10 +19,10 @@ export default function MessageComponent({
   message,
 }: MessageComponentProps) {
   return (
-    <NavLink to={`/profile/${profile.user_id}`}>
+    <NavLink to={`/profile/${profile.userId}`}>
       <div className="flex flex-col items-center gap-2 lg:gap-4">
         <Avatar
-          src={profile.path_picture}
+          src={profile.pathPicture}
           alt="avatar"
           className="w-24 h-24 sm:w-28 sm:h-28 md:w-40 md:h-40"
         />

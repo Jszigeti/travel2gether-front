@@ -87,11 +87,11 @@ export default function GroupManageMembersDisplay({
         {acceptedUsers.map((profile) => (
           <div
             className="grid gap-3 grid-cols-3 sm:grid-cols-6"
-            key={profile.user_id}
+            key={profile.userId}
           >
             <div className="flex items-center gap-3 col-span-2 order-1">
               <Avatar
-                src={profile.path_picture}
+                src={profile.pathPicture}
                 alt="Avatar du membre"
                 size="sm"
               />
@@ -102,12 +102,12 @@ export default function GroupManageMembersDisplay({
             <div className="order-3 col-span-3 sm:order-2 sm:col-span-3">
               <Select
                 onChange={(value) =>
-                  handleRoleChange(profile.user_id, value as GroupUserRoleEnum)
+                  handleRoleChange(profile.userId, value as GroupUserRoleEnum)
                 }
                 value={profile.role[0]}
                 disabled={
                   profile.role[0] === GroupUserRoleEnum.AUTHOR ||
-                  profile.user_id === userId
+                  profile.userId === userId
                 }
                 className="border border-blue"
                 labelProps={{
@@ -125,10 +125,10 @@ export default function GroupManageMembersDisplay({
             </div>
             <div className="flex justify-end items-center order-2 sm:order-3">
               <FontAwesomeIcon
-                onClick={() => handleDeleteUser(profile.user_id)}
+                onClick={() => handleDeleteUser(profile.userId)}
                 className={`cursor-pointer ${
                   profile.role[0] === GroupUserRoleEnum.AUTHOR ||
-                  profile.user_id === userId
+                  profile.userId === userId
                     ? "hidden"
                     : null
                 }`}

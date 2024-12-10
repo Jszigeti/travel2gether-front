@@ -70,8 +70,8 @@ export default function GroupInfoForm({
   });
 
   // DEFAULT AVATAR
-  const defaultImage = groupInfo?.path_picture
-    ? groupInfo.path_picture
+  const defaultImage = groupInfo?.pathPicture
+    ? groupInfo.pathPicture
     : "https://cdn.pixabay.com/photo/2016/01/19/15/48/luggage-1149289_960_720.jpg";
 
   // IMAGE FUNCTION
@@ -80,10 +80,10 @@ export default function GroupInfoForm({
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setPreviewImage(imageUrl);
-      formik.setFieldValue("path_picture", file);
+      formik.setFieldValue("pathPicture", file);
     } else {
       setPreviewImage(null);
-      formik.setFieldValue("path_picture", null);
+      formik.setFieldValue("pathPicture", null);
     }
   };
 
@@ -93,27 +93,27 @@ export default function GroupInfoForm({
       title: "",
       description: "",
       location: "",
-      date_from: "",
-      date_to: "",
-      path_picture: "",
+      dateFrom: "",
+      dateTo: "",
+      pathPicture: "",
     },
     validationSchema: Yup.object({
-      path_picture: Yup.mixed().required("Image requise"),
+      pathPicture: Yup.mixed().required("Image requise"),
       title: Yup.string().required("Nom du groupe requis"),
       description: Yup.string().required("Description requise"),
       location: Yup.string().required("Lieu requis"),
-      date_from: Yup.date().required("Date de début requise"),
-      date_to: Yup.date()
+      dateFrom: Yup.date().required("Date de début requise"),
+      dateTo: Yup.date()
         .required("Date de fin requise")
         .min(
-          Yup.ref("date_from"),
+          Yup.ref("dateFrom"),
           "La date de fin doit être après la date de début"
         ),
     }),
     onSubmit: async (values) => {
       const formData = {
         ...values,
-        path_picture: values.path_picture ? values.path_picture : defaultImage,
+        pathPicture: values.pathPicture ? values.pathPicture : defaultImage,
       };
       if (groupCreationContext && onNext && onGroupData) {
         try {
@@ -160,11 +160,12 @@ export default function GroupInfoForm({
         title: groupInfo.title || "",
         description: groupInfo.description || "",
         location: groupInfo.location || "",
-        date_from: groupInfo.date_from || "",
-        date_to: groupInfo.date_to || "",
-        path_picture: groupInfo.path_picture || "",
+        dateFrom: groupInfo.dateFrom || "",
+        dateTo: groupInfo.dateTo || "",
+        pathPicture: groupInfo.pathPicture || "",
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupInfo]);
 
   return (
@@ -196,16 +197,16 @@ export default function GroupInfoForm({
             size="lg"
             placeholder="Choisissez une image"
             className={`!border-blue ${
-              formik.touched.path_picture && formik.errors.path_picture
+              formik.touched.pathPicture && formik.errors.pathPicture
                 ? "!border-red-500"
                 : null
             }`}
             onChange={handleImageChange}
             crossOrigin={undefined}
           />
-          {formik.touched.path_picture && formik.errors.path_picture ? (
+          {formik.touched.pathPicture && formik.errors.pathPicture ? (
             <>
-              <Typography color="red">{formik.errors.path_picture}</Typography>
+              <Typography color="red">{formik.errors.pathPicture}</Typography>
               <FontAwesomeIcon
                 icon={faCircleExclamation}
                 className="absolute right-3 bottom-10 text-red-500"
@@ -310,15 +311,15 @@ export default function GroupInfoForm({
             size="lg"
             placeholder="Date de début du groupe de voyage"
             className={`!border-blue ${
-              formik.touched.date_from && formik.errors.date_from
+              formik.touched.dateFrom && formik.errors.dateFrom
                 ? "!border-red-500"
                 : null
             }`}
-            {...formik.getFieldProps("date_from")}
+            {...formik.getFieldProps("dateFrom")}
           />
-          {formik.touched.date_from && formik.errors.date_from ? (
+          {formik.touched.dateFrom && formik.errors.dateFrom ? (
             <>
-              <Typography color="red">{formik.errors.date_from}</Typography>
+              <Typography color="red">{formik.errors.dateFrom}</Typography>
               <FontAwesomeIcon
                 icon={faCircleExclamation}
                 className="absolute right-10 top-10 text-red-500"
@@ -337,15 +338,15 @@ export default function GroupInfoForm({
             size="lg"
             placeholder="Date de fin du groupe de voyage"
             className={`!border-blue ${
-              formik.touched.date_to && formik.errors.date_to
+              formik.touched.dateTo && formik.errors.dateTo
                 ? "!border-red-500"
                 : null
             }`}
-            {...formik.getFieldProps("date_to")}
+            {...formik.getFieldProps("dateTo")}
           />
-          {formik.touched.date_to && formik.errors.date_to ? (
+          {formik.touched.dateTo && formik.errors.dateTo ? (
             <>
-              <Typography color="red">{formik.errors.date_to}</Typography>
+              <Typography color="red">{formik.errors.dateTo}</Typography>
               <FontAwesomeIcon
                 icon={faCircleExclamation}
                 className="absolute right-10 top-10 text-red-500"

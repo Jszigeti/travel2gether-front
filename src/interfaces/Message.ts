@@ -1,48 +1,48 @@
 export interface MessageInterface {
   id?: number;
   content?: string;
-  sender_id?: number;
-  user_receiver_id?: number;
-  group_receiver_id?: number;
-  created_at?: Date;
+  senderId?: number;
+  userReceiverId?: number;
+  groupReceiverId?: number;
+  createdAt?: Date;
 }
 
 export interface UserConversationInterface {
-  user_receiver_id: number;
+  userReceiverId: number;
   firstname: string;
-  path_picture: string;
-  last_message: string;
-  last_message_date: Date;
+  pathPicture: string;
+  lastMessage: string;
+  lastMessageDate: Date;
 }
 
 export interface GroupConversationInterface {
-  group_receiver_id: number;
+  groupReceiverId: number;
   title: string;
-  path_picture: string;
-  last_message: string;
-  last_message_date: Date;
+  pathPicture: string;
+  lastMessage: string;
+  lastMessageDate: Date;
 }
 
 export interface ConversationInterface {
-  user_receiver_id?: number;
+  userReceiverId?: number;
   firstname?: string;
-  group_receiver_id?: number;
+  groupReceiverId?: number;
   title?: string;
-  path_picture: string;
-  last_message: string;
-  last_message_date: string;
+  pathPicture: string;
+  lastMessage: string;
+  lastMessageDate: string;
 }
 
 export interface ChatInterface {
   user?: {
     user_id: number;
     firstname: string;
-    path_picture: string;
+    pathPicture: string;
   };
   messages: {
     id: number;
     content: string;
-    created_at: Date;
+    createdAt: Date;
   }[];
 }
 
@@ -50,11 +50,11 @@ export interface GroupChatInterface {
   group: {
     group_id: number;
     title: string;
-    path_picture: string;
+    pathPicture: string;
   };
   messages: {
     id: number;
     content: string;
-    created_at: Date;
+    createdAt: Date;
   }[];
 }

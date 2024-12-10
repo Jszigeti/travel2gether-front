@@ -1,6 +1,6 @@
 export interface RatingInterface {
-  rater_id?: number;
-  rated_id?: number;
+  raterId?: number;
+  ratedId?: number;
   value?: number;
-  created_at?: Date;
+  createdAt?: Date;
 }

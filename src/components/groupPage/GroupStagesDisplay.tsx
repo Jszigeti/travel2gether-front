@@ -44,8 +44,7 @@ export default function GroupStagesDisplay({
                 <span className="font-bold">
                   {stage.title} - {stage.address}
                 </span>{" "}
-                - du {formatDate(stage.date_from)} au{" "}
-                {formatDate(stage.date_to)}
+                - du {formatDate(stage.dateFrom)} au {formatDate(stage.dateTo)}
               </NavLink>
             </p>
           ))}

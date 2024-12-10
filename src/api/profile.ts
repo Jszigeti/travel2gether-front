@@ -30,7 +30,9 @@ export function useProfileApi() {
       const { data } = await api.get("users/profiles");
       return data;
     } catch (error: unknown) {
-      throw new Error(error);
+      throw new Error(
+        customHandleError(error, "Une erreur inconnue est survenue")
+      );
     }
   };
   const getProfiles = async (query: {
@@ -48,8 +50,9 @@ export function useProfileApi() {
       });
       return data;
     } catch (error) {
-      console.error("Erreur lors de la recherche des profiles :", error);
-      throw error;
+      throw new Error(
+        customHandleError(error, "Une erreur inconnue est survenue")
+      );
     }
   };
   return {

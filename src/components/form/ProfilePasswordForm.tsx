@@ -54,7 +54,7 @@ export function ProfilePasswordForm() {
       if (user) {
         try {
           setError(null);
-          const response = await editPassword(user.userId, values);
+          const response = await editPassword(user.id, values);
           console.log("Modification du mot de passe réussie", response);
           navigate("/my-profile/edit/account");
           formik.resetForm();

@@ -17,7 +17,7 @@ export const retrieveUserRole = (
 ) => {
   if (groupDetailsData) {
     const userProfile = groupDetailsData.profiles.find(
-      (profile) => profile.user_id === userId
+      (profile) => profile.userId === userId
     );
     if (userProfile) {
       if (userProfile.role.includes(GroupUserRoleEnum.TRAVELER)) {
@@ -40,7 +40,7 @@ export const retrieveUserStatus = (
 ) => {
   if (groupDetailsData) {
     const userProfile = groupDetailsData.profiles.find(
-      (profile) => profile.user_id === userId
+      (profile) => profile.userId === userId
     );
     if (userProfile) {
       if (userProfile.status.includes(GroupUserStatusEnum.PENDING)) {

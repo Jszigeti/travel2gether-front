@@ -1,15 +1,15 @@
 export interface GroupUserInterface {
-  user_id?: number;
-  group_id?: number;
+  userId?: number;
+  groupId?: number;
   role?: GroupUserRoleEnum[];
   status?: GroupUserStatusEnum[];
-  created_at?: Date;
-  updated_at?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface PendingUserInterface {
-  user_id: number;
-  path_picture: string;
+  userId: number;
+  pathPicture: string;
   firstname: string;
 }
 
