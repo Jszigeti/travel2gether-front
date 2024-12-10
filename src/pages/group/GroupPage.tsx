@@ -57,7 +57,7 @@ export default function GroupPage() {
 
   // RETRIEVE GROUP DATA
   const {
-    data: groupDetailsData,
+    data: groupDetails,
     isLoading: isGroupDetailsLoading,
     isError: isGroupDetailsError,
   } = useQuery<GroupPageInterface>({
@@ -70,11 +70,11 @@ export default function GroupPage() {
 
   // RETRIEVE USER ROLE AND STATUS
   useEffect(() => {
-    if (groupDetailsData && userId) {
-      retrieveUserRole(groupDetailsData, userId, setUserRole);
-      retrieveUserStatus(groupDetailsData, userId, setUserStatus);
+    if (groupDetails && userId) {
+      retrieveUserRole(groupDetails, userId, setUserRole);
+      retrieveUserStatus(groupDetails, userId, setUserStatus);
     }
-  }, [userId, groupDetailsData]);
+  }, [userId, groupDetails]);
 
   // LEAVING GROUP FUNCTION
   const handleLeavingGroup = async () => {
@@ -132,7 +132,7 @@ export default function GroupPage() {
       </>
     );
 
-  if (!groupDetailsData || isGroupDetailsLoading)
+  if (!groupDetails || isGroupDetailsLoading)
     return (
       <>
         <Header pageTitle="Chargement" backLink="/" />
@@ -143,24 +143,24 @@ export default function GroupPage() {
 
   return (
     <>
-      <Header pageTitle={groupDetailsData.title} backLink="/" />
+      <Header pageTitle={groupDetails.title} backLink="/" />
       <GroupCoverDisplay
-        groupDetails={groupDetailsData}
+        groupDetails={groupDetails}
         userRole={userRole}
         userStatus={userStatus}
         groupId={params.groupId}
       />
       <main className="flex flex-col px-5 gap-6 py-6 max-w-screen-xl mx-auto lg:gap-12">
-        <GroupInfoDisplay groupDetails={groupDetailsData} />
+        <GroupInfoDisplay groupDetails={groupDetails} />
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <GroupStagesDisplay
-            groupDetails={groupDetailsData}
+            groupDetails={groupDetails}
             userRole={userRole}
             userStatus={userStatus}
             groupId={params.groupId}
           />
           <GroupMembersDisplay
-            groupDetails={groupDetailsData}
+            groupDetails={groupDetails}
             userRole={userRole}
             userStatus={userStatus}
           />

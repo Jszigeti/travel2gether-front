@@ -49,9 +49,9 @@ export default function GroupManagePage() {
 
   // RETRIEVE GROUP DATA
   const {
-    data: groupDetailsData,
-    isLoading: isGroupDetailsDataLoading,
-    isError: isGroupDetailsDataError,
+    data: groupDetails,
+    isLoading: isGroupDetailsLoading,
+    isError: isGroupDetailsError,
   } = useQuery<GroupPageInterface>({
     queryKey: ["groupDetails", Number(params.groupId)],
     queryFn: () =>
@@ -62,9 +62,9 @@ export default function GroupManagePage() {
 
   // RETRIEVE USER ROLE
   useEffect(() => {
-    if (groupDetailsData && userId)
-      retrieveUserRole(groupDetailsData, userId, setUserRole);
-  }, [userId, groupDetailsData]);
+    if (groupDetails && userId)
+      retrieveUserRole(groupDetails, userId, setUserRole);
+  }, [userId, groupDetails]);
 
   const handleDeleteGroup = async () => {
     try {
@@ -85,12 +85,7 @@ export default function GroupManagePage() {
     }
   };
 
-  if (
-    !params.groupId ||
-    !groupDetailsData ||
-    isGroupDetailsDataError ||
-    !userId
-  )
+  if (!params.groupId || isGroupDetailsError)
     return (
       <>
         <Header pageTitle="Erreur" backLink="/" />
@@ -101,27 +96,31 @@ export default function GroupManagePage() {
       </>
     );
 
+  if (isGroupDetailsLoading || !groupDetails || !userId)
+    return (
+      <>
+        <Header pageTitle="Chargement" backLink="/" />
+        <div className="text-blue text-center">Chargement des données...</div>
+        <Footer />
+      </>
+    );
+
   return (
     <ProtectGroupRoute editPage={true}>
       <Header pageTitle="Gestion" backLink={`/group/${params.groupId}`} />
       <main className="flex flex-col justify-center items-center px-5 gap-6 py-6 max-w-screen-xl min-h-[70vh] mx-auto lg:gap-12">
         <section className="grid gap-6 w-full lg:grid-cols-4">
-          {isGroupDetailsDataLoading && (
-            <div className="text-blue text-center">
-              Chargement des données...
-            </div>
-          )}
           <GroupManageRequestsDisplay
             groupId={Number(params.groupId)}
-            groupDetailsData={groupDetailsData}
+            groupDetails={groupDetails}
           />
           <GroupManageMembersDisplay
             userId={userId}
             groupId={Number(params.groupId)}
-            groupDetailsData={groupDetailsData}
+            groupDetails={groupDetails}
           />
           <GroupManageStagesDisplay
-            groupDetailsData={groupDetailsData}
+            groupDetails={groupDetails}
             groupId={Number(params.groupId)}
           />
         </section>

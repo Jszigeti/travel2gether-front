@@ -1,41 +1,42 @@
+// ROUTER
 import { NavLink } from "react-router-dom";
+
+// INTERFACES
 import {
   NotificationComponentInterface,
   NotificationEnum,
 } from "../../interfaces/Notification";
-import { Alert } from "@material-tailwind/react";
-//import { getNotifications, editNotification } from "../../api/notification";
-//import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
+// COMPONENTS
+import { Alert } from "@material-tailwind/react";
+
+// PROPS INTERFACE
 interface NotificationComponentProps {
-  notif: NotificationComponentInterface;
+  notification: NotificationComponentInterface;
 }
 
-function NotificationComponent({ notif }: NotificationComponentProps) {
-  const handleReadNotification = () => {
-    // editNotification();
-  };
-
-  /*const handleNotificationDelete = (notif.id) => {};*/
-
+function NotificationComponent({ notification }: NotificationComponentProps) {
   return (
     <NavLink
       to={
-        notif.reference_type?.includes(NotificationEnum.GROUP_MESSAGE)
-          ? `/group/${notif.reference_id}/messages`
-          : notif.reference_type?.includes(NotificationEnum.PRIVATE_MESSAGE)
-          ? `/my-profile/messages/${notif.reference_id}`
-          : `/group/${notif.reference_id}`
+        notification.reference_type?.includes(NotificationEnum.GROUP_MESSAGE)
+          ? `/group/${notification.reference_id}/messages`
+          : notification.reference_type?.includes(
+              NotificationEnum.PRIVATE_MESSAGE
+            )
+          ? `/my-profile/messages/${notification.reference_id}`
+          : `/group/${notification.reference_id}`
       }
-      onClick={handleReadNotification}
     >
       <Alert
         className={
-          notif.isRead ? "bg-blue-gray-100 text-blue-gray-500" : "bg-blue"
+          notification.isRead
+            ? "bg-blue-gray-100 text-blue-gray-500"
+            : "bg-blue"
         }
       >
-        <h3 className="font-bold">{notif.reference_type}</h3>
-        {notif.details}
+        <h3 className="font-bold">{notification.reference_type}</h3>
+        {notification.details}
       </Alert>
     </NavLink>
   );

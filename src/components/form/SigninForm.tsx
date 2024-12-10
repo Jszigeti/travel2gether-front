@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import { signin } from "../../api/auth";
+import { useAuthApi } from "../../api/auth";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -19,6 +19,9 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 export default function SigninForm() {
   // STATES
   const [error, setError] = useState<null | string>(null);
+
+  // Import signup function
+  const { signin } = useAuthApi();
 
   // REDIRECTION
   const navigate = useNavigate();
@@ -118,11 +121,7 @@ export default function SigninForm() {
       <Button className="bg-blue font-montserrat" fullWidth type="submit">
         Me connecter
       </Button>
-      {error && (
-        <div className="text-red-500 text-center ">
-          Identifiant ou mot de passe incorrect
-        </div>
-      )}
+      {error && <div className="text-red-500 text-center ">{error}</div>}
     </form>
   );
 }

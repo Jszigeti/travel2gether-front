@@ -23,8 +23,18 @@ export interface GroupConversationInterface {
   last_message_date: Date;
 }
 
-export interface UserChatInterface {
-  user: {
+export interface ConversationInterface {
+  user_receiver_id?: number;
+  firstname?: string;
+  group_receiver_id?: number;
+  title?: string;
+  path_picture: string;
+  last_message: string;
+  last_message_date: string;
+}
+
+export interface ChatInterface {
+  user?: {
     user_id: number;
     firstname: string;
     path_picture: string;

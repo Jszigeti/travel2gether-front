@@ -32,18 +32,18 @@ export default function ProfileComponent({
 }: ProfileComponentProps) {
   // RETRIEVE PROFIL INFO DATA
   const {
-    data: profileData,
-    isLoading: isProfileDataLoading,
-    isError: isProfileDataError,
+    data: profile,
+    isLoading: isProfileLoading,
+    isError: isProfileError,
   } = useQuery<ProfilePageInterface>({
-    queryKey: ["profileData", userId],
+    queryKey: ["profile", userId],
     queryFn: () =>
       userId
         ? getProfile(userId)
         : Promise.reject(new Error("User ID is required")),
   });
 
-  if (!profileData)
+  if (!profile)
     return (
       <div className="text-red-500 text-center">
         Erreur lors du chargement des données
@@ -53,32 +53,32 @@ export default function ProfileComponent({
   return (
     <>
       <section className="flex md:gap-12 lg:gap-20 xl:gap-24 justify-center gap-6 shadow-md p-4 rounded-md ">
-        {isProfileDataLoading && (
+        {isProfileLoading && (
           <div className="text-blue text-center">Chargement des données...</div>
         )}
-        {isProfileDataError && (
+        {isProfileError && (
           <div className="text-red-500 text-center">
             Erreur lors du chargement des données
           </div>
         )}
         <Avatar
-          src={profileData.path_picture}
-          alt={`${profileData.firstname} (photo de profil)`}
+          src={profile.path_picture}
+          alt={`${profile.firstname} (photo de profil)`}
           size="xxl"
         />
         <section className="flex flex-col justify-between font-bold ">
           <h2 className="font-bold">
-            {`${profileData.firstname}
-          ${profileData.lastname?.charAt(0)}.`}
+            {`${profile.firstname}
+          ${profile.lastname?.charAt(0)}.`}
           </h2>
           <section className="flex flex-col sm:flex-row sm:gap-2">
-            <Rating value={Math.round(profileData.average_rating)} readonly />
-            {profileData.average_rating} ({profileData.ratings} avis)
+            <Rating value={Math.round(profile.average_rating)} readonly />
+            {profile.average_rating} ({profile.ratings} avis)
           </section>
           <section className="flex gap-2">
-            <Chip value={profileData.gender} className="bg-green w-fit " />
+            <Chip value={profile.gender} className="bg-green w-fit " />
             <Chip
-              value={displayAge(profileData.birthdate)}
+              value={displayAge(profile.birthdate)}
               className="bg-green w-fit "
             />
           </section>
@@ -88,64 +88,64 @@ export default function ProfileComponent({
             <FontAwesomeIcon icon={faCog} color="#68baf5" size="2xl" />
           </NavLink>
         ) : (
-          <NavLink to={`/my-profile/messages/${profileData.user_id}`}>
+          <NavLink to={`/my-profile/messages/${profile.user_id}`}>
             <FontAwesomeIcon icon={faEnvelope} color="#68baf5" size="2xl" />
           </NavLink>
         )}
       </section>
       <section className="flex flex-col md:grid md:grid-cols-2 gap-6">
         <section className="flex flex-col justify-between shadow-md p-4 rounded-md">
-          <div>{profileData.description}</div>
+          <div>{profile.description}</div>
           <p className="font-bold">
-            Disponible du {formatDate(profileData.available_from)} au{" "}
-            {formatDate(profileData.available_to)}
+            Disponible du {formatDate(profile.available_from)} au{" "}
+            {formatDate(profile.available_to)}
           </p>
         </section>
-        {(profileData.spoken_languages.length <= 1 ||
-          profileData.interests.length <= 1 ||
-          profileData.trip_durations.length <= 1 ||
-          profileData.lodgings.length <= 1) && (
+        {(profile.spoken_languages.length <= 1 ||
+          profile.interests.length <= 1 ||
+          profile.trip_durations.length <= 1 ||
+          profile.lodgings.length <= 1) && (
           <section className=" flex flex-col gap-3 shadow-md p-4 rounded-md">
             <h2 className="font-bold">Informations</h2>
 
-            {profileData.spoken_languages.length > 0 && (
+            {profile.spoken_languages.length > 0 && (
               <div>
                 <h3>Langues parlées</h3>
                 <section className="flex flex-wrap gap-3">
-                  {profileData.spoken_languages.map((lang, index) => (
+                  {profile.spoken_languages.map((lang, index) => (
                     <Chip value={lang} key={index} className="bg-green w-fit" />
                   ))}
                 </section>
               </div>
             )}
 
-            {profileData.interests.length > 0 && (
+            {profile.interests.length > 0 && (
               <div>
                 <h3>Centres d'intérêt</h3>
                 <section className="flex gap-3 flex-wrap">
-                  {profileData.interests.map((intr, index) => (
+                  {profile.interests.map((intr, index) => (
                     <Chip value={intr} key={index} className="bg-green w-fit" />
                   ))}
                 </section>
               </div>
             )}
 
-            {profileData.trip_durations.length > 0 && (
+            {profile.trip_durations.length > 0 && (
               <div>
                 <h3>Durées préférées</h3>
                 <section className="flex gap-3 flex-wrap">
-                  {profileData.trip_durations.map((dur, index) => (
+                  {profile.trip_durations.map((dur, index) => (
                     <Chip value={dur} key={index} className="bg-green w-fit" />
                   ))}
                 </section>
               </div>
             )}
 
-            {profileData.lodgings.length > 0 && (
+            {profile.lodgings.length > 0 && (
               <div>
                 <h3>Préférences d'hébergement</h3>
                 <section className="flex gap-3 flex-wrap">
-                  {profileData.lodgings.map((lodge, index) => (
+                  {profile.lodgings.map((lodge, index) => (
                     <Chip
                       value={lodge}
                       key={index}
@@ -161,7 +161,7 @@ export default function ProfileComponent({
       <section className="flex flex-col gap-4">
         <h2 className="font-bold">Voyages à venir</h2>
         <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {profileData.groups.map((gr, index) => (
+          {profile.groups.map((gr, index) => (
             <GroupCard group={gr} key={index} />
           ))}
         </div>

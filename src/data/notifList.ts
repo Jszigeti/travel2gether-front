@@ -22,7 +22,7 @@ export const notifList = [
     user_id: 1,
     reference_id: 3,
     reference_type: [NotificationEnum.PRIVATE_MESSAGE],
-    isRead: true,
+    isRead: false,
     details: "Charles",
   },
   {

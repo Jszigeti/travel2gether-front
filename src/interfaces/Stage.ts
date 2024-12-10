@@ -6,8 +6,8 @@ export interface StageInterface {
   date_to?: string;
   path_picture?: string;
   address?: string;
-  longitude?: number;
-  latitude?: number;
+  longitude?: string;
+  latitude?: string;
   group_id?: number;
   created_at?: Date;
   updated_at?: Date;

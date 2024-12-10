@@ -11,7 +11,7 @@ import UserContext from "../../hooks/context/user.context";
 import { useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import { editUser, getUser } from "../../api/auth";
+import { useAuthApi } from "../../api/auth";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -33,6 +33,9 @@ export function ProfileAccountForm() {
   // STATES
   const [error, setError] = useState<null | string>(null);
 
+  // Import signup function
+  const { getUser, editUser } = useAuthApi();
+
   // RETRIEVE USER ID
   const { userId } = useContext(UserContext) || {};
 
@@ -44,7 +47,7 @@ export function ProfileAccountForm() {
 
   // RETRIEVE PROFIL INFO DATA
   const {
-    data: profileAccountData,
+    data: profileAccount,
     isLoading: isProfileAccountLoading,
     isError: isProfileAccountError,
   } = useQuery<UserInterface & ProfileInterface>({
@@ -92,14 +95,14 @@ export function ProfileAccountForm() {
   });
 
   useEffect(() => {
-    if (profileAccountData) {
+    if (profileAccount) {
       formik.setValues({
-        email: profileAccountData.email || "",
-        firstname: profileAccountData.firstname || "",
-        lastname: profileAccountData.lastname || "",
+        email: profileAccount.email || "",
+        firstname: profileAccount.firstname || "",
+        lastname: profileAccount.lastname || "",
       });
     }
-  }, [profileAccountData]);
+  }, [profileAccount]);
 
   return (
     <Card

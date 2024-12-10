@@ -42,19 +42,11 @@ import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 // PROPS INTERFACE
 interface ProfilePrefFormProps {
-  profileData?: ProfileInterface;
   signupContext?: boolean;
-  formUserId?: number;
-  token?: string;
-  saveUserToken?: (token: string) => void;
 }
 
 export function ProfilePrefForm({
-  profileData,
   signupContext = true,
-  formUserId,
-  token,
-  saveUserToken,
 }: ProfilePrefFormProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
@@ -70,7 +62,7 @@ export function ProfilePrefForm({
 
   // RETRIEVE PROFIL PREF DATA
   const {
-    data: profilePrefData,
+    data: profilePref,
     isLoading: isProfilePrefLoading,
     isError: isProfilePrefError,
   } = useQuery<ProfileInterface>({
@@ -85,37 +77,51 @@ export function ProfilePrefForm({
   // FORM LOGIC
   const formik = useFormik({
     initialValues: {
-      travel_types: [] as TravelTypesSet[],
+      travelTypes: [] as TravelTypesSet[],
       budget: [] as BudgetEnum[],
       lodgings: [] as LodgingsSet[],
-      available_from: "",
-      available_to: "",
-      trip_durations: [] as ProfileTripDurationsSet[],
+      availableFrom: "",
+      availableTo: "",
+      tripDurations: [] as ProfileTripDurationsSet[],
     },
     validationSchema: object({
-      travel_types: array(),
+      travelTypes: array(),
       budget: array(),
       lodgings: array(),
-      available_from: date(),
-      available_to: date().min(
-        ref("available_from"),
+      availableFrom: date(),
+      availableTo: date().min(
+        ref("availableFrom"),
         "La date de fin doit être supérieure à la date de début"
       ),
-      trip_durations: array(),
+      tripDurations: array(),
     }),
     onSubmit: async (values) => {
+      const formData = new FormData();
+      if (values.availableFrom)
+        formData.append("availableFrom", values.availableFrom);
+      if (values.availableTo)
+        formData.append("availableTo", values.availableTo);
+      values.travelTypes?.forEach((travelType) =>
+        formData.append("travelTypes[]", travelType)
+      );
+      values.budget?.forEach((budget) => formData.append("budget[]", budget));
+      values.lodgings?.forEach((lodging) =>
+        formData.append("lodgings[]", lodging)
+      );
+      values.tripDurations?.forEach((tripDuration) =>
+        formData.append("tripDurations[]", tripDuration)
+      );
       // FORM LOGIC IF SIGNUP CONTEXT
-      if (profileData && formUserId) {
-        const userProfileData = { ...profileData, ...values };
+      if (signupContext) {
         try {
           setError(null);
-          const response = await editProfile(formUserId, userProfileData);
+          const response = await editProfile(formData);
           console.log(
             "Enregistrement des informations du profil réussi",
             response
           );
-          if (token) saveUserToken?.(token);
           formik.resetForm();
+          navigate(`/signin`);
         } catch (error: unknown) {
           if (error instanceof Error) {
             setError(error.message);
@@ -124,18 +130,18 @@ export function ProfilePrefForm({
           }
           console.log(error);
         }
-      } else if (userId && !signupContext) {
+      } else {
         // FORM LOGIC IF EDIT CONTEXT
         try {
           setError(null);
-          const response = await editProfile(userId, values);
+          const response = await editProfile(formData);
           console.log("Modification du profil réussie", response);
           queryClient.setQueryData(["profilePref", userId], values);
           queryClient.invalidateQueries({
             queryKey: ["profileData", userId],
           });
-          navigate(`/my-profile/edit`);
           formik.resetForm();
+          navigate(`/my-profile/edit`);
         } catch (error: unknown) {
           if (error instanceof Error) {
             setError(error.message);
@@ -149,17 +155,17 @@ export function ProfilePrefForm({
   });
 
   useEffect(() => {
-    if (profilePrefData) {
+    if (profilePref) {
       formik.setValues({
-        travel_types: profilePrefData.travel_types || [],
-        budget: profilePrefData.budget || [],
-        lodgings: profilePrefData.lodgings || [],
-        available_from: profilePrefData.available_from || "",
-        available_to: profilePrefData.available_to || "",
-        trip_durations: profilePrefData.trip_durations || [],
+        travelTypes: profilePref.travelTypes || [],
+        budget: profilePref.budget || [],
+        lodgings: profilePref.lodgings || [],
+        availableFrom: profilePref.availableFrom || "",
+        availableTo: profilePref.availableTo || "",
+        tripDurations: profilePref.tripDurations || [],
       });
     }
-  }, [profilePrefData]);
+  }, [profilePref]);
 
   return (
     <Card
@@ -176,7 +182,7 @@ export function ProfilePrefForm({
           <Typography variant="h6">Types de voyage</Typography>
           <Dropdown
             options={travelTypesOptions}
-            field={formik.getFieldProps("travel_types")}
+            field={formik.getFieldProps("travelTypes")}
             formik={formik}
             label="vos types de voyage"
           />
@@ -208,7 +214,7 @@ export function ProfilePrefForm({
             type="date"
             placeholder="Début"
             className={`!border-blue mb-3  ${
-              formik.touched.available_from && formik.errors.available_from
+              formik.touched.availableFrom && formik.errors.availableFrom
                 ? "!border-red-500"
                 : null
             }`}
@@ -216,17 +222,17 @@ export function ProfilePrefForm({
               className: "before:content-none after:content-none",
             }}
             onChange={formik.handleChange}
-            name="available_from"
-            value={formik.values.available_from}
+            name="availableFrom"
+            value={formik.values.availableFrom}
           />
-          {formik.touched.available_from && formik.errors.available_from ? (
+          {formik.touched.availableFrom && formik.errors.availableFrom ? (
             <FontAwesomeIcon
               icon={faCircleExclamation}
               className="absolute right-3 top-[40px] text-red-500"
             />
           ) : null}
-          {formik.errors.available_from && formik.touched.available_from && (
-            <div>{formik.errors.available_from}</div>
+          {formik.errors.availableFrom && formik.touched.availableFrom && (
+            <div>{formik.errors.availableFrom}</div>
           )}
         </div>
         <div className="flex flex-col mb-3 relative">
@@ -236,7 +242,7 @@ export function ProfilePrefForm({
             type="date"
             placeholder="Fin"
             className={`!border-blue  ${
-              formik.touched.available_to && formik.errors.available_to
+              formik.touched.availableTo && formik.errors.availableTo
                 ? "!border-red-500"
                 : null
             }`}
@@ -244,24 +250,24 @@ export function ProfilePrefForm({
               className: "before:content-none after:content-none",
             }}
             onChange={formik.handleChange}
-            name="available_to"
-            value={formik.values.available_to}
+            name="availableTo"
+            value={formik.values.availableTo}
           />
-          {formik.touched.available_to && formik.errors.available_to ? (
+          {formik.touched.availableTo && formik.errors.availableTo ? (
             <FontAwesomeIcon
               icon={faCircleExclamation}
               className="absolute right-3 top-[40px] text-red-500"
             />
           ) : null}
-          {formik.errors.available_to && formik.touched.available_to && (
-            <div>{formik.errors.available_to}</div>
+          {formik.errors.availableTo && formik.touched.availableTo && (
+            <div>{formik.errors.availableTo}</div>
           )}
         </div>
         <div className="flex flex-col mb-6 relative">
           <Typography variant="h6">Durées de voyage</Typography>
           <Dropdown
             options={tripDurationsOptions}
-            field={formik.getFieldProps("trip_durations")}
+            field={formik.getFieldProps("tripDurations")}
             formik={formik}
             label="vos durées de voyage"
           />
@@ -290,7 +296,7 @@ export function ProfilePrefForm({
         {signupContext && (
           <Typography
             className="text-center text-blue font-normal mt-6 cursor-pointer"
-            onClick={() => token && saveUserToken?.(token)}
+            onClick={() => navigate(`/signin`)}
           >
             Compléter plus tard
           </Typography>
