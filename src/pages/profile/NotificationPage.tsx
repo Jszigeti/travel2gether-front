@@ -33,7 +33,7 @@ function NotificationPage() {
     if (user) {
       try {
         setError(null);
-        const response = await editNotification(user.userId, notificationId);
+        const response = await editNotification(user.id, notificationId);
         console.log("Notification lue", response);
         queryClient.invalidateQueries({ queryKey: ["notificationsList"] });
       } catch (errors: unknown) {

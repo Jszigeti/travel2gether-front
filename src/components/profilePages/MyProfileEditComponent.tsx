@@ -21,7 +21,7 @@ export default function MyProfileEditComponent() {
     if (user) {
       try {
         setError(null);
-        const response = await deleteUser(user.userId);
+        const response = await deleteUser(user.id);
         console.log("Compte supprimé", response);
         logout();
         navigate(`/`);

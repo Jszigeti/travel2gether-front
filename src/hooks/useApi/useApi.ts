@@ -10,7 +10,10 @@ export function useApi(): AxiosInstance {
 
   const handleUnauthorizedError = (err: unknown): Promise<never> => {
     return Promise.reject(
-      customHandleError(err, "Session expirée, veuillez vous reconnecter", 401)
+      customHandleError(err, {
+        401: "Session expirée, veuillez vous reconnecter",
+        403: "Compte banni, merci de nous contacter pour avoir davantage d'informations",
+      })
     );
   };
 
@@ -40,7 +43,7 @@ export function useApi(): AxiosInstance {
           }
         }
       }
-      return handleUnauthorizedError(error);
+      return Promise.reject(error);
     }
   );
   // Return axios instance

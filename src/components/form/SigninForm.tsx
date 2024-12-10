@@ -1,6 +1,3 @@
-// REACT HOOKS
-import { useState } from "react";
-
 // ROUTER
 import { useNavigate } from "react-router-dom";
 
@@ -18,11 +15,9 @@ import { object, string } from "yup";
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 export default function SigninForm() {
-  // STATES
-  const [error, setError] = useState<null | string>(null);
-
   // RETRIEVE LOGIN FUNCTION FROM CONTEXT
   const { login } = useAuthContext();
 
@@ -44,19 +39,16 @@ export default function SigninForm() {
     }),
     onSubmit: async (values) => {
       try {
-        setError(null);
         const response = await signin(values);
         console.log("Connexion réussie", response);
         login(response.user.id, response.user.pathPicture);
         navigate(`/`);
+        toast.success("Ravi de vous revoir !");
         formik.resetForm();
       } catch (error: unknown) {
         if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("Une erreur inconnue est survenue");
+          toast.error(error.message);
         }
-        console.log(error);
       }
     },
   });
@@ -128,7 +120,6 @@ export default function SigninForm() {
       <Button className="bg-blue font-montserrat" fullWidth type="submit">
         Me connecter
       </Button>
-      {error && <div className="text-red-500 text-center ">{error}</div>}
     </form>
   );
 }

@@ -1,6 +1,3 @@
-// REACT HOOKS
-import { useState } from "react";
-
 // ROUTER
 import { NavLink } from "react-router-dom";
 
@@ -18,15 +15,13 @@ import { capitalizeFirstLetters } from "../../utils/capitalizeFirstLetter";
 import { Button, Card, Input, Typography } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 // PROPS INTERFACE
 interface SignupFormProps {
   onNext: () => void;
 }
 export function SignupForm({ onNext }: SignupFormProps) {
-  // STATES
-  const [error, setError] = useState<null | string>(null);
-
   // Import signup function
   const { signup } = useAuthApi();
 
@@ -58,18 +53,13 @@ export function SignupForm({ onNext }: SignupFormProps) {
         password: values.password,
       };
       try {
-        setError(null);
-        const response = await signup(userData);
-        console.log("Inscription réussie", response);
+        await signup(userData);
         onNext();
         formik.resetForm();
       } catch (error: unknown) {
         if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("Une erreur inconnue est survenue.");
+          toast.error(error.message);
         }
-        console.error("Erreur d'inscription", error);
       }
     },
   });
@@ -248,7 +238,6 @@ export function SignupForm({ onNext }: SignupFormProps) {
         >
           M'inscrire
         </Button>
-        {error && <div className="text-red-500 text-center ">{error}</div>}
         <Typography className="text-center font-normal  mt-6">
           Déjà inscrit ?{" "}
           <NavLink to="/signin" className="text-blue font-bold">

@@ -1,5 +1,5 @@
 // REACT HOOKS
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // CONTEXT
 import useAuthContext from "../../hooks/context/useAuthContext";
@@ -11,7 +11,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import { editProfile, getProfile } from "../../api/profile";
+import { useProfileApi } from "../../api/profile";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -39,6 +39,7 @@ import Dropdown from "../UI/DropdownComponent";
 import { Button, Card, Typography, Input } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 // PROPS INTERFACE
 interface ProfilePrefFormProps {
@@ -48,8 +49,8 @@ interface ProfilePrefFormProps {
 export function ProfilePrefForm({
   signupContext = true,
 }: ProfilePrefFormProps) {
-  // STATES
-  const [error, setError] = useState<null | string>(null);
+  // AXIOS FUNCTION
+  const { editProfile, getProfile } = useProfileApi();
 
   // REDIRECTION
   const navigate = useNavigate();
@@ -66,10 +67,10 @@ export function ProfilePrefForm({
     isLoading: isProfilePrefLoading,
     isError: isProfilePrefError,
   } = useQuery<ProfileInterface>({
-    queryKey: ["profilePref", user?.userId],
+    queryKey: ["profilePref", user?.id],
     queryFn: () =>
       user
-        ? getProfile(user.userId)
+        ? getProfile(user.id)
         : Promise.reject(new Error("User ID is required")),
     enabled: !signupContext,
   });
@@ -114,7 +115,6 @@ export function ProfilePrefForm({
       // FORM LOGIC IF SIGNUP CONTEXT
       if (signupContext) {
         try {
-          setError(null);
           const response = await editProfile(formData);
           console.log(
             "Enregistrement des informations du profil réussi",
@@ -122,33 +122,30 @@ export function ProfilePrefForm({
           );
           formik.resetForm();
           navigate(`/signin`);
+          toast.success(
+            "Profil complété avec succès, merci de valider votre compte !"
+          );
         } catch (error: unknown) {
           if (error instanceof Error) {
-            setError(error.message);
-          } else {
-            setError("Une erreur inconnue est survenue");
+            toast.error(error.message);
           }
-          console.log(error);
         }
       } else {
         // FORM LOGIC IF EDIT CONTEXT
         try {
-          setError(null);
           const response = await editProfile(formData);
           console.log("Modification du profil réussie", response);
-          queryClient.setQueryData(["profilePref", user?.userId], values);
+          queryClient.setQueryData(["profilePref", user?.id], values);
           queryClient.invalidateQueries({
-            queryKey: ["profileData", user?.userId],
+            queryKey: ["profileData", user?.id],
           });
           formik.resetForm();
           navigate(`/my-profile/edit`);
+          toast.success("Profil modifié avec succès !");
         } catch (error: unknown) {
           if (error instanceof Error) {
-            setError(error.message);
-          } else {
-            setError("Une erreur inconnue est survenue");
+            toast.error(error.message);
           }
-          console.log(error);
         }
       }
     },
@@ -281,11 +278,6 @@ export function ProfilePrefForm({
         >
           Valider
         </Button>
-        {error && (
-          <div className="text-red-500 text-center ">
-            Erreur lors de la mise à jour du profil
-          </div>
-        )}
         {isProfilePrefLoading && (
           <div className="text-blue text-center">Chargement des données...</div>
         )}
@@ -297,7 +289,12 @@ export function ProfilePrefForm({
         {signupContext && (
           <Typography
             className="text-center text-blue font-normal mt-6 cursor-pointer"
-            onClick={() => navigate(`/signin`)}
+            onClick={() => {
+              navigate(`/signin`);
+              toast.success(
+                "Profil complété avec succès, merci de valider votre compte !"
+              );
+            }}
           >
             Compléter plus tard
           </Typography>

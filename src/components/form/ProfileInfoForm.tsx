@@ -11,7 +11,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import { editProfile, getProfile } from "../../api/profile";
+import { useProfileApi } from "../../api/profile";
 
 // FORMIK
 import { useFormik } from "formik";
@@ -44,6 +44,7 @@ import {
 } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 // PROPS INTERFACE
 interface ProfileInfoFormProps {
@@ -55,12 +56,13 @@ export function ProfileInfoForm({
   onNext,
   signupContext = true,
 }: ProfileInfoFormProps) {
+  // AXIOS FUNCTION
+  const { editProfile, getProfile } = useProfileApi();
   // STATES
-  const [error, setError] = useState<null | string>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   // RETRIEVE USER FROM CONTEXT
-  const { user } = useAuthContext();
+  const { user, setAuthInfos } = useAuthContext();
 
   // REDIRECTION
   const navigate = useNavigate();
@@ -74,17 +76,17 @@ export function ProfileInfoForm({
     isLoading: isProfileInfoLoading,
     isError: isProfileInfoError,
   } = useQuery<ProfileInterface>({
-    queryKey: ["profileInfo", user?.userId],
+    queryKey: ["profileInfo", user?.id],
     queryFn: () =>
       user
-        ? getProfile(user.userId)
+        ? getProfile(user.id)
         : Promise.reject(new Error("User ID is required")),
     enabled: !signupContext,
   });
 
   // DEFAULT AVATAR
   const defaultImage = profileInfo?.pathPicture
-    ? profileInfo.pathPicture
+    ? `${import.meta.env.VITE_API_BASE_URL}${profileInfo.pathPicture}`
     : "https://images-ext-1.discordapp.net/external/vj4B_0At5aHV02oJ7BEdIZ2gOKfDu1FphkjY5ojkEko/%3Fs%3D612x612%26w%3D0%26k%3D20%26c%3Dt2RnIzl7hAwIUoupTgTDTYPZ2HCLvw5y-umBEtBsk8g%3D/https/media.istockphoto.com/id/846183008/fr/vectoriel/ic%25C3%25B4ne-de-profil-avatar-par-d%25C3%25A9faut-espace-r%25C3%25A9serv%25C3%25A9-photo-gris.jpg?format=webp";
 
   // IMAGE FUNCTION
@@ -119,7 +121,6 @@ export function ProfileInfoForm({
       spokenLanguages: array(),
     }),
     onSubmit: async (values) => {
-      console.log("🚀 ~ onSubmit: ~ values:", values);
       const formData = new FormData();
       if (values.file) formData.append("file", values.file);
       if (values.description)
@@ -133,28 +134,24 @@ export function ProfileInfoForm({
         formData.append("spokenLanguages[]", language)
       );
       if (onNext) {
-        const response = await editProfile(formData);
-        console.log("Enregistrement réussi", response);
+        await editProfile(formData);
         onNext();
         formik.resetForm();
       } else if (user) {
         try {
-          setError(null);
           const response = await editProfile(formData);
-          console.log("Mise à jour du profil réussie", response);
-          queryClient.setQueryData(["profileInfo", user.userId], values);
+          queryClient.setQueryData(["profileInfo", user.id], response);
           queryClient.invalidateQueries({
-            queryKey: ["profileData", user.userId],
+            queryKey: ["profileData", user.id],
           });
+          setAuthInfos({ ...user, pathPicture: response.pathPicture });
           navigate(`/my-profile/edit`);
+          toast.success("Profil modifié avec succès !");
           formik.resetForm();
         } catch (error: unknown) {
           if (error instanceof Error) {
-            setError(error.message);
-          } else {
-            setError("Une erreur inconnue est survenue");
+            toast.error(error.message);
           }
-          console.log(error);
         }
       }
     },
@@ -165,6 +162,7 @@ export function ProfileInfoForm({
       formik.setValues({
         pathPicture: profileInfo.pathPicture || "",
         gender: profileInfo.gender || [],
+        birthdate: profileInfo.birthdate || "",
         description: profileInfo.description || "",
         interests: profileInfo.interests || [],
         spokenLanguages: profileInfo.spokenLanguages || [],
@@ -294,11 +292,6 @@ export function ProfileInfoForm({
         >
           {signupContext ? "Suite" : "Valider"}
         </Button>
-        {error && (
-          <div className="text-red-500 text-center ">
-            Erreur lors de la mise à jour du profil
-          </div>
-        )}
         {isProfileInfoLoading && (
           <div className="text-blue text-center">Chargement des données...</div>
         )}
@@ -310,7 +303,12 @@ export function ProfileInfoForm({
         {signupContext && (
           <Typography
             className="text-center text-blue font-normal mt-6 cursor-pointer"
-            onClick={() => navigate(`/signin`)}
+            onClick={() => {
+              navigate(`/signin`);
+              toast.success(
+                "Compte créé avec succès, merci de valider votre compte !"
+              );
+            }}
           >
             Compléter plus tard
           </Typography>

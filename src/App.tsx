@@ -2,6 +2,12 @@
 import { Routes, Route } from "react-router-dom";
 import ProtectRoute from "./components/protectedRoutes/ProtectRoute";
 
+// COMPONENTS
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Spinner } from "@material-tailwind/react";
+import FadeLoadingScreen from "./components/FadeLoadingScreen";
+
 // PAGES ACCESS. TO EVERYONE
 import HomePage from "./pages/home/HomePage";
 import NoPage from "./NoPage";
@@ -32,10 +38,23 @@ import StageCreatePage from "./pages/stage/StageCreatePage";
 import StageChecklistPage from "./pages/stage/StageChecklistPage";
 import StageEditPage from "./pages/stage/StageEditPage";
 import StagePage from "./pages/stage/StagePage";
+import useAuthContext from "./hooks/context/useAuthContext";
 
 export default function App() {
+  const { isLoading } = useAuthContext();
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        {/* <Spinner className="text-blue h-20 w-20" /> */}
+        <img src="/src/assets/logo/logo.svg" />
+      </div>
+    );
+  }
+
   return (
     <>
+      <FadeLoadingScreen isLoading={isLoading} />
       <Routes>
         {/* ROUTES ACCESS. TO EVERYONE */}
         <Route path="/" element={<HomePage />} />
@@ -108,6 +127,7 @@ export default function App() {
           />
         </Route>
       </Routes>
+      <ToastContainer closeOnClick={true} />
     </>
   );
 }

@@ -16,12 +16,9 @@ export function useAuthApi() {
       const { data } = await api.post("signup", body);
       return data;
     } catch (error: unknown) {
-      const errorMessage = customHandleError(
-        error,
-        "L'adresse email est déjà utilisée",
-        403
+      throw new Error(
+        customHandleError(error, "L'adresse email est déjà utilisée", 403)
       );
-      throw new Error(errorMessage);
     }
   };
 

@@ -1,18 +1,18 @@
 // REACT QUERY
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 
 // AXIOS FUNCTIONS
-import { getGroups } from "../../api/group";
-import { getProfiles } from "../../api/profile";
+// import { getGroups } from "../../api/group";
+// import { getProfiles } from "../../api/profile";
 
 // INTERFACES
-import { GroupCardInterface } from "../../interfaces/Group";
-import { AvatarCardInterface } from "../../interfaces/Profile";
+// import { GroupCardInterface } from "../../interfaces/Group";
+// import { AvatarCardInterface } from "../../interfaces/Profile";
 
 // COMPONENTS
 import Header from "../../components/UI/Header";
-import GroupCard from "../../components/UI/GroupCard";
-import AvatarCard from "../../components/UI/AvatarCard";
+// import GroupCard from "../../components/UI/GroupCard";
+// import AvatarCard from "../../components/UI/AvatarCard";
 import Footer from "../../components/UI/Footer";
 import { useContext } from "react";
 import AuthContext from "../../hooks/context/auth.context";
@@ -22,24 +22,24 @@ export default function HomePage() {
   const { isAuthenticated } = useContext(AuthContext);
 
   // RETRIEVE GROUPS DATA
-  const {
-    data: groupsList,
-    isLoading: isGroupsLoading,
-    isError: isGroupsError,
-  } = useQuery<GroupCardInterface[]>({
-    queryKey: ["groups"],
-    queryFn: () => getGroups(),
-  });
+  // const {
+  //   data: groupsList,
+  //   isLoading: isGroupsLoading,
+  //   isError: isGroupsError,
+  // } = useQuery<GroupCardInterface[]>({
+  //   queryKey: ["groups"],
+  //   queryFn: () => getGroups(),
+  // });
 
-  // RETRIEVE PROFILES DATA
-  const {
-    data: profilesList,
-    isLoading: isProfilesLoading,
-    isError: isProfilesError,
-  } = useQuery<AvatarCardInterface[]>({
-    queryKey: ["profiles"],
-    queryFn: () => getProfiles(),
-  });
+  // // RETRIEVE PROFILES DATA
+  // const {
+  //   data: profilesList,
+  //   isLoading: isProfilesLoading,
+  //   isError: isProfilesError,
+  // } = useQuery<AvatarCardInterface[]>({
+  //   queryKey: ["profiles"],
+  //   queryFn: () => getProfiles(),
+  // });
 
   return (
     <>
@@ -56,7 +56,7 @@ export default function HomePage() {
               : "Les derniers groupes"}
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 w-full lg:gap-6">
-            {isGroupsLoading && (
+            {/* {isGroupsLoading && (
               <div className="text-blue text-center">
                 Chargement des données...
               </div>
@@ -71,7 +71,7 @@ export default function HomePage() {
                 .slice(0, 4)
                 .map((group: GroupCardInterface) => (
                   <GroupCard key={group.id} group={group} />
-                ))}
+                ))} */}
           </div>
         </section>
         <section className="flex flex-col gap-3 lg:gap-6">
@@ -81,7 +81,7 @@ export default function HomePage() {
               : "Les derniers voyageurs"}
           </h2>
           <div className="grid grid-cols-3 lg:grid-cols-4 justify-start gap-x-10 gap-y-3 lg:gap-y-6">
-            {isProfilesLoading && (
+            {/* {isProfilesLoading && (
               <div className="text-blue text-center">
                 Chargement des données...
               </div>
@@ -96,7 +96,7 @@ export default function HomePage() {
                 .slice(0, 9)
                 .map((profile: AvatarCardInterface) => (
                   <AvatarCard profile={profile} key={profile.user_id} />
-                ))}
+                ))} */}
           </div>
         </section>
       </main>

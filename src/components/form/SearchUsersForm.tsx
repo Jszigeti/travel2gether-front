@@ -22,13 +22,13 @@ import {
   ProfileInterestsSet,
 } from "../../interfaces/Matching";
 import { Button, Card, Typography } from "@material-tailwind/react";
-import { getProfiles } from "../../api/profile";
-import { useNavigate } from "react-router-dom";
+// import { getProfiles } from "../../api/profile";
+// import { useNavigate } from "react-router-dom";
 
 export default function SearchUsersForm() {
   const [showMore, setShowMore] = useState(false);
-  const [error, setError] = useState<null | string>(null);
-  const navigate = useNavigate();
+  // const [error, setError] = useState<null | string>(null);
+  // const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -42,18 +42,19 @@ export default function SearchUsersForm() {
       interests: [] as ProfileInterestsSet[],
     },
     onSubmit: async (values) => {
-      try {
-        const response = await getProfiles(values);
-        console.log("Recherche des utilisateurs", response);
-        navigate(`/results`, { state: { profiles: response } });
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("Une erreur inconnue est survenue");
-        }
-        console.log(error);
-      }
+      console.log("🚀 ~ onSubmit: ~ values:", values);
+      // try {
+      //   const response = await getProfiles(values);
+      //   console.log("Recherche des utilisateurs", response);
+      //   navigate(`/results`, { state: { profiles: response } });
+      // } catch (error: unknown) {
+      //   if (error instanceof Error) {
+      //     setError(error.message);
+      //   } else {
+      //     setError("Une erreur inconnue est survenue");
+      //   }
+      //   console.log(error);
+      // }
     },
   });
 
@@ -181,11 +182,11 @@ export default function SearchUsersForm() {
         >
           Effacer tout
         </Button>
-        {error && (
+        {/* {error && (
           <div className="text-red-500 text-center ">
             Erreur lors de la recherche
           </div>
-        )}
+        )} */}
       </form>
     </Card>
   );

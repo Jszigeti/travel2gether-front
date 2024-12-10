@@ -51,8 +51,8 @@ export function ProfileAccountForm() {
     isLoading: isProfileAccountLoading,
     isError: isProfileAccountError,
   } = useQuery<UserInterface & ProfileInterface>({
-    queryKey: ["profileAccount", user?.userId],
-    queryFn: () => (user ? getUser(user.userId) : Promise.reject(error)),
+    queryKey: ["profileAccount", user?.id],
+    queryFn: () => (user ? getUser(user.id) : Promise.reject(error)),
   });
 
   // FORM LOGIC
@@ -71,7 +71,7 @@ export function ProfileAccountForm() {
       if (user) {
         try {
           setError(null);
-          const response = await editUser(user.userId, values);
+          const response = await editUser(user.id, values);
           console.log("Modification des informations réussie", response);
           queryClient.setQueryData(["profileAccount", user], values);
           queryClient.invalidateQueries({

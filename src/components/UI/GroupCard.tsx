@@ -21,7 +21,7 @@ export default function GroupCard({ group }: GroupCardProps) {
     <NavLink to={`/group/${group.id}`}>
       <article className="relative w-full pb-[60%] md:pb-[55%] rounded-lg overflow-hidden">
         <img
-          src={group.path_picture}
+          src={group.pathPicture}
           alt={`Image du groupe`}
           className="absolute inset-0 w-full h-full object-cover rounded-lg"
         />
@@ -31,10 +31,10 @@ export default function GroupCard({ group }: GroupCardProps) {
         </p>
         <p className="absolute right-4 bottom-4 text-white z-20 text-xl lg:text-lg xl:text-xl flex flex-col items-end sm:flex-row">
           {group.location && <span>{group.location},</span>}
-          {group.date_from && group.date_to && (
+          {group.dateFrom && group.dateTo && (
             <span>
-              &nbsp;du {formatDate(group.date_from)} au{" "}
-              {formatDate(group.date_to)}
+              &nbsp;du {formatDate(group.dateFrom)} au{" "}
+              {formatDate(group.dateTo)}
             </span>
           )}
         </p>
@@ -44,8 +44,8 @@ export default function GroupCard({ group }: GroupCardProps) {
               .slice(0, 3)
               .map((profil) => (
                 <Avatar
-                  key={profil.user_id}
-                  src={profil.path_picture}
+                  key={profil.userId}
+                  src={profil.pathPicture}
                   alt="Avatar"
                   className={`${
                     profil.role.includes(GroupUserRoleEnum.ORGANIZER) ||

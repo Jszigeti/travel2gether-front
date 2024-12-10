@@ -7,13 +7,15 @@ import { BrowserRouter } from "react-router-dom";
 // REACT QUERY
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+// CONTEXT PROVIDER
+import { AuthProvider } from "./hooks/context/auth.context.tsx";
+
 // MAIN APP COMPONENT
 import App from "./App.tsx";
 
 // TAILWIND + MATERIAL TAILWIND
 import "./index.css";
 import { ThemeProvider } from "@material-tailwind/react";
-import { AuthProvider } from "./hooks/context/auth.context.ts";
 
 // CREATE QUERY CLIENT
 const queryClient = new QueryClient();

@@ -23,7 +23,7 @@ export default function MyProfilePage() {
     <>
       <Header pageTitle="Mon profil" backLink="/" />
       <main className="flex flex-col px-5 xl:px-0 gap-6 py-6 max-w-screen-xl mx-auto lg:gap-12">
-        <ProfileComponent myProfileContext={true} userId={user.userId} />
+        <ProfileComponent myProfileContext={true} userId={user.id} />
       </main>
       <Footer />
     </>

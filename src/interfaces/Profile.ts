@@ -35,7 +35,7 @@ export interface ProfilePageInterface {
   firstname: string;
   lastname: string;
   birthdate: string;
-  average_rating: number;
+  averageRating: number;
   ratings: number;
   gender: ProfileGenderEnum[];
   pathPicture: string;
@@ -53,8 +53,8 @@ export interface ProfilePageInterface {
     title: string;
     pathPicture: string;
     location: string;
-    date_from: string;
-    date_to: string;
+    dateFrom: string;
+    dateTo: string;
   }[];
 }
 

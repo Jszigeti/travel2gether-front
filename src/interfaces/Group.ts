@@ -14,30 +14,30 @@ export interface GroupInterface {
   title?: string;
   description?: string;
   location?: string;
-  date_from?: string;
-  date_to?: string;
-  path_picture?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  pathPicture?: string;
   status?: GroupStatusEnum[];
-  travel_types?: TravelTypesSet[];
+  travelTypes?: TravelTypesSet[];
   lodgings?: LodgingsSet[];
-  gender_type?: GroupGenderEnum[];
-  spoken_languages?: SpokenLanguagesSet[];
+  gender?: GroupGenderEnum[];
+  spokenLanguages?: SpokenLanguagesSet[];
   budget?: BudgetEnum[];
-  age_ranges?: GroupAgeRangesSet[];
-  created_at?: Date;
-  updated_at?: Date;
+  ageRanges?: GroupAgeRangesSet[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface GroupCardInterface {
   id: number;
   title: string;
-  path_picture: string;
+  pathPicture: string;
   location: string;
-  date_from: string;
-  date_to: string;
+  dateFrom: string;
+  dateTo: string;
   profiles?: {
-    user_id: number;
-    path_picture: string;
+    userId: number;
+    pathPicture: string;
     role: GroupUserRoleEnum[];
     status: GroupUserStatusEnum[];
   }[];
@@ -47,14 +47,14 @@ export interface GroupPageInterface {
   id: number;
   title: string;
   description: string;
-  path_picture: string;
+  pathPicture: string;
   location: string;
-  date_from: string;
-  date_to: string;
+  dateFrom: string;
+  dateTo: string;
   profiles: {
-    user_id: number;
+    userId: number;
     firstname: string;
-    path_picture: string;
+    pathPicture: string;
     role: GroupUserRoleEnum[];
     status: GroupUserStatusEnum[];
   }[];
@@ -62,8 +62,8 @@ export interface GroupPageInterface {
     id: number;
     title: string;
     address: string;
-    date_from: string;
-    date_to: string;
+    dateFrom: string;
+    dateTo: string;
   }[];
 }
 

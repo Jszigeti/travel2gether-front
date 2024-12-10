@@ -13,13 +13,15 @@ import { useAuthApi } from "../../api/auth";
 import { customHandleError } from "../../utils/customHandleError";
 
 interface AuthInfos {
-  userId: number;
+  id: number;
   pathPicture: string;
 }
 
 interface AuthContextType {
   user: AuthInfos | null;
   isAuthenticated: boolean;
+  setAuthInfos: Dispatch<SetStateAction<AuthInfos | null>>;
+  isLoading: boolean;
   login: (userId: number, pathPicture: string) => void;
   logout: () => void;
   nbNotReadNotifications: number;
@@ -30,6 +32,10 @@ interface AuthContextType {
 const defaultAuthContext: AuthContextType = {
   user: null,
   isAuthenticated: false,
+  setAuthInfos: () => {
+    console.warn("setAuthInfos() called outside the AuthProvider");
+  },
+  isLoading: true,
   login: () => {
     console.warn("login() called outside the AuthProvider");
   },
@@ -61,13 +67,14 @@ export const AuthProvider = ({
   const [notificationsList, setNotificationsList] = useState<
     NotificationComponentInterface[]
   >([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Axios functions
   const { me, signout } = useAuthApi();
 
   // Auth functions
-  const login = (userId: number, pathPicture: string): void => {
-    setAuthInfos({ userId, pathPicture });
+  const login = (id: number, pathPicture: string): void => {
+    setAuthInfos({ id, pathPicture });
   };
 
   const logout = async (): Promise<void> => {
@@ -82,25 +89,27 @@ export const AuthProvider = ({
     }
   };
 
+  const retrieveAuthInfos = async () => {
+    try {
+      const response = await me();
+      setAuthInfos({
+        id: response.user.id,
+        pathPicture: response.user.pathPicture,
+      });
+    } catch (error) {
+      console.error(
+        customHandleError(error, {
+          401: "Session expirée, veuillez vous reconnecter",
+          403: "Compte banni, merci de nous contacter pour avoir davantage d'informations",
+        })
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await me();
-        setAuthInfos({
-          userId: response.user.id,
-          pathPicture: response.user.pathPicture,
-        });
-      } catch (error) {
-        console.error(
-          customHandleError(
-            error,
-            "Session expirée, veuillez vous reconnecter",
-            401
-          )
-        );
-      }
-    };
-    fetchUser();
+    retrieveAuthInfos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -108,7 +117,7 @@ export const AuthProvider = ({
   const loadNotifications = useCallback(async () => {
     if (authInfos) {
       try {
-        const notifications = await getNotifications(authInfos.userId);
+        const notifications = await getNotifications(authInfos.id);
         setNotificationsList(notifications);
         setNbNotReadNotifications(
           notifications.filter((notif) => !notif.isRead).length
@@ -134,6 +143,8 @@ export const AuthProvider = ({
       value={{
         user: authInfos,
         isAuthenticated: !!authInfos,
+        setAuthInfos,
+        isLoading,
         login,
         logout,
         nbNotReadNotifications,
