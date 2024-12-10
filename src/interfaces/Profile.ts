@@ -61,5 +61,6 @@ export interface ProfilePageInterface {
 export interface AvatarCardInterface {
   user_id: number;
   firstname: string;
+  lastname: string;
   pathPicture: string;
 }
