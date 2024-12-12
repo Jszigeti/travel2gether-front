@@ -9,8 +9,17 @@ import { customHandleError } from "../utils/customHandleError";
 export function useGroupApi() {
   const api = useApi();
 
-  const getGroup = async (_groupId: number) => {
-    return groupDetails;
+  // const getGroup = async (_groupId: number) => {
+  //   return groupDetails;
+  // };
+
+  const getGroup = async (group_id: number) => {
+    try {
+      const { data } = await api.get(`/groups/${group_id}`);
+      return data;
+    } catch (error: unknown) {
+      throw new Error(customHandleError(error, "Ce groupe n'existe pas"));
+    }
   };
 
   const getLastGroups = async () => {
