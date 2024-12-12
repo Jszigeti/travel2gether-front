@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // AXIOS
-import { groupDetails } from "../data/groupDetails";
+//import { groupDetails } from "../data/groupDetails";
 import { useApi } from "../hooks/useApi/useApi";
+
+// INTERFACES
+import { GroupInterface } from "../interfaces/Group";
+import { GroupUserInterface } from "../interfaces/GroupUser";
 
 // UTILS FUNCTIONS
 import { customHandleError } from "../utils/customHandleError";
@@ -9,13 +13,9 @@ import { customHandleError } from "../utils/customHandleError";
 export function useGroupApi() {
   const api = useApi();
 
-  // const getGroup = async (_groupId: number) => {
-  //   return groupDetails;
-  // };
-
-  const getGroup = async (group_id: number) => {
+  const getGroup = async (groupId: number) => {
     try {
-      const { data } = await api.get(`/groups/${group_id}`);
+      const { data } = await api.get(`groups/${groupId}`);
       return data;
     } catch (error: unknown) {
       throw new Error(customHandleError(error, "Ce groupe n'existe pas"));
@@ -50,133 +50,86 @@ export function useGroupApi() {
       throw error;
     }
   };
+
+  const createGroup = async (body: GroupInterface) => {
+    try {
+      const { data } = await api.post("/groups", { body });
+      return data.body;
+    } catch (error: unknown) {
+      throw new Error(
+        customHandleError(error, "Le groupe n'a pas pu être ajouté")
+      );
+    }
+  };
+
+  const editGroup = async (group_id: number, body: GroupInterface) => {
+    try {
+      const { data } = await api.put(`/groups/${group_id}`, {
+        body,
+      });
+      return data.body;
+    } catch (error: unknown) {
+      throw new Error(
+        customHandleError(error, "Le groupe n'a pas pu être modifié")
+      );
+    }
+  };
+
+  const deleteGroup = async (group_id: number) => {
+    try {
+      const { data } = await api.delete(`/groups/${group_id}`);
+      return data;
+    } catch (error: unknown) {
+      throw new Error(
+        customHandleError(error, "Le groupe n'a pas pu être supprimé")
+      );
+    }
+  };
+
+  const addUserToGroup = async (group_id: number, user_id: number) => {
+    try {
+      const { data } = await api.post(`/groups/${group_id}/users/${user_id}`);
+      return data;
+    } catch (error: unknown) {
+      throw new Error(customHandleError(error, "Invitation échouée"));
+    }
+  };
+
+  const deleteUserFromGroup = async (group_id: number, user_id: number) => {
+    try {
+      const { data } = await api.delete(`/groups/${group_id}/users/${user_id}`);
+      return data;
+    } catch (error: unknown) {
+      throw new Error(customHandleError(error, "Sortie du groupe échouée"));
+    }
+  };
+
+  const editUserFromGroup = async (
+    group_id: number,
+    user_id: number,
+    body: GroupUserInterface
+  ) => {
+    try {
+      const { data } = await api.put(`groups/${group_id}/users/${user_id}`, {
+        body,
+      });
+      return data.body;
+    } catch (error: unknown) {
+      throw new Error(
+        customHandleError(error, "Le status du membre n'a pas pu être modifié")
+      );
+    }
+  };
+
   return {
     getGroup,
     getLastGroups,
     getGroups,
+    createGroup,
+    editGroup,
+    deleteGroup,
+    addUserToGroup,
+    deleteUserFromGroup,
+    editUserFromGroup,
   };
-}
-
-// INTERFACES
-import { GroupInterface } from "../interfaces/Group";
-import { GroupUserInterface } from "../interfaces/GroupUser";
-import { groupsList } from "../data/groupsList";
-import { AxiosError } from "axios";
-
-export async function createGroup(body: GroupInterface) {
-  try {
-    // const { data } = await axios.post(`${uri}/groups`, { body });
-    // return data.body;
-    return body;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
-
-export async function editGroup(_group_id: number, body: GroupInterface) {
-  try {
-    // const { data } = await axios.put(`${uri}/groups/${group_id}`, {
-    //   body,
-    // });
-    // return data.body;
-    return body;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
-
-export async function deleteGroup(group_id: number) {
-  try {
-    // const { data } = await axios.delete(`${uri}/groups/${group_id}`);
-    // return data;
-    return group_id;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
-
-export async function getGroup(_group_id: number) {
-  try {
-    // const { data } = await axios.get(`${uri}/groups/${group_id}`);
-    const data = groupDetails;
-    return data;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
-
-export async function getGroups(_body: GroupInterface) {
-  try {
-    const data = groupsList;
-    return data;
-    // const { data } = await axios.post(`${uri}/groups`, { body });
-    //return data.body;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
-
-export async function addUserToGroup(_group_id: number, user_id: number) {
-  try {
-    // const { data } = await axios.post(
-    //   `${uri}/groups/${group_id}/users/${user_id}`
-    // );
-    // return data;
-    return user_id;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
-
-export async function editUserFromGroup(
-  _group_id: number,
-  _user_id: number,
-  body: GroupUserInterface
-) {
-  try {
-    //   const { data } = await axios.put(
-    //     `${uri}/groups/${group_id}/users/${user_id}`,
-    //     { body }
-    //   );
-    //   return data.body;
-    return body;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
-
-export async function deleteUserFromGroup(_group_id: number, user_id: number) {
-  try {
-    // const { data } = await axios.delete(
-    //   `${uri}/groups/${group_id}/users/${user_id}`
-    // );
-    // return data;
-    return user_id;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
 }

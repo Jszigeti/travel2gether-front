@@ -8,11 +8,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useAuthContext from "../../hooks/context/useAuthContext";
 
 // AXIOS FUNCTIONS
-import {
-  addUserToGroup,
-  deleteUserFromGroup,
-  useGroupApi,
-} from "../../api/group";
+import { useGroupApi } from "../../api/group";
 
 // ROUTER
 import { useNavigate, useParams } from "react-router-dom";
@@ -46,7 +42,7 @@ export default function GroupPage() {
     "NOT_MEMBER" | "PENDING" | "ACCEPTED" | "DENIED"
   >("NOT_MEMBER");
   const [error, setError] = useState<null | string>(null);
-  const { getGroup } = useGroupApi();
+  const { getGroup, addUserToGroup, deleteUserFromGroup } = useGroupApi();
 
   // RETRIEVE USER FROM CONTEXT
   const { user } = useAuthContext();
@@ -81,7 +77,7 @@ export default function GroupPage() {
     }
   }, [user, groupDetails]);
 
-  // LEAVING GROUP FUNCTION
+  //LEAVING GROUP FUNCTION
   const handleLeavingGroup = async () => {
     if (user) {
       try {
@@ -106,7 +102,7 @@ export default function GroupPage() {
     }
   };
 
-  // JOIN GROUP REQUEST FUNCTION
+  //JOIN GROUP REQUEST FUNCTION
   const handleRequestGroup = async () => {
     if (user) {
       try {

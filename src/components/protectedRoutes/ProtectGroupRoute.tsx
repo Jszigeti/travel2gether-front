@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAuthContext from "../../hooks/context/useAuthContext";
 
 // AXIOS FUNCTION
-import { getGroup } from "../../api/group";
+import { useGroupApi } from "../../api/group";
 
 // INTERFACES
 import { GroupPageInterface } from "../../interfaces/Group";
@@ -32,6 +32,7 @@ export default function ProtectGroupRoute({
 }: ProtectEditRouteProps) {
   // STATES
   const [redirect, setRedirect] = useState(false);
+  const { getGroup } = useGroupApi();
 
   // RETRIEVE USER FROM CONTEXT
   const { user } = useAuthContext();

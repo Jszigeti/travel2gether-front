@@ -12,7 +12,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ProtectGroupRoute from "../../components/protectedRoutes/ProtectGroupRoute";
 
 // AXIOS FUNCTIONS
-import { deleteGroup, getGroup } from "../../api/group";
+import { useGroupApi } from "../../api/group";
 
 // INTERFACES
 import { GroupPageInterface } from "../../interfaces/Group";
@@ -34,7 +34,7 @@ export default function GroupManagePage() {
     "NOT_MEMBER" | "TRAVELER" | "ORGANIZER" | "AUTHOR"
   >("NOT_MEMBER");
   const [error, setError] = useState<null | string>(null);
-
+  const { deleteGroup, getGroup } = useGroupApi();
   // RETRIEVE USER FROM CONTEXT
   const { user } = useAuthContext();
 
