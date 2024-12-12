@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // AXIOS
 import { useApi } from "../hooks/useApi/useApi";
 
@@ -101,7 +102,7 @@ export function useAuthApi() {
     }
   };
 
-  const editPassword = async (id: number, body: UserInterface) => {
+  const editPassword = async (_id: number, body: UserInterface) => {
     try {
       // const { data } = await axios.put(`${uri}/users/${id}/password`, { body });
       // return data.body;
@@ -116,7 +117,7 @@ export function useAuthApi() {
     }
   };
 
-  const getUser = async (id: number) => {
+  const getUser = async (_id: number) => {
     try {
       // const { data } = await axios.post(`${uri}/users/${id}`, { body });
       // return data.body;
@@ -132,7 +133,7 @@ export function useAuthApi() {
     }
   };
 
-  const editUser = async (id: number, body: UserInterface) => {
+  const editUser = async (_id: number, body: UserInterface) => {
     try {
       // const { data } = await axios.put(`${uri}/users/${id}`, { body });
       // return data.body;

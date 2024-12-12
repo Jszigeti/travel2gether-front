@@ -1,14 +1,12 @@
-// API URI
-import { uri } from "./uri";
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // AXIOS
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 
 // INTERFACES
 import { StageInterface } from "../interfaces/Stage";
 import { stageDetails } from "../data/stageDetails";
 
-export async function createStage(group_id: number, body: StageInterface) {
+export async function createStage(_group_id: number, body: StageInterface) {
   try {
     // const { data } = await axios.post(`${uri}/groups/${group_id}/stages`, {
     //   body,
@@ -23,7 +21,7 @@ export async function createStage(group_id: number, body: StageInterface) {
   }
 }
 
-export async function getStageFromGroup(group_id: number, stage_id: number) {
+export async function getStageFromGroup(_group_id: number, _stage_id: number) {
   try {
     // const { data } = await axios.get(
     //   `${uri}/groups/${group_id}/stages/${stage_id}`
@@ -40,8 +38,8 @@ export async function getStageFromGroup(group_id: number, stage_id: number) {
 }
 
 export async function editStage(
-  group_id: number,
-  stage_id: number,
+  _group_id: number,
+  _stage_id: number,
   body: StageInterface
 ) {
   try {
@@ -61,7 +59,7 @@ export async function editStage(
   }
 }
 
-export async function deleteStage(group_id: number, stage_id: number) {
+export async function deleteStage(_group_id: number, stage_id: number) {
   try {
     // const { data } = await axios.delete(
     //   `${uri}/groups/${group_id}/stages/${stage_id}`

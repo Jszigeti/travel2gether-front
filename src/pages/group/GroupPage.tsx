@@ -141,7 +141,7 @@ export default function GroupPage() {
         <Footer />
       </>
     );
-
+  console.log(groupDetails);
   return (
     <>
       <Header pageTitle={groupDetails.title} backLink="/" />

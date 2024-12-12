@@ -1,6 +1,3 @@
-// API URI
-import { uri } from "./uri";
-
 // AXIOS
 import axios, { AxiosError } from "axios";
 
@@ -15,7 +12,7 @@ export function useRatingApi() {
   ) => {
     try {
       const { data } = await axios.post(
-        `${uri}/users/${rated_id}/ratings/${rater_id}`,
+        `/users/${rated_id}/ratings/${rater_id}`,
         { body }
       );
       return data.body;
@@ -29,7 +26,7 @@ export function useRatingApi() {
 
   const getUserRatings = async (rated_id: number) => {
     try {
-      const { data } = await axios.get(`${uri}/users/${rated_id}/ratings`);
+      const { data } = await axios.get(`/users/${rated_id}/ratings`);
       return data;
     } catch (error: unknown) {
       const axiosError = error as AxiosError;

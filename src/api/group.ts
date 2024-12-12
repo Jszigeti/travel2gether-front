@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // AXIOS
 //import { groupDetails } from "../data/groupDetails";
 import { useApi } from "../hooks/useApi/useApi";
+
+// INTERFACES
 import { GroupInterface } from "../interfaces/Group";
 import { GroupUserInterface } from "../interfaces/GroupUser";
+
 // UTILS FUNCTIONS
 import { customHandleError } from "../utils/customHandleError";
 
@@ -129,36 +133,3 @@ export function useGroupApi() {
     editUserFromGroup,
   };
 }
-
-// INTERFACES
-// import { GroupInterface } from "../interfaces/Group";
-// import { GroupUserInterface } from "../interfaces/GroupUser";
-// import { groupsList } from "../data/groupsList";
-// import { groupDetails } from "../data/groupDetails";
-
-// export async function getGroup(group_id: number) {
-//   try {
-//     // const { data } = await axios.get(`${uri}/groups/${group_id}`);
-//     const data = groupDetails;
-//     return data;
-//   } catch (error: unknown) {
-//     const axiosError = error as AxiosError;
-//     throw new Error(
-//       `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-//     );
-//   }
-// }
-
-// export async function getGroups(body: GroupInterface) {
-//   try {
-//     const data = groupsList;
-//     return data;
-//     // const { data } = await axios.post(`${uri}/groups`, { body });
-//     //return data.body;
-//   } catch (error: unknown) {
-//     const axiosError = error as AxiosError;
-//     throw new Error(
-//       `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-//     );
-//   }
-// }
