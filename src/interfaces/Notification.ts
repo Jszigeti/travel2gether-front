@@ -1,20 +1,12 @@
 export interface NotificationInterface {
-  id?: number;
-  userId?: number;
-  referenceId?: number;
-  referenceType?: NotificationEnum[];
-  isRead?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-export interface NotificationComponentInterface {
   id: number;
+  createdAt: Date;
+  updatedAt: Date;
   userId: number;
   referenceId: number;
   referenceType: NotificationEnum[];
-  isRead: boolean;
   details: string;
+  isRead: boolean;
 }
 
 export enum NotificationEnum {

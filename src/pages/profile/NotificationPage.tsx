@@ -8,10 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import useAuthContext from "../../hooks/context/useAuthContext";
 
 // AXIOS FUNCTIONS
-import { editNotification } from "../../api/notification";
-
-// INTERFACES
-import { NotificationComponentInterface } from "../../interfaces/Notification";
+import { useNotifApi } from "../../api/notification";
 
 // COMPONENTS
 import Header from "../../components/UI/Header";
@@ -21,7 +18,7 @@ import NotificationComponent from "../../components/notificationPage/Notificatio
 function NotificationPage() {
   // STATES
   const [error, setError] = useState<null | string>(null);
-
+  const { markAsRead } = useNotifApi();
   // RETRIEVE USER AND NOTIFICATIONS LIST FROM CONTEXT
   const { user, notificationsList } = useAuthContext();
 
@@ -33,7 +30,7 @@ function NotificationPage() {
     if (user) {
       try {
         setError(null);
-        const response = await editNotification(user.id, notificationId);
+        const response = await markAsRead(notificationId);
         console.log("Notification lue", response);
         queryClient.invalidateQueries({ queryKey: ["notificationsList"] });
       } catch (errors: unknown) {
@@ -60,16 +57,14 @@ function NotificationPage() {
     <>
       <Header pageTitle="Mes notifications" backLink="/" />
       <main className="flex flex-col px-5 gap-6 py-6 max-w-screen-xl mx-auto lg:gap-12">
-        {notificationsList.map(
-          (notification: NotificationComponentInterface) => (
-            <div
-              key={notification.id}
-              onClick={() => handleReadNotification(notification.id)}
-            >
-              <NotificationComponent notification={notification} />
-            </div>
-          )
-        )}
+        {notificationsList.map((notification) => (
+          <div
+            key={notification.id}
+            onClick={() => handleReadNotification(notification.id)}
+          >
+            <NotificationComponent notification={notification} />
+          </div>
+        ))}
         {error && (
           <div className="text-red-500 text-center">
             Erreur lors de la mise à jour de la notification

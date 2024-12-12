@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 // INTERFACES
 import {
-  NotificationComponentInterface,
+  NotificationInterface,
   NotificationEnum,
 } from "../../interfaces/Notification";
 
@@ -12,7 +12,7 @@ import { Alert } from "@material-tailwind/react";
 
 // PROPS INTERFACE
 interface NotificationComponentProps {
-  notification: NotificationComponentInterface;
+  notification: NotificationInterface;
 }
 
 function NotificationComponent({ notification }: NotificationComponentProps) {

@@ -1,37 +1,49 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // AXIOS
-import { AxiosError } from "axios";
+import { useApi } from "../hooks/useApi/useApi";
+import { NotificationInterface } from "../interfaces/Notification";
+// UTILS FUNCTIONS
+import { customHandleError } from "../utils/customHandleError";
 
-// INTERFACES
-import { notifList } from "../data/notifList";
+export function useNotifApi() {
+  const api = useApi();
 
-export async function getNotifications(_user_id: number) {
-  try {
-    // const { data } = await axios.get(`${uri}/users/${user_id}/notifications`);
-    const data = notifList;
-    return data;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
+  const getNotifications = async (): Promise<NotificationInterface[]> => {
+    try {
+      const { data } = await api.get(`notifications`);
+      return data;
+    } catch (error: unknown) {
+      throw new Error(
+        customHandleError(
+          error,
+          "Les notifications n'ont pas pu être récupérées"
+        )
+      );
+    }
+  };
 
-export async function editNotification(
-  _user_id: number,
-  notification_id: number
-) {
-  try {
-    // const { data } = await axios.put(
-    //   `${uri}/users/${user_id}/notifications/${notification_id}`
-    // );
-    // return data;
-    return notification_id;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
+  const markAsRead = async (notification_id: number) => {
+    try {
+      const { data } = await api.patch(`notifications/${notification_id}`);
+      return data;
+    } catch (error: unknown) {
+      throw new Error(customHandleError(error, "Mise à jour échouée"));
+    }
+  };
+
+  const deleteNotification = async (notification_id: number) => {
+    try {
+      const { data } = await api.delete(`notifications/${notification_id}`);
+      return data;
+    } catch (error: unknown) {
+      throw new Error(
+        customHandleError(error, "La notification n'a pas pu être supprimée")
+      );
+    }
+  };
+
+  return {
+    getNotifications,
+    markAsRead,
+    deleteNotification,
+  };
 }
