@@ -8,7 +8,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import { createGroup, editGroup, getGroup } from "../../api/group";
+import { editGroup, getGroup, useGroupApi } from "../../api/group";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -49,6 +49,8 @@ export default function GroupInfoForm({
   const [error, setError] = useState<null | string>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
+  const { createGroup } = useGroupApi();
+
   // REDIRECTION
   const navigate = useNavigate();
 
@@ -71,7 +73,7 @@ export default function GroupInfoForm({
 
   // DEFAULT AVATAR
   const defaultImage = groupInfo?.pathPicture
-    ? groupInfo.pathPicture
+    ? `${import.meta.env.VITE_API_BASE_URL}${groupInfo.pathPicture}`
     : "https://cdn.pixabay.com/photo/2016/01/19/15/48/luggage-1149289_960_720.jpg";
 
   // IMAGE FUNCTION
@@ -80,25 +82,26 @@ export default function GroupInfoForm({
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setPreviewImage(imageUrl);
-      formik.setFieldValue("pathPicture", file);
+      formik.setFieldValue("file", file);
     } else {
       setPreviewImage(null);
-      formik.setFieldValue("pathPicture", null);
+      formik.setFieldValue("file", null);
     }
   };
 
   // FORM LOGIC
-  const formik = useFormik({
+  const formik = useFormik<GroupInterface>({
     initialValues: {
       title: "",
       description: "",
       location: "",
       dateFrom: "",
       dateTo: "",
-      pathPicture: "",
+      file: undefined,
+      // pathPicture: "",
     },
     validationSchema: Yup.object({
-      pathPicture: Yup.mixed().required("Image requise"),
+      file: Yup.mixed().required("Image requise"),
       title: Yup.string().required("Nom du groupe requis"),
       description: Yup.string().required("Description requise"),
       location: Yup.string().required("Lieu requis"),
@@ -111,14 +114,21 @@ export default function GroupInfoForm({
         ),
     }),
     onSubmit: async (values) => {
-      const formData = {
-        ...values,
-        pathPicture: values.pathPicture ? values.pathPicture : defaultImage,
-      };
+      const formData = new FormData();
+      if (values.file) formData.append("file", values.file);
+
+      if (values.description)
+        formData.append("description", values.description);
+      if (values.title) formData.append("title", values.title);
+      if (values.location) formData.append("location", values.location);
+      if (values.dateFrom) formData.append("dateFrom", values.dateFrom);
+      if (values.dateTo) formData.append("dateTo", values.dateTo);
+
       if (groupCreationContext && onNext && onGroupData) {
         try {
           setError(null);
-          const response = await createGroup({ ...formData, id: 1 });
+          console.log("Création du groupe", formData);
+          const response = await createGroup(formData);
           console.log("Création du groupe réussie", response);
           onGroupData(response);
           onNext();
@@ -195,18 +205,19 @@ export default function GroupInfoForm({
           <Input
             type="file"
             size="lg"
+            name="file"
             placeholder="Choisissez une image"
             className={`!border-blue ${
-              formik.touched.pathPicture && formik.errors.pathPicture
+              formik.touched.file && formik.errors.file
                 ? "!border-red-500"
                 : null
             }`}
             onChange={handleImageChange}
             crossOrigin={undefined}
           />
-          {formik.touched.pathPicture && formik.errors.pathPicture ? (
+          {formik.touched.file && formik.errors.file ? (
             <>
-              <Typography color="red">{formik.errors.pathPicture}</Typography>
+              <Typography color="red">{formik.errors.file}</Typography>
               <FontAwesomeIcon
                 icon={faCircleExclamation}
                 className="absolute right-3 bottom-10 text-red-500"

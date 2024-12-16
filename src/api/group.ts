@@ -41,10 +41,21 @@ export function useGroupApi() {
       throw error;
     }
   };
+
+  const createGroup = async (body: FormData) => {
+    try {
+      const { data } = await api.post(`groups`, body);
+      return data;
+    } catch (error) {
+      console.error("Erreur lors de la création d'un groupe :", error);
+      throw error;
+    }
+  };
   return {
     getGroup,
     getLastGroups,
     getGroups,
+    createGroup,
   };
 }
 
@@ -54,18 +65,18 @@ import { GroupUserInterface } from "../interfaces/GroupUser";
 import { groupsList } from "../data/groupsList";
 import { AxiosError } from "axios";
 
-export async function createGroup(body: GroupInterface) {
-  try {
-    // const { data } = await axios.post(`${uri}/groups`, { body });
-    // return data.body;
-    return body;
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError;
-    throw new Error(
-      `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
-    );
-  }
-}
+// export async function createGroup(body: GroupInterface) {
+//   try {
+//     // const { data } = await axios.post(`${uri}/groups`, { body });
+//     // return data.body;
+//     return body;
+//   } catch (error: unknown) {
+//     const axiosError = error as AxiosError;
+//     throw new Error(
+//       `Axios error: ${axiosError.message}, status code: ${axiosError.response?.status}`
+//     );
+//   }
+// }
 
 export async function editGroup(_group_id: number, body: GroupInterface) {
   try {
