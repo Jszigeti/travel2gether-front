@@ -48,9 +48,8 @@ export default function GroupInfoForm({
   // STATES
   const [error, setError] = useState<null | string>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const { createGroup, editGroup, getGroup } = useGroupApi();
 
-  const { createGroup } = useGroupApi();
+  const { createGroup, editGroup, getGroup } = useGroupApi();
 
   // REDIRECTION
   const navigate = useNavigate();

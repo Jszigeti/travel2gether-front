@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // AXIOS
-//import { groupDetails } from "../data/groupDetails";
 import { useApi } from "../hooks/useApi/useApi";
 
 // INTERFACES
-import { GroupInterface } from "../interfaces/Group";
 import { GroupUserInterface } from "../interfaces/GroupUser";
 
 // UTILS FUNCTIONS
@@ -62,7 +60,7 @@ export function useGroupApi() {
     }
   };
 
-  const editGroup = async (group_id: number, body: GroupInterface) => {
+  const editGroup = async (group_id: number, body: FormData) => {
     try {
       const { data } = await api.put(`/groups/${group_id}`, {
         body,
@@ -126,6 +124,10 @@ export function useGroupApi() {
     getLastGroups,
     getGroups,
     createGroup,
+    editGroup,
+    deleteGroup,
+    addUserToGroup,
+    deleteUserFromGroup,
+    editUserFromGroup,
   };
 }
-
