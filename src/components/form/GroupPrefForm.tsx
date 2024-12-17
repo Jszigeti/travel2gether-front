@@ -8,7 +8,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { NavLink, useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import { editGroup, getGroup } from "../../api/group";
+import { useGroupApi } from "../../api/group";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -53,7 +53,7 @@ export default function GroupPrefForm({
 }: GroupPrefFormProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
-
+  const { editGroup, getGroup } = useGroupApi();
   // REDIRECTION
   const navigate = useNavigate();
 

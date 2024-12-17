@@ -9,6 +9,7 @@ import useAuthContext from "../../hooks/context/useAuthContext";
 
 // AXIOS FUNCTIONS
 import { useChecklistApi } from "../../api/checklist";
+import { useGroupApi } from "../../api/group";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -35,7 +36,6 @@ import {
   faPlus,
   faX,
 } from "@fortawesome/free-solid-svg-icons";
-import { useGroupApi } from "../../api/group";
 
 // PROPS INTERFACE
 interface ChecklistProps {

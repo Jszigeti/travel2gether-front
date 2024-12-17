@@ -8,7 +8,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 // AXIOS FUNCTIONS
-import { editGroup, getGroup, useGroupApi } from "../../api/group";
+import { useGroupApi } from "../../api/group";
 
 // FORMIK + YUP
 import { useFormik } from "formik";
@@ -48,6 +48,7 @@ export default function GroupInfoForm({
   // STATES
   const [error, setError] = useState<null | string>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const { createGroup, editGroup, getGroup } = useGroupApi();
 
   const { createGroup } = useGroupApi();
 

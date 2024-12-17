@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 // AXIOS FUNCTIONS
-import { editUserFromGroup } from "../../api/group";
+import { useGroupApi } from "../../api/group";
 
 // INTERFACES
 import { GroupPageInterface } from "../../interfaces/Group";
@@ -33,7 +33,7 @@ export default function GroupManageMembersDisplay({
 }: GroupManageMembersDisplayProps) {
   // STATES
   const [error, setError] = useState<null | string>(null);
-
+  const { editUserFromGroup } = useGroupApi();
   // QUERY CLIENT DECLARATION
   const queryClient = useQueryClient();
 
