@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // AXIOS
 import { useApi } from "../hooks/useApi/useApi";
 
