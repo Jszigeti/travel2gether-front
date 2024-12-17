@@ -7,8 +7,8 @@ import {
   useEffect,
   useState,
 } from "react";
-import { NotificationComponentInterface } from "../../interfaces/Notification";
-import { getNotifications } from "../../api/notification";
+import { NotificationInterface } from "../../interfaces/Notification";
+import { useNotifApi } from "../../api/notification";
 import { useAuthApi } from "../../api/auth";
 import { customHandleError } from "../../utils/customHandleError";
 
@@ -26,7 +26,7 @@ interface AuthContextType {
   logout: () => void;
   nbNotReadNotifications: number;
   updateNbNotReadNotifications: Dispatch<SetStateAction<number>>;
-  notificationsList: NotificationComponentInterface[];
+  notificationsList: NotificationInterface[];
 }
 
 const defaultAuthContext: AuthContextType = {
@@ -65,9 +65,10 @@ export const AuthProvider = ({
   const [nbNotReadNotifications, setNbNotReadNotifications] =
     useState<number>(0);
   const [notificationsList, setNotificationsList] = useState<
-    NotificationComponentInterface[]
+    NotificationInterface[]
   >([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { getNotifications } = useNotifApi();
 
   // Axios functions
   const { me, signout } = useAuthApi();
@@ -117,7 +118,7 @@ export const AuthProvider = ({
   const loadNotifications = useCallback(async () => {
     if (authInfos) {
       try {
-        const notifications = await getNotifications(authInfos.id);
+        const notifications = await getNotifications();
         setNotificationsList(notifications);
         setNbNotReadNotifications(
           notifications.filter((notif) => !notif.isRead).length
