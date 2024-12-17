@@ -75,6 +75,7 @@ export const profileGenderOptions = [
   { value: ProfileGenderEnum.MALE, label: "Masculin" },
   { value: ProfileGenderEnum.FEMALE, label: "Féminin" },
   { value: ProfileGenderEnum.OTHER, label: "Autre" },
+  { value: ProfileGenderEnum.NOT_SPECIFIED, label: "Non spécifié" },
 ];
 
 export const spokenLanguagesOptions = [
@@ -98,6 +99,7 @@ export const budgetOptions = [
   { value: BudgetEnum.MIDDLE, label: "Moyen" },
   { value: BudgetEnum.HIGH, label: "Haut" },
   { value: BudgetEnum.LUXURY, label: "Luxe" },
+  { value: BudgetEnum.NOT_SPECIFIED, label: "Non spécifié" },
 ];
 
 export const ageRangesOptions = [

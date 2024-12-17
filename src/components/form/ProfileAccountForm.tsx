@@ -1,5 +1,5 @@
 // REACT HOOKS
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // REACT QUERY
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -28,11 +28,9 @@ import { Button, Card, Input, Typography } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { ProfileInterface } from "../../interfaces/Profile";
+import { toast } from "react-toastify";
 
 export function ProfileAccountForm() {
-  // STATES
-  const [error, setError] = useState<null | string>(null);
-
   // Import signup function
   const { getUser, editUser } = useAuthApi();
 
@@ -52,7 +50,7 @@ export function ProfileAccountForm() {
     isError: isProfileAccountError,
   } = useQuery<UserInterface & ProfileInterface>({
     queryKey: ["profileAccount", user?.id],
-    queryFn: () => (user ? getUser(user.id) : Promise.reject(error)),
+    queryFn: () => getUser(),
   });
 
   // FORM LOGIC
@@ -68,24 +66,18 @@ export function ProfileAccountForm() {
       lastname: string().required("Nom requis"),
     }),
     onSubmit: async (values) => {
-      if (user) {
-        try {
-          setError(null);
-          const response = await editUser(user.id, values);
-          console.log("Modification des informations réussie", response);
-          queryClient.setQueryData(["profileAccount", user], values);
-          queryClient.invalidateQueries({
-            queryKey: ["profileData", user],
-          });
-          navigate("/my-profile/edit");
-          formik.resetForm();
-        } catch (error: unknown) {
-          if (error instanceof Error) {
-            setError(error.message);
-          } else {
-            setError("Une erreur inconnue est survenue");
-          }
-          console.log(error);
+      try {
+        await editUser(values);
+        queryClient.setQueryData(["profileAccount", user], values);
+        queryClient.invalidateQueries({
+          queryKey: ["profileData", user],
+        });
+        navigate("/my-profile/edit");
+        toast.success("Vos informations ont été éditées avec succès !");
+        formik.resetForm();
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          toast.error(error.message);
         }
       }
     },
@@ -216,11 +208,6 @@ export function ProfileAccountForm() {
         >
           Valider
         </Button>
-        {error && (
-          <div className="text-red-500 text-center ">
-            Erreur lors de la mise à jour du compte
-          </div>
-        )}
         {isProfileAccountLoading && (
           <div className="text-blue text-center">Chargement des données...</div>
         )}

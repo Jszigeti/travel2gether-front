@@ -78,27 +78,32 @@ export function useAuthApi() {
       );
       return data;
     } catch (error: unknown) {
-      const errorMessage = customHandleError(
-        error,
-        "L'adresse email ou le mot de passe est incorrect",
-        403
-      );
-      throw new Error(errorMessage);
+      throw new Error(customHandleError(error, "Une erreur est survenue"));
     }
   };
 
   const forgotPassword = async (body: UserInterface) => {
     try {
-      // const { data } = await axios.post(`${uri}/users/forgot`, { body });
-      // return data.body;
-      return body;
+      const { data } = await api.post("forgot", body);
+      return data;
     } catch (error: unknown) {
-      const errorMessage = customHandleError(
-        error,
-        "L'adresse email est déjà utilisée",
-        403
+      throw new Error(customHandleError(error, "Une erreur est survenue"));
+    }
+  };
+
+  const resetPassword = async (
+    userId: string,
+    resetToken: string,
+    password: string
+  ) => {
+    try {
+      const { data } = await api.patch(
+        `reset-password/${userId}/${resetToken}`,
+        { password }
       );
-      throw new Error(errorMessage);
+      return data;
+    } catch (error: unknown) {
+      throw new Error(customHandleError(error, "Une erreur est survenue"));
     }
   };
 
@@ -117,34 +122,27 @@ export function useAuthApi() {
     }
   };
 
-  const getUser = async (_id: number) => {
+  const getUser = async () => {
     try {
-      // const { data } = await axios.post(`${uri}/users/${id}`, { body });
-      // return data.body;
-      const data = userDetails;
+      const { data } = await api.get("users");
       return data;
     } catch (error: unknown) {
-      const errorMessage = customHandleError(
-        error,
-        "L'adresse email est déjà utilisée",
-        403
-      );
-      throw new Error(errorMessage);
+      throw new Error(customHandleError(error, "Une erreur est survenue"));
     }
   };
 
-  const editUser = async (_id: number, body: UserInterface) => {
+  const editUser = async (body: UserInterface) => {
     try {
-      // const { data } = await axios.put(`${uri}/users/${id}`, { body });
-      // return data.body;
-      return body;
+      const { data } = await api.patch("users", body);
+      return data;
     } catch (error: unknown) {
-      const errorMessage = customHandleError(
-        error,
-        "L'adresse email est déjà utilisée",
-        403
+      throw new Error(
+        customHandleError(error, {
+          400: "Le nouvel email est déjà attribué à un autre utilisateur",
+          403: "L'ancien mot de passe ne correspond pas.",
+          404: "Une erreur est survenue, veuillez réessayer.",
+        })
       );
-      throw new Error(errorMessage);
     }
   };
 
@@ -167,6 +165,7 @@ export function useAuthApi() {
     signout,
     accountVerification,
     forgotPassword,
+    resetPassword,
     editPassword,
     getUser,
     editUser,

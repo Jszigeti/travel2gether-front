@@ -91,7 +91,13 @@ export default function GroupManageMembersDisplay({
           >
             <div className="flex items-center gap-3 col-span-2 order-1">
               <Avatar
-                src={profile.pathPicture}
+                src={
+                  profile.pathPicture
+                    ? `${import.meta.env.VITE_API_BASE_URL}${
+                        profile.pathPicture
+                      }`
+                    : "/src/assets/avatar/avatar.svg"
+                }
                 alt="Avatar du membre"
                 size="sm"
               />

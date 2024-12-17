@@ -42,14 +42,20 @@ export default function GroupCard({ group }: GroupCardProps) {
           {group.profiles &&
             group.profiles
               .slice(0, 3)
-              .map((profil) => (
+              .map((profile) => (
                 <Avatar
-                  key={profil.userId}
-                  src={profil.pathPicture}
+                  key={profile.userId}
+                  src={
+                    profile.pathPicture
+                      ? `${import.meta.env.VITE_API_BASE_URL}${
+                          profile.pathPicture
+                        }`
+                      : "/src/assets/avatar/avatar.svg"
+                  }
                   alt="Avatar"
                   className={`${
-                    profil.role.includes(GroupUserRoleEnum.ORGANIZER) ||
-                    profil.role.includes(GroupUserRoleEnum.AUTHOR)
+                    profile.role.includes(GroupUserRoleEnum.ORGANIZER) ||
+                    profile.role.includes(GroupUserRoleEnum.AUTHOR)
                       ? "border-green"
                       : "border-blue"
                   } border-4 h-12 w-12 md:h-16 md:w-16 lg:h-12 lg:w-12 xl:h-16 xl:w-16`}

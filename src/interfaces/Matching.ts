@@ -3,6 +3,7 @@ export enum BudgetEnum {
   MIDDLE = "MIDDLE",
   HIGH = "HIGH",
   LUXURY = "LUXURY",
+  NOT_SPECIFIED = "NOT_SPECIFIED",
 }
 
 export enum GroupGenderEnum {
@@ -32,6 +33,7 @@ export enum ProfileGenderEnum {
   MALE = "MALE",
   FEMALE = "FEMALE",
   OTHER = "OTHER",
+  NOT_SPECIFIED = "NOT_SPECIFIED",
 }
 
 export enum ProfileInterestsSet {

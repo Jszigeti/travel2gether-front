@@ -1,6 +1,3 @@
-// REACT HOOKS
-import { useState } from "react";
-
 // AXIOS FUNCTIONS
 import { useAuthApi } from "../../api/auth";
 
@@ -12,13 +9,15 @@ import { object, string } from "yup";
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function ForgotPasswordForm() {
-  // STATES
-  const [error, setError] = useState<null | string>(null);
-
   // Import signup function
   const { forgotPassword } = useAuthApi();
+
+  // Import useNavigate
+  const navigate = useNavigate();
 
   // FORM LOGIC
   const formik = useFormik({
@@ -30,17 +29,17 @@ export default function ForgotPasswordForm() {
     }),
     onSubmit: async (values) => {
       try {
-        setError(null);
-        const response = await forgotPassword(values);
-        console.log("Soumission du formulaire réussie", response);
+        await forgotPassword(values);
+        toast.success(
+          "Un email avec les instructions vient de vous être envoyé"
+        );
         formik.resetForm();
       } catch (error: unknown) {
         if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("Une erreur inconnue est survenue");
+          toast.error(error.message);
         }
-        console.log(error);
+      } finally {
+        navigate("/signin");
       }
     },
   });
@@ -81,9 +80,6 @@ export default function ForgotPasswordForm() {
       <Button className="bg-blue font-montserrat" fullWidth type="submit">
         Me renvoyer mon mot de passe
       </Button>
-      {error && (
-        <div className="text-red-500 text-center">Une erreur est survenue</div>
-      )}
     </form>
   );
 }
