@@ -19,6 +19,13 @@ import GroupCard from "../UI/GroupCard";
 import { Chip, Avatar, Rating, Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import {
+  interestsOptions,
+  lodgingsOptions,
+  profileGenderOptions,
+  spokenLanguagesOptions,
+  tripDurationsOptions,
+} from "../../data/formOptions";
 
 // PROPS INTERFACE
 interface ProfileComponentProps {
@@ -44,6 +51,12 @@ export default function ProfileComponent({
         : Promise.reject(new Error("User ID is required")),
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getLabelFromValue = (value: string, options: any[]) => {
+    const option = options.find((opt) => opt.value === value);
+    return option ? option.label : value;
+  };
+
   return (
     profile && (
       <>
@@ -59,7 +72,11 @@ export default function ProfileComponent({
             </div>
           )}
           <Avatar
-            src={`${import.meta.env.VITE_API_BASE_URL}${profile.pathPicture}`}
+            src={
+              profile.pathPicture
+                ? `${import.meta.env.VITE_API_BASE_URL}${profile.pathPicture}`
+                : "/src/assets/avatar/avatar.svg"
+            }
             alt={`${profile.firstname} (photo de profil)`}
             size="xxl"
           />
@@ -73,7 +90,14 @@ export default function ProfileComponent({
               {profile.averageRating} ({profile.ratings} avis)
             </section>
             <section className="flex gap-2">
-              <Chip value={profile.gender} className="bg-green w-fit " />
+              <Chip
+                value={
+                  profileGenderOptions.find(
+                    (option) => option.value === profile.gender[0]
+                  )?.label
+                }
+                className="bg-green w-fit "
+              />
               <Chip
                 value={displayAge(profile.birthdate)}
                 className="bg-green w-fit "
@@ -93,15 +117,17 @@ export default function ProfileComponent({
         <section className="flex flex-col md:grid md:grid-cols-2 gap-6">
           <section className="flex flex-col justify-between shadow-md p-4 rounded-md">
             <div>{profile.description}</div>
-            <p className="font-bold">
-              Disponible du {formatDate(profile.availableFrom)} au{" "}
-              {formatDate(profile.availableTo)}
-            </p>
+            {profile.availableFrom && profile.availableTo && (
+              <p className="font-bold">
+                Disponible du {formatDate(profile.availableFrom)} au{" "}
+                {formatDate(profile.availableTo)}
+              </p>
+            )}
           </section>
-          {(profile.spokenLanguages.length <= 1 ||
-            profile.interests.length <= 1 ||
-            profile.tripDurations.length <= 1 ||
-            profile.lodgings.length <= 1) && (
+          {(profile.spokenLanguages.length > 0 ||
+            profile.interests.length > 0 ||
+            profile.tripDurations.length > 0 ||
+            profile.lodgings.length > 0) && (
             <section className=" flex flex-col gap-3 shadow-md p-4 rounded-md">
               <h2 className="font-bold">Informations</h2>
 
@@ -109,13 +135,19 @@ export default function ProfileComponent({
                 <div>
                   <h3>Langues parlées</h3>
                   <section className="flex flex-wrap gap-3">
-                    {profile.spokenLanguages.map((lang, index) => (
-                      <Chip
-                        value={lang}
-                        key={index}
-                        className="bg-green w-fit"
-                      />
-                    ))}
+                    {profile.spokenLanguages.map((lang, index) => {
+                      const languageLabel = getLabelFromValue(
+                        lang,
+                        spokenLanguagesOptions
+                      );
+                      return (
+                        <Chip
+                          value={languageLabel}
+                          key={index}
+                          className="bg-green w-fit"
+                        />
+                      );
+                    })}
                   </section>
                 </div>
               )}
@@ -124,13 +156,19 @@ export default function ProfileComponent({
                 <div>
                   <h3>Centres d'intérêt</h3>
                   <section className="flex gap-3 flex-wrap">
-                    {profile.interests.map((intr, index) => (
-                      <Chip
-                        value={intr}
-                        key={index}
-                        className="bg-green w-fit"
-                      />
-                    ))}
+                    {profile.interests.map((intr, index) => {
+                      const interestLabel = getLabelFromValue(
+                        intr,
+                        interestsOptions
+                      );
+                      return (
+                        <Chip
+                          value={interestLabel}
+                          key={index}
+                          className="bg-green w-fit"
+                        />
+                      );
+                    })}
                   </section>
                 </div>
               )}
@@ -139,13 +177,19 @@ export default function ProfileComponent({
                 <div>
                   <h3>Durées préférées</h3>
                   <section className="flex gap-3 flex-wrap">
-                    {profile.tripDurations.map((dur, index) => (
-                      <Chip
-                        value={dur}
-                        key={index}
-                        className="bg-green w-fit"
-                      />
-                    ))}
+                    {profile.tripDurations.map((dur, index) => {
+                      const durationLabel = getLabelFromValue(
+                        dur,
+                        tripDurationsOptions
+                      );
+                      return (
+                        <Chip
+                          value={durationLabel}
+                          key={index}
+                          className="bg-green w-fit"
+                        />
+                      );
+                    })}
                   </section>
                 </div>
               )}
@@ -154,27 +198,35 @@ export default function ProfileComponent({
                 <div>
                   <h3>Préférences d'hébergement</h3>
                   <section className="flex gap-3 flex-wrap">
-                    {profile.lodgings.map((lodge, index) => (
-                      <Chip
-                        value={lodge}
-                        key={index}
-                        className="bg-green w-fit"
-                      />
-                    ))}
+                    {profile.lodgings.map((lodge, index) => {
+                      const lodgeLabel = getLabelFromValue(
+                        lodge,
+                        lodgingsOptions
+                      );
+                      return (
+                        <Chip
+                          value={lodgeLabel}
+                          key={index}
+                          className="bg-green w-fit"
+                        />
+                      );
+                    })}
                   </section>
                 </div>
               )}
             </section>
           )}
         </section>
-        <section className="flex flex-col gap-4">
-          <h2 className="font-bold">Voyages à venir</h2>
-          <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {profile.groups.map((gr, index) => (
-              <GroupCard group={gr} key={index} />
-            ))}
-          </div>
-        </section>
+        {profile.groups.length > 0 && (
+          <section className="flex flex-col gap-4">
+            <h2 className="font-bold">Voyages à venir</h2>
+            <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {profile.groups.map((gr, index) => (
+                <GroupCard group={gr} key={index} />
+              ))}
+            </div>
+          </section>
+        )}
         {!myProfileContext && (
           <section className="flex justify-center gap-3 md:gap-6 lg:gap-12">
             <NavLink to={"/a"}>

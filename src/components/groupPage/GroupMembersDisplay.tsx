@@ -54,14 +54,20 @@ export default function GroupMembersDisplay({
         <Accordion open={open}>
           <div className="flex justify-between">
             <div className="grid grid-cols-4 w-full gap-6">
-              {groupDetails.profiles.slice(0, 4).map((profil) => (
-                <NavLink to={`/profile/${profil.userId}`} key={profil.userId}>
+              {groupDetails.profiles.slice(0, 4).map((profile) => (
+                <NavLink to={`/profile/${profile.userId}`} key={profile.userId}>
                   <Avatar
-                    src={profil.pathPicture}
+                    src={
+                      profile.pathPicture
+                        ? `${import.meta.env.VITE_API_BASE_URL}${
+                            profile.pathPicture
+                          }`
+                        : "/src/assets/avatar/avatar.svg"
+                    }
                     alt="Avatar"
                     className={`${
-                      profil.role.includes(GroupUserRoleEnum.ORGANIZER) ||
-                      profil.role.includes(GroupUserRoleEnum.AUTHOR)
+                      profile.role.includes(GroupUserRoleEnum.ORGANIZER) ||
+                      profile.role.includes(GroupUserRoleEnum.AUTHOR)
                         ? "border-green"
                         : "border-blue"
                     } border-4 h-20 w-20`}
@@ -72,14 +78,20 @@ export default function GroupMembersDisplay({
           </div>
           {groupDetails.profiles.length > 4 && (
             <AccordionBody className="grid grid-cols-4 w-full gap-6">
-              {groupDetails.profiles.slice(4).map((profil) => (
-                <NavLink to={`/profile/${profil.userId}`} key={profil.userId}>
+              {groupDetails.profiles.slice(4).map((profile) => (
+                <NavLink to={`/profile/${profile.userId}`} key={profile.userId}>
                   <Avatar
-                    src={profil.pathPicture}
+                    src={
+                      profile.pathPicture
+                        ? `${import.meta.env.VITE_API_BASE_URL}${
+                            profile.pathPicture
+                          }`
+                        : "/src/assets/avatar/avatar.svg"
+                    }
                     alt="Avatar"
                     className={`${
-                      profil.role.includes(GroupUserRoleEnum.ORGANIZER) ||
-                      profil.role.includes(GroupUserRoleEnum.AUTHOR)
+                      profile.role.includes(GroupUserRoleEnum.ORGANIZER) ||
+                      profile.role.includes(GroupUserRoleEnum.AUTHOR)
                         ? "border-green"
                         : "border-blue"
                     } border-4 h-20 w-20`}

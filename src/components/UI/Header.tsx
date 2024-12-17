@@ -15,6 +15,7 @@ import {
   IconButton,
   Avatar,
   Badge,
+  Button,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -56,11 +57,16 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
   function NavList({ closeNav }: { closeNav?: () => void }) {
     return (
       <nav className="flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row items-center lg:gap-6 text-black">
+        {isAuthenticated && (
+          <NavLink to="/group/create" className="mb-6 lg:mb-0">
+            <Button className="bg-blue">Créer un groupe</Button>
+          </NavLink>
+        )}
         {navLinks.map((link, index) => (
           <NavLink
             key={index}
             to={link.path}
-            className="mb-3 font-bold"
+            className="mb-3 lg:mb-0 font-bold"
             onClick={closeNav}
           >
             {link.name === "Mes notifications" &&
@@ -73,13 +79,18 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
           </NavLink>
         ))}
         {isAuthenticated && (
-          <NavLink
-            to="/"
-            onClick={closeNav}
-            className="mb-3 font-bold text-red-500"
-          >
-            <span onClick={logout}>Déconnexion</span>
-          </NavLink>
+          <>
+            {/* <NavLink to="/signin">
+              <Button className="bg-blue">Créer un groupe</Button>
+            </NavLink> */}
+            <NavLink
+              to="/"
+              onClick={closeNav}
+              className="mt-32 lg:mt-0 mb-3 lg:mb-0 font-bold text-red-500"
+            >
+              <span onClick={logout}>Déconnexion</span>
+            </NavLink>
+          </>
         )}
       </nav>
     );
@@ -109,7 +120,11 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
           <div className="flex items-center gap-6">
             {isAuthenticated && (
               <Avatar
-                src={`${import.meta.env.VITE_API_BASE_URL}${user?.pathPicture}`}
+                src={
+                  user?.pathPicture
+                    ? `${import.meta.env.VITE_API_BASE_URL}${user.pathPicture}`
+                    : "/src/assets/avatar/avatar.svg"
+                }
                 alt="avatar"
                 size="md"
               />

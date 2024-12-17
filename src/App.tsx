@@ -18,6 +18,8 @@ import ResultPage from "./pages/result/ResultPage";
 import SignupPage from "./pages/auth/SignupPage";
 import SigninPage from "./pages/auth/SigninPage";
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
+import ValidatePage from "./pages/auth/ValidatePage";
 
 // PROTECTED PAGES
 import MyProfilePage from "./pages/profile/MyProfilePage";
@@ -67,6 +69,14 @@ export default function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/signin" element={<SigninPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route
+            path="/user-verification/:userId/:verificationToken"
+            element={<ValidatePage />}
+          />
+          <Route
+            path="/reset-password/:userId/:resetToken"
+            element={<ResetPasswordPage />}
+          />
         </Route>
 
         {/* PROTECTED ROUTES (REQUIRES BEING CONNECTED) */}

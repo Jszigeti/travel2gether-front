@@ -1,5 +1,5 @@
 // ROUTER
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // AXIOS FUNCTIONS
 import { useAuthApi } from "../../api/auth";
@@ -14,24 +14,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 
-export function ProfilePasswordForm() {
+export function ResetPasswordForm() {
   // Import signup function
-  const { editUser } = useAuthApi();
+  const { resetPassword } = useAuthApi();
 
   // REDIRECTION
   const navigate = useNavigate();
 
+  // USEPARAMS HOOK
+  const { userId, resetToken } = useParams();
+
   // FORM LOGIC
   const formik = useFormik({
     initialValues: {
-      oldPassword: "",
       password: "",
       passwordmatch: "",
     },
     validationSchema: object({
-      oldPassword: string()
-        .required("Mot de passe requis")
-        .min(8, "Au moins 8 caractères"),
       password: string()
         .required("Mot de passe requis")
         .min(8, "Au moins 8 caractères"),
@@ -40,19 +39,24 @@ export function ProfilePasswordForm() {
         .required("Confirmation du mot de passe requise"),
     }),
     onSubmit: async (values) => {
-      const body = {
-        oldPassword: values.oldPassword,
-        password: values.password,
-      };
-      try {
-        await editUser(body);
-        navigate("/my-profile/edit");
-        toast.success("Votre mot de passe a été édité avec succès !");
-        formik.resetForm();
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          toast.error(error.message);
+      if (userId && resetToken) {
+        try {
+          await resetPassword(userId, resetToken, values.password);
+          toast.success(
+            "Votre mot de passe a été réinitialisé avec succès, vous pouvez maintenant vous connecté !"
+          );
+          navigate("/signin");
+          formik.resetForm();
+        } catch {
+          toast.error(
+            "Une erreur est survenue, un nouveau mail vient de vous être envoyé."
+          );
+        } finally {
+          navigate("/signin");
         }
+      } else {
+        toast.error("Une erreur est survenue, veuillez réessayer.");
+        navigate("/signin");
       }
     },
   });
@@ -67,35 +71,6 @@ export function ProfilePasswordForm() {
         className="mt-6 mb-6 w-80 max-w-screen-lg sm:w-96"
         onSubmit={formik.handleSubmit}
       >
-        <div className="flex flex-col mb-3 relative">
-          <Typography variant="h6">Ancien mot de passe</Typography>
-          <Input
-            crossOrigin={undefined}
-            size="lg"
-            type="password"
-            placeholder="********"
-            className={`!border-blue  ${
-              formik.touched.oldPassword && formik.errors.oldPassword
-                ? "!border-red-500"
-                : null
-            }`}
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            onChange={formik.handleChange}
-            name="oldPassword"
-            value={formik.values.oldPassword}
-          />
-          {formik.touched.oldPassword && formik.errors.oldPassword ? (
-            <FontAwesomeIcon
-              icon={faCircleExclamation}
-              className="absolute right-3 top-[40px] text-red-500"
-            />
-          ) : null}
-          {formik.errors.oldPassword && formik.touched.oldPassword && (
-            <div className="mt-1 text-red-500">{formik.errors.oldPassword}</div>
-          )}
-        </div>
         <div className="flex flex-col mb-3 relative">
           <Typography variant="h6">Nouveau mot de passe</Typography>
           <Input

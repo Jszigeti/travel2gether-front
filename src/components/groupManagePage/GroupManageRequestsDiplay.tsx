@@ -94,7 +94,13 @@ export default function GroupManageRequestsDisplay({
               className="flex items-center gap-3"
             >
               <Avatar
-                src={pendingUser.pathPicture}
+                src={
+                  pendingUser.pathPicture
+                    ? `${import.meta.env.VITE_API_BASE_URL}${
+                        pendingUser.pathPicture
+                      }`
+                    : "/src/assets/avatar/avatar.svg"
+                }
                 alt="Avatar du membre"
                 size="sm"
               />
