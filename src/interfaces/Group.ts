@@ -17,6 +17,7 @@ export interface GroupInterface {
   dateFrom?: string;
   dateTo?: string;
   pathPicture?: string;
+  file?: Blob;
   status?: GroupStatusEnum[];
   travelTypes?: TravelTypesSet[];
   lodgings?: LodgingsSet[];

@@ -51,11 +51,11 @@ export function useGroupApi() {
     }
   };
 
-  const createGroup = async (body: GroupInterface) => {
+  const createGroup = async (body: FormData) => {
     try {
-      const { data } = await api.post("/groups", { body });
-      return data.body;
-    } catch (error: unknown) {
+      const { data } = await api.post(`groups`, body);
+      return data;
+    } catch (error) {
       throw new Error(
         customHandleError(error, "Le groupe n'a pas pu être ajouté")
       );
@@ -126,10 +126,6 @@ export function useGroupApi() {
     getLastGroups,
     getGroups,
     createGroup,
-    editGroup,
-    deleteGroup,
-    addUserToGroup,
-    deleteUserFromGroup,
-    editUserFromGroup,
   };
 }
+
