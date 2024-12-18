@@ -26,6 +26,8 @@ import {
   spokenLanguagesOptions,
   tripDurationsOptions,
 } from "../../data/formOptions";
+import { toast } from "react-toastify";
+import { useModeratingApi } from "../../api/moderating";
 
 // PROPS INTERFACE
 interface ProfileComponentProps {
@@ -38,6 +40,7 @@ export default function ProfileComponent({
   userId,
 }: ProfileComponentProps) {
   const { getProfile } = useProfileApi();
+  const { reportUser } = useModeratingApi();
   // RETRIEVE PROFIL INFO DATA
   const {
     data: profile,
@@ -50,6 +53,17 @@ export default function ProfileComponent({
         ? getProfile(userId)
         : Promise.reject(new Error("User ID is required")),
   });
+
+  const handleReport = async (userId: number) => {
+    try {
+      await reportUser(userId);
+      toast.info("Utilisateur reporté");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    }
+  };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getLabelFromValue = (value: string, options: any[]) => {
@@ -229,12 +243,12 @@ export default function ProfileComponent({
         )}
         {!myProfileContext && (
           <section className="flex justify-center gap-3 md:gap-6 lg:gap-12">
-            <NavLink to={"/a"}>
-              <Button className="bg-red-500 sm:w-40">Signaler</Button>
-            </NavLink>
-            <NavLink to={"/a"}>
-              <Button className="bg-red-500 sm:w-40">Bloquer</Button>
-            </NavLink>
+            <Button
+              onClick={() => handleReport(userId)}
+              className="bg-red-500 sm:w-40"
+            >
+              Signaler
+            </Button>
           </section>
         )}
       </>

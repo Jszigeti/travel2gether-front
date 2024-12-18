@@ -8,7 +8,10 @@ export default function StageCreatePage() {
   const params = useParams();
   return (
     <div>
-      <Header pageTitle="Création d'une étape" backLink="/group/:groupId" />
+      <Header
+        pageTitle="Création d'une étape"
+        backLink={`/group/${params.groupId}`}
+      />
       <StageInfoForm groupId={Number(params.groupId)} />
       <Footer />
     </div>

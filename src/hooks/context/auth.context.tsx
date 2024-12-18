@@ -90,7 +90,7 @@ export const AuthProvider = ({
     }
   };
 
-  const retrieveAuthInfos = async () => {
+  const retrieveAuthInfos = async (): Promise<void> => {
     try {
       const response = await me();
       setAuthInfos({
@@ -133,6 +133,7 @@ export const AuthProvider = ({
         );
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authInfos]);
 
   useEffect(() => {
