@@ -96,10 +96,25 @@ export default function GroupPrefForm({
       ageRanges: Yup.array(),
     }),
     onSubmit: async (values) => {
+      const formData = new FormData();
+      values.travelTypes?.forEach((travelType) =>
+        formData.append("travelTypes[]", travelType)
+      );
+      values.budget?.forEach((budget) => formData.append("budget[]", budget));
+      values.lodgings?.forEach((lodging) =>
+        formData.append("lodgings[]", lodging)
+      );
+      values.spokenLanguages?.forEach((spokenLanguage) =>
+        formData.append("spokenLanguages[]", spokenLanguage)
+      );
+      values.ageRanges?.forEach((ageRange) =>
+        formData.append("ageRanges[]", ageRange)
+      );
+      values.gender?.forEach((gender) => formData.append("gender[]", gender));
       if (groupId) {
         try {
           setError(null);
-          const response = await editGroup(groupId, values);
+          const response = await editGroup(groupId, formData);
           console.log("Mise à jour du groupe réussie", response);
           if (groupCreationContext) {
             navigate(`/group/${groupId}`);

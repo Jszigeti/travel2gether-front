@@ -14,13 +14,13 @@ export interface PendingUserInterface {
 }
 
 export enum GroupUserRoleEnum {
-  TRAVELER = "Voyageur",
-  ORGANIZER = "Organisateur",
-  AUTHOR = "Auteur",
+  TRAVELER = "TRAVELER",
+  ORGANIZER = "ORGANIZER",
+  AUTHOR = "AUTHOR",
 }
 
 export enum GroupUserStatusEnum {
-  PENDING = "En attente",
-  ACCEPTED = "Accepté",
-  DENIED = "Refusé",
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  DENIED = "DENIED",
 }
