@@ -98,10 +98,11 @@ export default function GroupInfoForm({
       dateFrom: "",
       dateTo: "",
       file: undefined,
-      // pathPicture: "",
     },
     validationSchema: Yup.object({
-      file: Yup.mixed().required("Image requise"),
+      file: groupCreationContext
+        ? Yup.mixed().required("Image requise")
+        : Yup.mixed(),
       title: Yup.string().required("Nom du groupe requis"),
       description: Yup.string().required("Description requise"),
       location: Yup.string().required("Lieu requis"),

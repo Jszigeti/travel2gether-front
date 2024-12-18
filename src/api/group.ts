@@ -62,9 +62,7 @@ export function useGroupApi() {
 
   const editGroup = async (group_id: number, body: FormData) => {
     try {
-      const { data } = await api.put(`/groups/${group_id}`, {
-        body,
-      });
+      const { data } = await api.patch(`/groups/${group_id}`, body);
       return data.body;
     } catch (error: unknown) {
       throw new Error(

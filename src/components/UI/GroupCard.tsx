@@ -21,7 +21,7 @@ export default function GroupCard({ group }: GroupCardProps) {
     <NavLink to={`/group/${group.id}`}>
       <article className="relative w-full pb-[60%] md:pb-[55%] rounded-lg overflow-hidden">
         <img
-          src={group.pathPicture}
+          src={`${import.meta.env.VITE_API_BASE_URL}${group.pathPicture}`}
           alt={`Image du groupe`}
           className="absolute inset-0 w-full h-full object-cover rounded-lg"
         />
