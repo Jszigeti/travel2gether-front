@@ -2,7 +2,7 @@
 import { NavLink } from "react-router-dom";
 
 // COMPONENTS
-import { ResetPasswordForm } from "../../components/form/ResetPasswordForm";
+import { ResetPasswordForm } from "../../components/form/resetPasswordForm/ResetPasswordForm";
 import { Card } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";

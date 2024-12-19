@@ -5,11 +5,12 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 // COMPONENTS
-import { SignupForm } from "../../components/form/SignupForm";
-import { ProfileInfoForm } from "../../components/form/ProfileInfoForm";
-import { ProfilePrefForm } from "../../components/form/ProfilePrefForm";
+import { SignupForm } from "../../components/form/signupForm/SignupForm";
+import { ProfileInfoForm } from "../../components/form/profileInfoForm/ProfileInfoForm";
+import { ProfilePrefForm } from "../../components/form/profilePrefForm/ProfilePrefForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { Card } from "@material-tailwind/react";
 
 export default function SignupPage() {
   // STATES
@@ -28,13 +29,22 @@ export default function SignupPage() {
           Retour à la page d'accueil
         </span>
       </NavLink>
-      {view === 0 ? (
-        <SignupForm onNext={handleNext} />
-      ) : view === 1 ? (
-        <ProfileInfoForm onNext={handleNext} />
-      ) : (
-        <ProfilePrefForm />
-      )}
+      <Card color="transparent" shadow={false} className="flex flex-col gap-6">
+        <h1 className="text-center text-black">
+          {view === 0
+            ? "Créer mon compte"
+            : view === 1
+            ? "Mon profil"
+            : "Mes préférences"}
+        </h1>
+        {view === 0 ? (
+          <SignupForm onNext={handleNext} />
+        ) : view === 1 ? (
+          <ProfileInfoForm onNext={handleNext} />
+        ) : (
+          <ProfilePrefForm />
+        )}
+      </Card>
     </main>
   );
 }
