@@ -112,7 +112,7 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
       <Navbar className="mx-auto max-w-screen-xl px-6 py-3 rounded-none relative z-30">
         <div className="flex items-end justify-end text-blue-gray-900 relative">
           <NavLink to="/" className="absolute left-1">
-            <img src="/src/assets/logo/logo.svg" />
+            <img src="/assets/logo/logo.svg" />
           </NavLink>
           <div className="hidden xl:block lg:mr-4">
             <NavList />
@@ -123,7 +123,7 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
                 src={
                   user?.pathPicture
                     ? `${import.meta.env.VITE_API_BASE_URL}${user.pathPicture}`
-                    : "/src/assets/avatar/avatar.svg"
+                    : "/assets/avatar/avatar.svg"
                 }
                 alt="avatar"
                 size="md"
@@ -134,6 +134,7 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
               className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent xl:hidden"
               ripple={false}
               onClick={() => setOpenNav(!openNav)}
+              data-cy="toggle-nav-button"
             >
               {openNav ? (
                 <XMarkIcon className="h-8 w-8" strokeWidth={2} />

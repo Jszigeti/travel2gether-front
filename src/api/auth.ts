@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // AXIOS
 import { useApi } from "../hooks/useApi/useApi";
 
@@ -7,7 +6,6 @@ import { customHandleError } from "../utils/customHandleError";
 
 // INTERFACES
 import { UserInterface } from "../interfaces/User";
-import { userDetails } from "../data/userDetails";
 
 export function useAuthApi() {
   const api = useApi();

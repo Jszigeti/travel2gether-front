@@ -219,11 +219,11 @@ export default function SearchUsersForm() {
         >
           Effacer tout
         </Button>
-        {/* {error && (
+        {error && (
           <div className="text-red-500 text-center ">
             Erreur lors de la recherche
           </div>
-        )} */}
+        )}
       </form>
     </Card>
   );

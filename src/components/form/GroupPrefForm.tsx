@@ -38,6 +38,7 @@ import {
 // COMPONENTS
 import Dropdown from "../UI/DropdownComponent";
 import { Card, Button, Typography } from "@material-tailwind/react";
+import { toast } from "react-toastify";
 
 // PROPS INTERFACE
 interface GroupPrefFormProps {
@@ -118,6 +119,7 @@ export default function GroupPrefForm({
           console.log("Mise à jour du groupe réussie", response);
           if (groupCreationContext) {
             navigate(`/group/${groupId}`);
+            toast.success("Info du groupe mises à jour avec succès !");
           } else {
             navigate(`/group/${groupId}/edit`);
             queryClient.setQueryData(["groupPref", groupId], values);

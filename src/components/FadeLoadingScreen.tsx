@@ -25,7 +25,7 @@ const FadeLoadingScreen: React.FC<FadeLoadingScreenProps> = ({ isLoading }) => {
         !lauchAnimation ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >
-      <img src="/src/assets/logo/logo.svg" />
+      <img src="/assets/logo/logo.svg" />
     </div>
   );
 };

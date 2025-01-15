@@ -20,7 +20,7 @@ export default function AvatarCard({ profile }: AvatarCardProps) {
           src={
             profile.pathPicture
               ? `${import.meta.env.VITE_API_BASE_URL}${profile.pathPicture}`
-              : "/src/assets/avatar/avatar.svg"
+              : "/assets/avatar/avatar.svg"
           }
           alt="avatar"
           className="w-24 h-24 sm:w-28 sm:h-28 md:w-40 md:h-40"

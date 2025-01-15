@@ -39,7 +39,7 @@ export function ProfileInfoForm({
         <AvatarInput formik={formik} pathPicture={profileInfo?.pathPicture} />
         <SelectInput
           title="Genre"
-          label="Votre genre"
+          label="votre genre"
           options={profileGenderOptions}
           formik={formik}
           fieldName="gender"
@@ -60,14 +60,14 @@ export function ProfileInfoForm({
         />
         <SelectInput
           title="Centres d'intérêt"
-          label="Vos centres d'intérêt"
+          label="vos centres d'intérêt"
           options={interestsOptions}
           formik={formik}
           fieldName="interests"
         />
         <SelectInput
           title="Langues parlées"
-          label="Vos langues parlées"
+          label="vos langues parlées"
           options={spokenLanguagesOptions}
           formik={formik}
           fieldName="spokenLanguages"

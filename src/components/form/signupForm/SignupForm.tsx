@@ -25,7 +25,6 @@ export function SignupForm({ onNext }: SignupFormProps) {
         <FormInput
           title="E-mail"
           name="email"
-          inputType="email"
           formik={formik}
           placeholder="jean.dupont@gmail.com"
         />

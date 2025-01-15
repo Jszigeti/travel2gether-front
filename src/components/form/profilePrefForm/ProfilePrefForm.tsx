@@ -33,14 +33,14 @@ export function ProfilePrefForm({
       <div className="flex flex-col gap-3 mb-6">
         <SelectInput
           title="Types de voyage"
-          label="Vos types de voyages"
+          label="vos types de voyages"
           options={travelTypesOptions}
           formik={formik}
           fieldName="travelTypes"
         />
         <SelectInput
           title="Mon budget"
-          label="Votre budget"
+          label="votre budget"
           options={budgetOptions}
           formik={formik}
           fieldName="budget"
@@ -48,7 +48,7 @@ export function ProfilePrefForm({
         />
         <SelectInput
           title="Préférences d'hébergement"
-          label="Vos préférences d'hébergement"
+          label="vos préférences d'hébergement"
           options={lodgingsOptions}
           formik={formik}
           fieldName="lodgings"
@@ -68,7 +68,7 @@ export function ProfilePrefForm({
         />
         <SelectInput
           title="Durées de voyage"
-          label="Vos durées de voyage"
+          label="vos durées de voyage"
           options={tripDurationsOptions}
           formik={formik}
           fieldName="tripDurations"

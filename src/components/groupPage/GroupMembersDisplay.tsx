@@ -62,7 +62,7 @@ export default function GroupMembersDisplay({
                         ? `${import.meta.env.VITE_API_BASE_URL}${
                             profile.pathPicture
                           }`
-                        : "/src/assets/avatar/avatar.svg"
+                        : "/assets/avatar/avatar.svg"
                     }
                     alt="Avatar"
                     className={`${
@@ -86,7 +86,7 @@ export default function GroupMembersDisplay({
                         ? `${import.meta.env.VITE_API_BASE_URL}${
                             profile.pathPicture
                           }`
-                        : "/src/assets/avatar/avatar.svg"
+                        : "/assets/avatar/avatar.svg"
                     }
                     alt="Avatar"
                     className={`${

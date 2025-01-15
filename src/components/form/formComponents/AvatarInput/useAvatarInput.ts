@@ -17,7 +17,7 @@ const useAvatarInput = <T extends Record<string, any>>({
   // Default avatar
   const defaultImage = pathPicture
     ? `${import.meta.env.VITE_API_BASE_URL}${pathPicture}`
-    : "/src/assets/avatar/avatar.svg";
+    : "/assets/avatar/avatar.svg";
 
   // Image function
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {

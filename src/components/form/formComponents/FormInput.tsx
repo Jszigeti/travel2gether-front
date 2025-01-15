@@ -29,6 +29,7 @@ const FormInput = <T extends Record<string, any>>({
         placeholder={placeholder}
         type={inputType}
         name={name}
+        data-cy={name}
         value={formik.values[name]}
         onChange={
           capitalizeFirstLetter
