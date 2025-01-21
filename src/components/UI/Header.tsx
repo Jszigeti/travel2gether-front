@@ -79,18 +79,13 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
           </NavLink>
         ))}
         {isAuthenticated && (
-          <>
-            {/* <NavLink to="/signin">
-              <Button className="bg-blue">Créer un groupe</Button>
-            </NavLink> */}
-            <NavLink
-              to="/"
-              onClick={closeNav}
-              className="mt-32 lg:mt-0 mb-3 lg:mb-0 font-bold text-red-500"
-            >
-              <span onClick={logout}>Déconnexion</span>
-            </NavLink>
-          </>
+          <NavLink
+            to="/"
+            onClick={closeNav}
+            className="mt-32 lg:mt-0 mb-3 lg:mb-0 font-bold text-red-500"
+          >
+            <span onClick={logout}>Déconnexion</span>
+          </NavLink>
         )}
       </nav>
     );
@@ -109,7 +104,7 @@ export default function Header({ pageTitle, backLink }: HeaderProps) {
 
   return (
     <header>
-      <Navbar className="mx-auto max-w-screen-xl px-6 py-3 rounded-none relative z-30">
+      <Navbar className="mx-auto max-w-screen-xl px-6 py-8 rounded-none relative z-30">
         <div className="flex items-end justify-end text-blue-gray-900 relative">
           <NavLink to="/" className="absolute left-1">
             <img src="/assets/logo/logo.svg" />

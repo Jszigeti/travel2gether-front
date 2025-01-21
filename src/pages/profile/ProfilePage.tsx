@@ -1,11 +1,15 @@
 import ProfileComponent from "../../components/profilePages/ProfileComponent";
 import Header from "../../components/UI/Header";
 import Footer from "../../components/UI/Footer";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import useAuthContext from "../../hooks/context/useAuthContext";
 
 export default function ProfilePage() {
-  // USEPARAMS HOOK
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
   const params = useParams();
+
+  if (Number(params.userId) === user?.id) navigate("/my-profile");
 
   return (
     <>

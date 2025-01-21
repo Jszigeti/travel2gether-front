@@ -1,20 +1,21 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { customHandleError } from "../../utils/customHandleError";
+import useAuthContext from "../context/useAuthContext";
+import { toast } from "react-toastify";
 
 export function useApi(): AxiosInstance {
+  const { setAuthInfos } = useAuthContext();
   // Create axios instance with base url and cookies use
   const api: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
     withCredentials: true,
   });
 
-  const handleUnauthorizedError = (err: unknown): Promise<never> => {
-    return Promise.reject(
-      customHandleError(err, {
-        401: "Session expirée, veuillez vous reconnecter",
-        403: "Compte banni, merci de nous contacter pour avoir davantage d'informations",
-      })
-    );
+  const handleUnauthorizedError = (err: unknown): string => {
+    return customHandleError(err, {
+      401: "Session expirée, veuillez vous reconnecter",
+      403: "Compte banni, merci de nous contacter pour avoir davantage d'informations",
+    });
   };
 
   // Create response interceptor to refresh token if error is 401
@@ -38,8 +39,8 @@ export function useApi(): AxiosInstance {
             // Retry original request
             return api(originalRequest);
           } catch (refreshError: unknown) {
-            // Optional : redirection or logout function
-            return handleUnauthorizedError(refreshError);
+            toast.error(handleUnauthorizedError(refreshError));
+            setAuthInfos(null);
           }
         }
       }
