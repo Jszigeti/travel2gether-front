@@ -1,6 +1,3 @@
-// REACT HOOKS
-import { useState } from "react";
-
 // REACT QUERY
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -18,6 +15,7 @@ import {
 import { Avatar, Option, Select } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 // PROPS INTERFACE
 interface GroupManageMembersDisplayProps {
@@ -31,9 +29,7 @@ export default function GroupManageMembersDisplay({
   groupId,
   groupDetails,
 }: GroupManageMembersDisplayProps) {
-  // STATES
-  const [error, setError] = useState<null | string>(null);
-  const { editUserFromGroup } = useGroupApi();
+  const { editUserRoleFromGroup, kickUserFromGroup } = useGroupApi();
   // QUERY CLIENT DECLARATION
   const queryClient = useQueryClient();
 
@@ -47,36 +43,21 @@ export default function GroupManageMembersDisplay({
     userId: number,
     newRole: GroupUserRoleEnum
   ) => {
-    const body = { role: [newRole] };
     try {
-      const response = await editUserFromGroup(groupId, userId, body);
-      console.log("Modification du rôle réussie", response);
+      await editUserRoleFromGroup(groupId, userId, newRole);
       queryClient.invalidateQueries({ queryKey: ["groupDetails", groupId] });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Une erreur inconnue est survenue");
-      }
-      console.log(error);
+      if (error instanceof Error) toast.error(error.message);
     }
   };
 
   // DELETE USER FUNCTION
   const handleDeleteUser = async (userId: number) => {
-    const body = { status: [GroupUserStatusEnum.DENIED] };
     try {
-      setError(null);
-      const response = await editUserFromGroup(groupId, userId, body);
-      console.log("Voyageur exclu", response);
+      await kickUserFromGroup(groupId, userId);
       queryClient.invalidateQueries({ queryKey: ["groupDetails", groupId] });
-    } catch (errors: unknown) {
-      if (errors instanceof Error) {
-        setError(errors.message);
-      } else {
-        setError("Une erreur est survenue");
-      }
-      console.log(errors);
+    } catch (error: unknown) {
+      if (error instanceof Error) toast.error(error.message);
     }
   };
 
@@ -110,7 +91,7 @@ export default function GroupManageMembersDisplay({
                 onChange={(value) =>
                   handleRoleChange(profile.userId, value as GroupUserRoleEnum)
                 }
-                value={profile.role[0]}
+                value={profile.role}
                 disabled={
                   profile.role[0] === GroupUserRoleEnum.AUTHOR ||
                   profile.userId === userId
@@ -144,11 +125,6 @@ export default function GroupManageMembersDisplay({
           </div>
         ))}
       </div>
-      {error && (
-        <div className="text-red-500 text-center">
-          Erreur lors de la mise à jour du/des rôles
-        </div>
-      )}
     </section>
   );
 }

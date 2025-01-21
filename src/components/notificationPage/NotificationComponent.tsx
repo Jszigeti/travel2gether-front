@@ -45,7 +45,6 @@ function NotificationComponent({ notification }: NotificationComponentProps) {
   return (
     <NavLink to={getNotificationUrl()} onClick={() => toggleRead()}>
       <Alert className={alertClassName}>
-        <h3 className="font-bold">{notification.referenceType}</h3>
         <p>{notification.details}</p>
       </Alert>
     </NavLink>

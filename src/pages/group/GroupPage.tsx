@@ -32,8 +32,10 @@ import GroupMembersDisplay from "../../components/groupPage/GroupMembersDisplay"
 import GroupMapDisplay from "../../components/groupPage/GroupMapDisplay";
 import GroupButtonsDisplay from "../../components/groupPage/GroupButtonsDisplay";
 import { Button } from "@material-tailwind/react";
+import { toast } from "react-toastify";
 
 export default function GroupPage() {
+  const { getGroup, joinGroup, leaveGroup } = useGroupApi();
   // STATES
   const [userRole, setUserRole] = useState<
     "NOT_MEMBER" | "TRAVELER" | "ORGANIZER" | "AUTHOR"
@@ -41,8 +43,6 @@ export default function GroupPage() {
   const [userStatus, setUserStatus] = useState<
     "NOT_MEMBER" | "PENDING" | "ACCEPTED" | "DENIED"
   >("NOT_MEMBER");
-  const [error, setError] = useState<null | string>(null);
-  const { getGroup, addUserToGroup, deleteUserFromGroup } = useGroupApi();
 
   // RETRIEVE USER FROM CONTEXT
   const { user } = useAuthContext();
@@ -81,23 +81,13 @@ export default function GroupPage() {
   const handleLeavingGroup = async () => {
     if (user) {
       try {
-        setError(null);
-        const response = await deleteUserFromGroup(
-          Number(params.groupId),
-          user.id
-        );
-        console.log("Groupe quitté", response);
+        await leaveGroup(Number(params.groupId));
         queryClient.invalidateQueries({
           queryKey: ["groupDetails", Number(params.groupId)],
         });
         navigate("/");
-      } catch (errors: unknown) {
-        if (errors instanceof Error) {
-          setError(errors.message);
-        } else {
-          setError("Une erreur est survenue");
-        }
-        console.log(errors);
+      } catch (error: unknown) {
+        if (error instanceof Error) toast.error(error.message);
       }
     }
   };
@@ -106,16 +96,10 @@ export default function GroupPage() {
   const handleRequestGroup = async () => {
     if (user) {
       try {
-        const response = await addUserToGroup(Number(params.groupId), user.id);
-        console.log("Demande envoyée", response);
+        await joinGroup(Number(params.groupId));
         setUserStatus("PENDING");
       } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("Une erreur inconnue est survenue");
-        }
-        console.log(error);
+        if (error instanceof Error) toast.error(error.message);
       }
     } else {
       navigate("/signin");
@@ -141,7 +125,7 @@ export default function GroupPage() {
         <Footer />
       </>
     );
-  console.log(groupDetails);
+
   return (
     <>
       <Header pageTitle={groupDetails.title} backLink="/" />
@@ -187,11 +171,6 @@ export default function GroupPage() {
               Quitter le groupe
             </Button>
           )}
-        {error && (
-          <div className="text-red-500 text-center">
-            Une erreur est survenue
-          </div>
-        )}
       </main>
       <GroupButtonsDisplay
         userRole={userRole}

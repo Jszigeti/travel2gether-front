@@ -6,7 +6,10 @@ import { NavLink } from "react-router-dom";
 
 // INTERFACES
 import { GroupPageInterface } from "../../interfaces/Group";
-import { GroupUserRoleEnum } from "../../interfaces/GroupUser";
+import {
+  GroupUserRoleEnum,
+  GroupUserStatusEnum,
+} from "../../interfaces/GroupUser";
 
 // COMPONENTS
 import {
@@ -31,8 +34,13 @@ export default function GroupMembersDisplay({
   // STATES
   const [open, setOpen] = useState(false);
 
+  // RETRIEVE ACCEPTED USERS
+  const acceptedUsers = groupDetails.profiles.filter((profile) =>
+    profile.status.includes(GroupUserStatusEnum.ACCEPTED)
+  );
+
   return (
-    groupDetails.profiles && (
+    acceptedUsers && (
       <section
         className={`flex flex-col gap-3 shadow-md p-4 rounded-md min-h-[10rem] h-fit ${
           (userRole === "ORGANIZER" || userRole === "AUTHOR") &&
@@ -42,7 +50,7 @@ export default function GroupMembersDisplay({
       >
         <div className="flex justify-between">
           <h2>Les membres</h2>
-          {groupDetails.profiles.length > 4 && (
+          {acceptedUsers.length > 4 && (
             <div
               className="font-normal text-base text-right cursor-pointer"
               onClick={() => setOpen((open) => !open)}
@@ -54,7 +62,7 @@ export default function GroupMembersDisplay({
         <Accordion open={open}>
           <div className="flex justify-between">
             <div className="grid grid-cols-4 w-full gap-6">
-              {groupDetails.profiles.slice(0, 4).map((profile) => (
+              {acceptedUsers.slice(0, 4).map((profile) => (
                 <NavLink to={`/profile/${profile.userId}`} key={profile.userId}>
                   <Avatar
                     src={
@@ -76,9 +84,9 @@ export default function GroupMembersDisplay({
               ))}
             </div>
           </div>
-          {groupDetails.profiles.length > 4 && (
+          {acceptedUsers.length > 4 && (
             <AccordionBody className="grid grid-cols-4 w-full gap-6">
-              {groupDetails.profiles.slice(4).map((profile) => (
+              {acceptedUsers.slice(4).map((profile) => (
                 <NavLink to={`/profile/${profile.userId}`} key={profile.userId}>
                   <Avatar
                     src={
