@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { object, string, ref } from "yup";
 import { useAuthApi } from "../../../api/auth";
+import { passwordRegex } from "../../../utils/regex";
 
 const useResetPasswordForm = () => {
   // Import reset password function
@@ -23,10 +24,14 @@ const useResetPasswordForm = () => {
     validationSchema: object({
       password: string()
         .required("Mot de passe requis")
-        .min(8, "Au moins 8 caractères"),
+        .matches(
+          passwordRegex,
+          "Minimum 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial"
+        ),
       passwordmatch: string()
-        .oneOf([ref("password"), ""], "Les mots de passe doivent correspondre")
-        .required("Confirmation du mot de passe requise"),
+        .oneOf([ref("password")], "Les mots de passe ne correspondent pas")
+        .required("Confirmation du mot de passe requise")
+        .matches(passwordRegex),
     }),
     onSubmit: async (values) => {
       if (userId && resetToken) {

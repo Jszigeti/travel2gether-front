@@ -23,6 +23,7 @@ import { UserInterface } from "../../../interfaces/User";
 
 // Components
 import { toast } from "react-toastify";
+import { mailRegex } from "../../../utils/regex";
 
 const useProfileAccountForm = () => {
   // Import getUser and editUser functions
@@ -55,7 +56,10 @@ const useProfileAccountForm = () => {
       lastname: "",
     },
     validationSchema: object({
-      email: string().email("E-mail invalide").required("E-mail requis"),
+      email: string()
+        .email()
+        .required("Email requis")
+        .matches(mailRegex, "Email invalide"),
       firstname: string().required("Prénom requis"),
       lastname: string().required("Nom requis"),
     }),

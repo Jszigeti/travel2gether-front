@@ -10,6 +10,7 @@ import { object, string } from "yup";
 
 // Components
 import { toast } from "react-toastify";
+import { mailRegex } from "../../../utils/regex";
 
 const useForgotPasswordForm = () => {
   // Import signup function
@@ -24,7 +25,10 @@ const useForgotPasswordForm = () => {
       email: "",
     },
     validationSchema: object({
-      email: string().email("Email invalide").required("Email requis"),
+      email: string()
+        .email()
+        .required("Email requis")
+        .matches(mailRegex, "Email invalide"),
     }),
     onSubmit: async (values) => {
       try {

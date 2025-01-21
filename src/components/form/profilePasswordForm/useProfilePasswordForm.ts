@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { object, string, ref } from "yup";
 import { useAuthApi } from "../../../api/auth";
+import { passwordRegex } from "../../../utils/regex";
 
 const useProfilePasswordForm = () => {
   // Import signup function
@@ -19,15 +20,17 @@ const useProfilePasswordForm = () => {
       passwordmatch: "",
     },
     validationSchema: object({
-      oldPassword: string()
-        .required("Mot de passe requis")
-        .min(8, "Au moins 8 caractères"),
+      oldPassword: string().required("Mot de passe requis"),
       password: string()
         .required("Mot de passe requis")
-        .min(8, "Au moins 8 caractères"),
+        .matches(
+          passwordRegex,
+          "Minimum 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial"
+        ),
       passwordmatch: string()
-        .oneOf([ref("password"), ""], "Les mots de passe doivent correspondre")
-        .required("Confirmation du mot de passe requise"),
+        .oneOf([ref("password")], "Les mots de passe ne correspondent pas")
+        .required("Confirmation du mot de passe requise")
+        .matches(passwordRegex),
     }),
     onSubmit: async (values) => {
       const body = {

@@ -13,6 +13,7 @@ import { object, string } from "yup";
 
 // Components
 import { toast } from "react-toastify";
+import { mailRegex } from "../../../utils/regex";
 
 const useSigninForm = () => {
   // Retrieve login function from context
@@ -31,7 +32,10 @@ const useSigninForm = () => {
       password: "",
     },
     validationSchema: object({
-      email: string().email("E-mail invalide").required("E-mail requis"),
+      email: string()
+        .email()
+        .required("Email requis")
+        .matches(mailRegex, "Email invalide"),
       password: string().required("Mot de passe requis"),
     }),
     onSubmit: async (values) => {

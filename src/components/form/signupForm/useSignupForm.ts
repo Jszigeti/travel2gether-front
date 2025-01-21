@@ -7,6 +7,7 @@ import { object, string, ref } from "yup";
 
 // Components
 import { toast } from "react-toastify";
+import { mailRegex, passwordRegex } from "../../../utils/regex";
 
 // Props interface
 interface IUseSignupForm {
@@ -27,13 +28,20 @@ const useSignupForm = ({ onNext }: IUseSignupForm) => {
       passwordmatch: "",
     },
     validationSchema: object({
-      email: string().email("E-mail invalide").required("E-mail requis"),
+      email: string()
+        .email()
+        .required("Email requis")
+        .matches(mailRegex, "Email invalide"),
       password: string()
         .required("Mot de passe requis")
-        .min(8, "Au moins 8 caractères"),
-      passwordmatch: string()
-        .oneOf([ref("password"), ""], "Les mots de passe doivent correspondre")
-        .required("Confirmation du mot de passe requise"),
+        .matches(
+          passwordRegex,
+          "Minimum 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial"
+        ),
+      matchingPassword: string()
+        .oneOf([ref("password")], "Les mots de passe ne correspondent pas")
+        .required("Confirmation du mot de passe requise")
+        .matches(passwordRegex),
       firstname: string().required("Prénom requis"),
       lastname: string().required("Nom requis"),
     }),

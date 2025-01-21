@@ -145,7 +145,11 @@ export default function GroupPrefForm({
       formik.setValues({
         travelTypes: groupPref.travelTypes || [],
         lodgings: groupPref.lodgings || [],
-        gender: groupPref.gender || [],
+        gender: Array.isArray(groupPref.gender)
+          ? groupPref.gender.filter(Boolean)
+          : groupPref.gender
+          ? [groupPref.gender]
+          : [],
         spokenLanguages: groupPref.spokenLanguages || [],
         budget: groupPref.budget || [],
         ageRanges: groupPref.ageRanges || [],
