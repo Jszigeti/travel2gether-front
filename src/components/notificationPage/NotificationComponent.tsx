@@ -11,6 +11,7 @@ import {
 import { Alert } from "@material-tailwind/react";
 import { useNotifApi } from "../../api/notification";
 import { toast } from "react-toastify";
+import useAuthContext from "../../hooks/context/useAuthContext";
 
 // PROPS INTERFACE
 interface NotificationComponentProps {
@@ -18,11 +19,15 @@ interface NotificationComponentProps {
 }
 
 function NotificationComponent({ notification }: NotificationComponentProps) {
+  const { nbNotReadNotifications, updateNbNotReadNotifications } =
+    useAuthContext();
   const { markAsRead } = useNotifApi();
 
   const toggleRead = () => {
     try {
       markAsRead(notification.id);
+      if (nbNotReadNotifications > 0)
+        updateNbNotReadNotifications(nbNotReadNotifications - 1);
     } catch (error: unknown) {
       if (error instanceof Error) toast.error(error.message);
     }
