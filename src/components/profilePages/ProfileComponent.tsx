@@ -89,7 +89,7 @@ export default function ProfileComponent({
             src={
               profile.pathPicture
                 ? `${import.meta.env.VITE_API_BASE_URL}${profile.pathPicture}`
-                : "/src/assets/avatar/avatar.svg"
+                : "/assets/avatar/avatar.svg"
             }
             alt={`${profile.firstname} (photo de profil)`}
             size="xxl"

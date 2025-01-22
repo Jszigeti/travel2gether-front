@@ -11,6 +11,7 @@ import { NotificationInterface } from "../../interfaces/Notification";
 import { useNotifApi } from "../../api/notification";
 import { useAuthApi } from "../../api/auth";
 import { customHandleError } from "../../utils/customHandleError";
+import { toast } from "react-toastify";
 
 interface AuthInfos {
   id: number;
@@ -124,7 +125,7 @@ export const AuthProvider = ({
           notifications.filter((notif) => !notif.isRead).length
         );
       } catch (error) {
-        console.error(
+        toast.error(
           customHandleError(
             error,
             "Erreur lors du chargement des notifications",

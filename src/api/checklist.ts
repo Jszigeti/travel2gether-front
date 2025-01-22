@@ -15,9 +15,7 @@ export function useChecklistApi() {
     body: ChecklistInterface
   ) => {
     try {
-      const { data } = await api.post(`checklist/groups/${group_id}`, {
-        body,
-      });
+      const { data } = await api.post(`checklist/groups/${group_id}`, body);
       return data.body;
       //return body;
     } catch (error: unknown) {

@@ -1,3 +1,12 @@
+# Compiled output
+node_modules
+dist
+dist-ssr
+
+# Package lock files
+package-lock.json
+pnpm-lock.yaml
+
 # Logs
 logs
 *.log
@@ -7,19 +16,23 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-.env
+# OS
+.DS_Store
 
-# Editor directories and files
+# IDEs and editors
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+*.local

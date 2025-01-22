@@ -73,6 +73,7 @@ export default function Dropdown({
       <div
         className="border border-blue p-2 rounded-md cursor-pointer relative flex items-center"
         onClick={() => setIsOpen(!isOpen)}
+        data-cy={label}
       >
         {formik?.values[field.name].length > 0
           ? options
@@ -104,6 +105,7 @@ export default function Dropdown({
                 className="mr-2"
                 checked={formik?.values[field.name].includes(option.value)}
                 onChange={() => handleCheckboxChange(option.value)}
+                data-cy={option.label}
               />
               {option.label}
             </label>

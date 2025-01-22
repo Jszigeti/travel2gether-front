@@ -2,7 +2,7 @@
 import { NavLink } from "react-router-dom";
 
 // COMPONENTS
-import SigninForm from "../../components/form/SigninForm";
+import SigninForm from "../../components/form/signinForm/SigninForm";
 import { Card, Typography } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";

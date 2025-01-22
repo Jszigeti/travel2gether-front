@@ -1,6 +1,3 @@
-// REACT HOOKS
-import { useState } from "react";
-
 // REACT QUERY
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -12,15 +9,13 @@ import { useGroupApi } from "../../api/group";
 
 // INTERFACES
 import { GroupPageInterface } from "../../interfaces/Group";
-import {
-  GroupUserRoleEnum,
-  GroupUserStatusEnum,
-} from "../../interfaces/GroupUser";
+import { GroupUserStatusEnum } from "../../interfaces/GroupUser";
 
 // COMPONENTS
 import { Avatar } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 // PROPS INTERFACE
 interface GroupManageRequestsDiplayProps {
@@ -32,9 +27,7 @@ export default function GroupManageRequestsDisplay({
   groupId,
   groupDetails,
 }: GroupManageRequestsDiplayProps) {
-  // STATES
-  const [error, setError] = useState<null | string>(null);
-  const { editUserFromGroup } = useGroupApi();
+  const { acceptUserGroupRequest, kickUserFromGroup } = useGroupApi();
 
   // QUERY CLIENT DECLARATION
   const queryClient = useQueryClient();
@@ -46,37 +39,20 @@ export default function GroupManageRequestsDisplay({
 
   // REQUEST FUNCTIONS
   const handleAcceptedRequest = async (userId: number) => {
-    const body = {
-      role: [GroupUserRoleEnum.TRAVELER],
-      status: [GroupUserStatusEnum.ACCEPTED],
-    };
     try {
-      const response = await editUserFromGroup(groupId, userId, body);
-      console.log("Demande acceptée", response);
+      await acceptUserGroupRequest(groupId, userId);
       queryClient.invalidateQueries({ queryKey: ["groupDetails", groupId] });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Une erreur inconnue est survenue");
-      }
-      console.log(error);
+      if (error instanceof Error) toast.error(error.message);
     }
   };
 
   const handleDeniedRequest = async (userId: number) => {
-    const body = { status: [GroupUserStatusEnum.DENIED] };
     try {
-      const response = await editUserFromGroup(groupId, userId, body);
-      console.log("Demande refusée", response);
+      await kickUserFromGroup(groupId, userId);
       queryClient.invalidateQueries({ queryKey: ["groupDetails", groupId] });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Une erreur inconnue est survenue");
-      }
-      console.log(error);
+      if (error instanceof Error) toast.error(error.message);
     }
   };
 
@@ -99,7 +75,7 @@ export default function GroupManageRequestsDisplay({
                     ? `${import.meta.env.VITE_API_BASE_URL}${
                         pendingUser.pathPicture
                       }`
-                    : "/src/assets/avatar/avatar.svg"
+                    : "/assets/avatar/avatar.svg"
                 }
                 alt="Avatar du membre"
                 size="sm"
@@ -121,11 +97,6 @@ export default function GroupManageRequestsDisplay({
           </div>
         ))}
       </div>
-      {error && (
-        <div className="text-red-500 text-center ">
-          Erreur lors l'action sur la demande
-        </div>
-      )}
     </section>
   );
 }

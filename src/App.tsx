@@ -38,9 +38,11 @@ import GroupEditPrefPage from "./pages/group/GroupEditPrefPage";
 import StageCreatePage from "./pages/stage/StageCreatePage";
 import StageChecklistPage from "./pages/stage/StageChecklistPage";
 import StageEditPage from "./pages/stage/StageEditPage";
-import MessagePage from "./pages/message/MessagePage";
 import StagePage from "./pages/stage/StagePage";
 import useAuthContext from "./hooks/context/useAuthContext";
+import PrivacyPolicyPage from "./pages/others/PrivacyPolicyPage";
+import AboutPage from "./pages/others/AboutPage";
+import ContactPage from "./pages/others/ContactUsPage";
 
 export default function App() {
   const { isLoading } = useAuthContext();
@@ -48,7 +50,7 @@ export default function App() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <img src="/src/assets/logo/logo.svg" />
+        <img src="/assets/logo/logo.svg" />
       </div>
     );
   }
@@ -63,6 +65,9 @@ export default function App() {
         <Route path="/group/:groupId" element={<GroupPage />} />
         <Route path="/profile/:userId" element={<ProfilePage />} />
         <Route path="/results" element={<ResultPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact-us" element={<ContactPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
 
         {/* ROUTES ACCESS. WITHOUT BEING CONNECTED */}
         <Route element={<ProtectRoute isLoggedIn={true} />}>
@@ -103,7 +108,6 @@ export default function App() {
             path="/my-profile/edit/pref"
             element={<MyProfileEditPrefPage />}
           />
-          <Route path="/my-profile/messages/" element={<MessagePage />} />
           <Route path="/group/create" element={<GroupCreatePage />} />
           <Route
             path="/group/:groupId/checklist"

@@ -56,8 +56,8 @@ export interface GroupPageInterface {
     userId: number;
     firstname: string;
     pathPicture: string;
-    role: GroupUserRoleEnum[];
-    status: GroupUserStatusEnum[];
+    role: GroupUserRoleEnum;
+    status: GroupUserStatusEnum;
   }[];
   stages?: {
     id: number;

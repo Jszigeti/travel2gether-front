@@ -30,6 +30,7 @@ import {
 } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 // PROPS INTERFACE
 interface GroupInfoFormProps {
@@ -131,6 +132,7 @@ export default function GroupInfoForm({
           console.log("Création du groupe", formData);
           const response = await createGroup(formData);
           console.log("Création du groupe réussie", response);
+          toast.success("Groupe créé avec succès !");
           onGroupData(response);
           onNext();
           formik.resetForm();

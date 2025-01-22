@@ -27,14 +27,16 @@ import GroupManageRequestsDisplay from "../../components/groupManagePage/GroupMa
 import GroupManageMembersDisplay from "../../components/groupManagePage/GroupManageMembersDisplay";
 import GroupManageStagesDisplay from "../../components/groupManagePage/GroupManageStagesDisplay";
 import { Button } from "@material-tailwind/react";
+import { toast } from "react-toastify";
 
 export default function GroupManagePage() {
+  const { deleteGroup, getGroup } = useGroupApi();
+
   // STATES
   const [userRole, setUserRole] = useState<
     "NOT_MEMBER" | "TRAVELER" | "ORGANIZER" | "AUTHOR"
   >("NOT_MEMBER");
-  const [error, setError] = useState<null | string>(null);
-  const { deleteGroup, getGroup } = useGroupApi();
+
   // RETRIEVE USER FROM CONTEXT
   const { user } = useAuthContext();
 
@@ -68,20 +70,13 @@ export default function GroupManagePage() {
 
   const handleDeleteGroup = async () => {
     try {
-      setError(null);
-      const response = await deleteGroup(Number(params.groupId));
-      console.log("Groupe supprimé", response);
+      await deleteGroup(Number(params.groupId));
       queryClient.invalidateQueries({
         queryKey: ["groupDetails", Number(params.groupId)],
       });
       navigate(`/`);
-    } catch (errors: unknown) {
-      if (errors instanceof Error) {
-        setError(errors.message);
-      } else {
-        setError("Une erreur est survenue");
-      }
-      console.log(errors);
+    } catch (error: unknown) {
+      if (error instanceof Error) toast.error(error.message);
     }
   };
 
@@ -131,11 +126,6 @@ export default function GroupManagePage() {
           >
             Supprimer le groupe
           </Button>
-        )}
-        {error && (
-          <div className="text-red-500 text-center ">
-            Erreur lors de la suppression du groupe
-          </div>
         )}
       </main>
       <Footer />
