@@ -33,7 +33,6 @@ const useSigninForm = () => {
     },
     validationSchema: object({
       email: string()
-        .email()
         .required("Email requis")
         .matches(mailRegex, "Email invalide"),
       password: string().required("Mot de passe requis"),
