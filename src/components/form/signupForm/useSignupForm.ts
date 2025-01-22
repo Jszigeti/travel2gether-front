@@ -32,28 +32,24 @@ const useSignupForm = ({ onNext }: IUseSignupForm) => {
         .email()
         .required("Email requis")
         .matches(mailRegex, "Email invalide"),
+      firstname: string().required("Prénom requis"),
+      lastname: string().required("Nom requis"),
       password: string()
         .required("Mot de passe requis")
         .matches(
           passwordRegex,
           "Minimum 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial"
         ),
-      matchingPassword: string()
+      passwordmatch: string()
         .oneOf([ref("password")], "Les mots de passe ne correspondent pas")
         .required("Confirmation du mot de passe requise")
         .matches(passwordRegex),
-      firstname: string().required("Prénom requis"),
-      lastname: string().required("Nom requis"),
     }),
     onSubmit: async (values) => {
-      const userData = {
-        email: values.email,
-        firstname: values.firstname,
-        lastname: values.lastname,
-        password: values.password,
-      };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { passwordmatch, ...rest } = values;
       try {
-        await signup(userData);
+        await signup(rest);
         onNext();
         formik.resetForm();
       } catch (error: unknown) {
