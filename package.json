@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "cy:open": "cypress open",
+    "generate-pwa-assets": "pwa-assets-generator --preset minimal public/logo.svg",
     "docker:build": "docker build --build-arg VITE_API_BASE_URL=https://travel2gether.api.jsproject.fr/ -t jszigeti93/travel2gether-front:latest .",
     "docker:buildx": "docker buildx build --platform linux/arm64,linux/amd64 --build-arg VITE_API_BASE_URL=https://travel2gether.api.jsproject.fr/ -t jszigeti93/travel2gether-front:latest --push ."
   },
@@ -38,6 +39,7 @@
     "@types/leaflet": "^1.9.14",
     "@types/react": "18.2.42",
     "@types/react-dom": "^18.3.0",
+    "@vite-pwa/assets-generator": "^0.2.6",
     "@vitejs/plugin-react": "^4.3.2",
     "autoprefixer": "^10.4.20",
     "cypress": "^13.17.0",
@@ -50,6 +52,7 @@
     "tailwindcss": "^3.4.13",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.7.0",
-    "vite": "^5.4.8"
+    "vite": "^5.4.8",
+    "vite-plugin-pwa": "^0.21.1"
   }
 }
